@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+    <name>PaymillPayment</name>
+    <version>1.0.1</version>
+    <stability>stable</stability>
+    <license uri="http://www.opensource.org/licenses/osl-3.0.php">OSL v3.0</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Paymill is an easy way to accept credit card payments online. </summary>
+    <description>Paymill is an easy way to accept credit card payments online. Register at paymill.de.</description>
+    <notes>The extension is in beta mode. Please report all bugs or feedback to www.paymill.de.</notes>
+    <authors><author><name>Philipp Frank</name><user>paymill</user><email>philipp.frank@paymill.de</email></author></authors>
+    <date>2012-08-29</date>
+    <time>13:06:54</time>
+    <contents><target name="magecommunity"><dir><dir name="Paymill"><dir name="Paymillcc"><dir name="Block"><dir name="Form"><file name="Paymill.php" hash="d90dc90411972fd25e7b266ef98141e4"/></dir><dir name="Info"><file name="Paymill.php" hash="d54e93a6b02ce83f73a105b204043d54"/></dir></dir><dir name="Helper"><file name="Data.php" hash="901beaefa74e1d111d535b6d7a039f8b"/></dir><dir name="Model"><file name="PaymentMethod.php" hash="f5855f12ed77a132bb2b3b16a3f23a80"/></dir><file name="OrderPoint.php" hash="e9cdc57f03a15df11e0c52d38201a03c"/><dir name="etc"><file name="config.xml" hash="979a6fd075a152e2f25cb0d72000dfd0"/><file name="system.xml" hash="9b32fc41cc85e9d7df8341bf109dfba9"/></dir></dir></dir></dir></target><target name="magedesign"><dir><dir name="frontend"><dir name="base"><dir name="default"><dir name="template"><dir name="paymill"><dir name="checkout"><file name="payment.phtml" hash="0cbc6611f5540bd0809a388dc95a615b"/></dir><dir name="form"><file name="paymill.phtml" hash="c7bf96ac520e60cd2f0a99bd2f440d8e"/></dir></dir></dir></dir></dir></dir></dir></target><target name="mageetc"><dir><dir name="modules"><file name="Paymill_Paymillcc.xml" hash="9449e58ef4e5a5026b2d5fa64bc820d7"/></dir></dir></target><target name="magelib"><dir><dir name="Services"><dir name="Paymill"><dir name="Apiclient"><file name="Curl.php" hash="bdf3b017142b9c7a971087d55518c38f"/><file name="Interface.php" hash="349309458455e550c562fb17cf23f4a6"/><file name="paymill.crt" hash="f85d1ff17b0079709f131f3ce3f288d2"/></dir><file name="Base.php" hash="46811ae6d1518cfa9fbf0b9e628d001c"/><file name="Clients.php" hash="f9bc9034a6f3b88a842f35efd6524ab6"/><file name="Creditcards.php" hash="844fdb4a5e6fa4e285bdf9199efaebb8"/><file name="Exception.php" hash="4ab4ba775b1614ff410bf31b3214968b"/><file name="Offers.php" hash="28b2d420c87531ffa1f193ec3934fc5b"/><file name="Refunds.php" hash="0fa0f1cc2f98a23eadd0a91ec330d540"/><file name="Subscriptions.php" hash="e8f55fcfd1065439d49bc5f734294be6"/><file name="Transactions.php" hash="b3fe9de3338eee15bb9c8e12e5853789"/></dir></dir></dir></target><target name="magelocale"><dir><dir name="en_US"><file name="Paymill_Paymillcc.csv" hash="4b54efe2bc56a376382fe0dd01063f0f"/></dir><dir name="de_DE"><file name="Paymill_Paymillcc.csv" hash="ecc11fd59495051c797150fbe88410b2"/></dir></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.1.0</min><max>6.0.0</max></php></required></dependencies>
+</package>
