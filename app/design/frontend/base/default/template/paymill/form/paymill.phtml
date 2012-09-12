@@ -29,6 +29,7 @@
 </script>
 <script type="text/javascript" src="<?php print $this->paymillBridgeEndpoint; ?>"></script>
 <script type="text/javascript">
+
     var debugMode = <?php print $this->paymillDebugMode; ?>;
     
     function DebugMessage(message) {
@@ -118,10 +119,11 @@
             payment.save();
         }
     }
-    //document.observe("dom:loaded", function() {
+        
+    document.observe("dom:loaded", function() {
         // incept NextStepHandler() into payment process
         $$('#payment-buttons-container button').first().writeAttribute("onclick", "NextStepHandler()"); 
-    //});
+    });
 </script>
 
 
