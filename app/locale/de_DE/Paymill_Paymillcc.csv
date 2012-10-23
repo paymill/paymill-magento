@@ -19,3 +19,5 @@
 "New order status","Staus neuer Bestellungen"
 "Credit Card Holder","Karteninhaber"
 "Credit Card Holder is missing","Bitte geben Sie den Karteninhaber an"
+"Accepted Currencies","Erlaubte Währungen (Komma-getrennt, z.B. eur,gbp)"
+"Paymill library version","Paymill-Wrapper Version"

@@ -19,3 +19,5 @@
 "New order status","New order status",
 "Credit Card Holder","Credit Card Holder",
 "Credit Card Holder is missing","Credit Card Holder is missing"
+"Accepted Currencies","Accepted Currencies (comma delimited, e.g. eur,usd)"
+"Paymill library version","Paymill-Wrapper Version"

@@ -135,9 +135,17 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
      * Specify currency support
      */
     public function canUseForCurrency($currency) {
-        if (!in_array($currency, array('EUR'))) {
+        
+        $acceptedCurrencies = Mage::getStoreConfig(
+            'payment/paymillcc/paymill_accepted_currencies', 
+            Mage::app()->getStore()
+        );
+        $acceptedCurrenciesExploded = explode(',', trim(strtolower($acceptedCurrencies)));
+
+        if (!in_array(strtolower($currency), $acceptedCurrenciesExploded)) {
             return false;
         }
+        
         return true;
     }
 
@@ -186,8 +194,24 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         $billing = $order->getBillingAddress();
         $customer = Mage::getModel('customer/session')->getCustomer();
         
+        // check the library version
+        $paymillLibraryVersion = Mage::getStoreConfig(
+            'payment/paymillcc/paymill_library_version', 
+            Mage::app()->getStore()
+        );
+        
+        if ($paymillLibraryVersion == "v1") {
+            $libBase = 'lib/paymill/v1/lib/';
+            $libVersion = 'v1';
+        } elseif ($paymillLibraryVersion == "v1") {
+            $libBase = 'lib/paymill/v2/lib/';
+            $libVersion = 'v2';
+        }
+        
+        
         // process the payment
         $result = $this->_processPayment(array(
+            'libVersion' => $libVersion,
             'token' => $token,
             'amount' => $amount * 100,
             'currency' => strtolower($payment->getOrder()->getOrderCurrency()->getCode()),
@@ -196,7 +220,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             'description' => 'Order ' 
                 . Mage::getStoreConfig('design/head/default_title') 
                 . ': ' . sprintf('#%s, %s', $order->getIncrementId(), $order->getCustomerEmail()),
-            'libBase' => 'lib/paymill/lib/',
+            'libBase' => $libBase,
             'privateKey' => Mage::getStoreConfig(
                 'payment/paymillcc/paymill_private_api_key', 
                 Mage::app()->getStore()
