@@ -113,7 +113,11 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         $token = $info->getAdditionalInformation("paymill_transaction_token");
    
         // process the payment
-        $result = $this->processPayment($payment, $amount);
+        $result = $this->processPayment($payment, $amount, $token);
+        if ($result == false) {
+            throw new Exception("Payment was not successfully processed. See log.");
+        }
+        
         return $this;
     }
      
@@ -176,7 +180,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
      * @param $amount The amount to be captures
      * @return boolean $result Returns true if the payment was successfully processed
      */
-    public function processPayment(Varien_Object $payment, $amount) {
+    public function processPayment(Varien_Object $payment, $amount, $token) {
         // get some relevant objects
         $order = $payment->getOrder();
         $billing = $order->getBillingAddress();
@@ -184,7 +188,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         
         // process the payment
         $result = $this->_processPayment(array(
-            'token' => $payment->getCcTransId(),
+            'token' => $token,
             'amount' => $amount * 100,
             'currency' => strtolower($payment->getOrder()->getOrderCurrency()->getCode()),
             'name' => $billing->getName(),
@@ -192,7 +196,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             'description' => 'Order ' 
                 . Mage::getStoreConfig('design/head/default_title') 
                 . ': ' . sprintf('#%s, %s', $order->getIncrementId(), $order->getCustomerEmail()),
-            'libBase' => 'lib/lib/',
+            'libBase' => 'lib/paymill/lib/',
             'privateKey' => Mage::getStoreConfig(
                 'payment/paymillcc/paymill_private_api_key', 
                 Mage::app()->getStore()
@@ -227,7 +231,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         // setup client params
         $clientParams = array(
             'email' => $params['email'],
-            'description' => $params['description']
+            'description' => $params['name']
         );
         
         // setup credit card params
@@ -296,7 +300,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
                     return false;
                 } else {
                     // another error occured
-                    call_user_func_array($logger, array("Unknown error." . var_export($transaction, true)))
+                    call_user_func_array($logger, array("Unknown error." . var_export($transaction, true)));
                     return false;
                 }
             } else {

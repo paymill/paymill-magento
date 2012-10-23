@@ -4,126 +4,202 @@
     The payment form.
     Important: do not process any card data to the server (leave name attribute away)
 -->
-<div id="payment_form_<?php echo $_code ?>" style="display: none">
-
-    <label><?php echo Mage::helper('paymillcc')->__('Credit Card Number') ?></label><br />
-    <input id="card-number" type="text" size="20" />
-    <ul id="cardErrors"></ul>
-
-    <label><?php echo Mage::helper('paymillcc')->__('Card Verification Number') ?></label><br />
-    <input id="card-cvc" type="text" size="4" />
-    <ul id="cvcErrors"></ul>
-
-    <label><?php echo Mage::helper('paymillcc')->__('Expiration Date') ?> (MM/YYYY)</label><br />
-    <input id="card-expiry-month" type="text" size="2" />
-    <span>/</span>
-    <input id="card-expiry-year" type="text" size="4" />
-    <ul id="dateErrors"></ul>
-
-    <input type="hidden" id="paymill_transaction_token" type="text" value="" name="payment[paymill_transaction_token]" />
-
-</div>
+<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display: none">
+    <li>
+        <label for="paymillcc_cardholder" class="required"><em>*</em><?php echo Mage::helper('paymillcc')->__('Credit Card Holder') ?></label>
+        <div class="input-box">
+            <input type="text" class="input-text required-entry" id="paymillcc_cardholder" value="" autocomplete="off">
+            <div class="validation-advice" id="cardholder_error" style="display: none"></div>
+        </div>
+    </li>
+    <li>
+        <label for="paymillcc_number" class="required"><em>*</em><?php echo Mage::helper('paymillcc')->__('Credit Card Number') ?></label>
+        <div class="input-box">
+            <input type="text" id="paymillcc_number" class="input-text" value="" autocomplete="off">
+            <div class="validation-advice" id="number_error" style="display: none"></div>
+        </div>
+    </li>
+    <li>
+        <label for="paymillcc_cvc" class="required"><em>*</em><?php echo Mage::helper('paymillcc')->__('Card Verification Number') ?></label>
+        <div class="input-box">
+            <input type="text" id="paymillcc_cvc" class="input-text" autocomplete="off" value="">
+            <div class="validation-advice" id="cvc_error" style="display: none"></div>
+        </div>
+    </li>
+    <li>
+        <label for="paymillcc_expiry" class="required"><em>*</em><?php echo Mage::helper('paymillcc')->__('Expiration Date') ?></label>
+        <div class="input-box">
+            <div class="v-fix">
+                <select id="paymillcc_expiry_month" class="month required-entry" autocomplete="off">
+                    <option value="" selected="selected">--</option>
+                    <option value="01">01 - Januar</option>
+                    <option value="02">02 - Februar</option>
+                    <option value="03">03 - März</option>
+                    <option value="04">04 - April</option>
+                    <option value="05">05 - Mai</option>
+                    <option value="06">06 - Juni</option>
+                    <option value="07">07 - Juli</option>
+                    <option value="08">08 - August</option>
+                    <option value="09">09 - September</option>
+                    <option value="10">10 - Oktober</option>
+                    <option value="11">11 - November</option>
+                    <option value="12">12 - Dezember</option>
+                </select>
+            </div>
+            <div class="v-fix">
+                <select id="paymillcc_expiry_year" class="year required-entry" autocomplete="off">
+                    <option value="" selected="selected">--</option>
+                    <option value="2012">2012</option>
+                    <option value="2013">2013</option>
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                </select>
+            </div>
+            <div class="validation-advice" id="expiry_error" style="display: none"></div>
+        </div>
+    </li>
+    <li>
+        <!-- this gets the transaction token -->
+        <input type="hidden" id="paymill_transaction_token" type="text" value="" name="payment[paymill_transaction_token]" />
+    </li>
+</ul>
 
 <script type="text/javascript">
     var PAYMILL_PUBLIC_KEY = '<?php print $this->paymillPublicApiKey; ?>';
 </script>
 <script type="text/javascript" src="<?php print $this->paymillBridgeEndpoint; ?>"></script>
+<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS); ?>jquery.min.js"></script>
 <script type="text/javascript">
+    jQuery.noConflict();
 
-    var debugMode = <?php print $this->paymillDebugMode; ?>;
+    jQuery(document).ready(function(){
+
+        jQuery('#payment-buttons-container button').first().attr("onclick", "paymill_payment_save_override()");
+
+    });
     
-    function DebugMessage(message) {
-        if (debugMode)
-            alert(message);
+    // is paymillPayment?
+    function paymill_is_paymill_payment() {
+        return payment.currentMethod == "<?php print $_code; ?>";
     }
 
-    function NextStepHandler() {
-
-        if (payment.currentMethod == "<?php print $_code; ?>") {
-            DebugMessage('Paymill payment method triggered');
-            if (ValidateCard()) {
-                DebugMessage('Validation successful');
+    // handler that is called when click on next step button
+    function paymill_payment_save_override() {
+        if (paymill_is_paymill_payment()) {
+            paymill_debug('Paymill payment method triggered');
+            if (paymill_validate()) {
+                paymill_debug('Validation successful');
+                var cardholder = jQuery('#paymillcc_cardholder');
+                var number = jQuery('#paymillcc_number');
+                var expiry_month = jQuery('#paymillcc_expiry_month');
+                var expiry_year = jQuery('#paymillcc_expiry_year');
+                var cvc = jQuery('#paymillcc_cvc');
                 paymill.createToken({
-                    number: $('card-number').getValue(), //benötigt
-                    exp_month: $('card-expiry-month').getValue(), //benötigt
-                    exp_year: $('card-expiry-year').getValue(), //benötigt
-                    cvc: $('card-cvc').getValue() //optional
-                 }, PaymillResponseHandler);
+                    number: number.val(), 
+                    exp_month: expiry_month.val(), 
+                    exp_year: expiry_year.val(), 
+                    cvc: cvc.val(),
+                    cardholder: cardholder.val()
+                    }, paymill_response_handler
+                );
             }
         } else {
-            // proceed original payment process
             payment.save();
         }
-    }
-
-    function ValidateCard() {
-        DebugMessage('Start form validation');
-
-        if ($('card-expiry-month').getValue().length == 1) {
-            $('card-expiry-month').value = "0" + $('card-expiry-month').getValue();
-        }
-
-        $('cardErrors').update('');
-        $('cvcErrors').update('');
-        $('dateErrors').update('');
-
-        var error = false;
-
-        var number = $('card-number').getValue();
-        var exp_month = $('card-expiry-month').getValue();
-        var exp_year = $('card-expiry-year').getValue();
-        var cvc = $('card-cvc').getValue();
-
-        if (!number) {
-            $('cardErrors').insert('<li class="validation-advice"><?php echo Mage::helper('paymillcc')->__('Please enter your credit card number'); ?></li>');
-            error = true;
-        } else {
-            if (!paymill.validateCardNumber(number)) {
-                $('cardErrors').insert('<li class="validation-advice"><?php echo Mage::helper('paymillcc')->__('Your credit card number is invalid'); ?></li>');
-                error = true;
-            }
-        }
-
-        if (!exp_month || !exp_year) {
-            $('dateErrors').insert('<li class="validation-advice"><?php echo Mage::helper('paymillcc')->__('Please enter your credit cards expiration date'); ?></li>');
-            error = true;
-        } else {
-            if (!paymill.validateExpiry(exp_month, exp_year)) {
-                $('dateErrors').insert('<li class="validation-advice"><?php echo Mage::helper('paymillcc')->__('The expiration date is invalid'); ?></li>');
-                error = true;
-            }
-        }
-
-        if (!cvc) {
-            $('cvcErrors').insert('<li class="validation-advice"><?php echo Mage::helper('paymillcc')->__('Please enter your credit card verification number'); ?></li>');
-            error = true;
-        } else {
-            if (!paymill.validateCvc(cvc)) {
-                $('cvcErrors').insert('<li class="validation-advice"><?php echo Mage::helper('paymillcc')->__('The verification number is invalid'); ?></li>');
-            error = true;
-            }
-        }
-
-        return !error;
     }
 
     // paymill response handler
-    function PaymillResponseHandler(error, result) {
-        DebugMessage('Start Paymill response handler');
+    function paymill_response_handler(error, result) {
+        paymill_debug('Start Paymill response handler');
         if (error) {
-            DebugMessage('An API error occured ' + error.apierror);
+            paymill_debug('An API error occured ' + error.apierror);
         } else {
-            DebugMessage('Paymill API received a token: ' + result.token);
-            $('paymill_transaction_token').value = result.token;
-            // proceed original payment process
+            paymill_debug('Received a token: ' + result.token);
+            jQuery('#paymill_transaction_token').val(result.token);
             payment.save();
         }
     }
-        
-    document.observe("dom:loaded", function() {
-        // incept NextStepHandler() into payment process
-        $$('#payment-buttons-container button').first().writeAttribute("onclick", "NextStepHandler()"); 
-    });
+
+    // validation
+    function paymill_validate() {
+
+        var cardholder = jQuery('#paymillcc_cardholder');
+        var number = jQuery('#paymillcc_number');
+        var expiry_month = jQuery('#paymillcc_expiry_month');
+        var expiry_year = jQuery('#paymillcc_expiry_year');
+        var cvc = jQuery('#paymillcc_cvc');
+        var cvc_error = jQuery('#cvc_error');
+        var expiry_error = jQuery('#expiry_error');
+        var number_error = jQuery('#number_error');
+        var cardholder_error = jQuery('#cardholder_error');
+
+        var result = true;
+
+        paymill_debug('Start form validation');
+
+        // reset errors
+        cardholder_error.hide();
+        cvc_error.hide();
+        expiry_error.hide();
+        number_error.hide();
+
+        // error messages
+        error_msg_cardholder_missing = "<?php echo Mage::helper('paymillcc')->__('Credit Card Holder is missing') ?>";
+        error_msg_cardnumber_invalid = "<?php echo Mage::helper('paymillcc')->__('Your credit card number is invalid'); ?>";
+        error_msg_expiry_invalid = "<?php echo Mage::helper('paymillcc')->__('The expiration date is invalid'); ?>";
+        error_msg_cvc_invalid = "<?php echo Mage::helper('paymillcc')->__('The verification number is invalid'); ?>";
+
+        if (cardholder.val() == "") {
+            cardholder_error.html(error_msg_cardholder_missing).show();
+            cardholder.addClass('validation-failed');
+            result = false;
+        } else {
+            cardholder.removeClass('validation-failed');
+        }
+
+        if (!paymill.validateCardNumber(number.val())) {
+            number_error.html(error_msg_cardnumber_invalid).show();
+            number.addClass('validation-failed');
+            result = false;
+        } else {
+            number.removeClass('validation-failed');
+        }
+
+        if (!paymill. validateCvc(cvc.val())) {
+            cvc_error.html(error_msg_cvc_invalid).show();
+            cvc.addClass('validation-failed');
+            result = false;
+        } else {
+            cvc.removeClass('validation-failed');
+        }
+
+        if (!paymill.validateExpiry(expiry_month.val(), expiry_year.val())) {
+            expiry_error.html(error_msg_expiry_invalid).show();
+            expiry_month.addClass('validation-failed');
+            expiry_year.addClass('validation-failed');
+            result = false;
+        } else {
+            expiry_month.removeClass('validation-failed');
+            expiry_year.removeClass('validation-failed');
+        }
+
+        return result;
+    }
+
+    // debug mode
+    function paymill_debug(message) {
+        if (<?php print $this->paymillDebugMode; ?>) {
+            console.log(message);
+        }
+    }
+
 </script>
 
 

@@ -17,3 +17,5 @@
 "Paymill API Endpoint","Paymill API URL"
 "Paymill capture point","Zahlung ausführen bei"
 "New order status","Staus neuer Bestellungen"
+"Credit Card Holder","Karteninhaber"
+"Credit Card Holder is missing","Bitte geben Sie den Karteninhaber an"

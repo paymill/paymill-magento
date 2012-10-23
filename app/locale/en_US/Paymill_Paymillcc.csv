@@ -16,4 +16,6 @@
 "Paymill bridge URL","Paymill bridge URL"
 "Paymill API Endpoint","Paymill API Endpoint"
 "Paymill capture point","Paymill capture point"
-"New order status","New order status"
+"New order status","New order status",
+"Credit Card Holder","Credit Card Holder",
+"Credit Card Holder is missing","Credit Card Holder is missing"
