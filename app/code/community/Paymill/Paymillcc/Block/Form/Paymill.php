@@ -24,6 +24,7 @@ class Paymill_Paymillcc_Block_Form_Paymill extends Mage_Payment_Block_Form
             'payment/paymillcc/paymill_debug_mode', 
             Mage::app()->getStore()
         );
+        
         if ($this->paymillDebugMode == "") {
             $this->paymillDebugMode = "false";
         }
