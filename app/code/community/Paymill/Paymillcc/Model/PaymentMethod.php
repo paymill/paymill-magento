@@ -196,7 +196,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         
         // check the library version
         $paymillLibraryVersion = Mage::getStoreConfig(
-            'payment/paymillcc/paymill_library_version', 
+            'payment/paymillcc/paymill_lib_version', 
             Mage::app()->getStore()
         );
         
