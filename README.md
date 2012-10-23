@@ -7,7 +7,7 @@ Paymill extension for Magento (Version 1.5.x - 1.7.x)
 
 Use the following command to clone the complete repository including the submodules:
     
-    git clone --recursive https://github.com/Paymill/Paymill-Shopware4.git
+    git clone --recursive https://github.com/Paymill/Paymill-Magento.git
 
 To install via Magento Connect login into your shop backend and go to System > Magento Connect > Magento Connect Manager and merge the contents of this repository with your magento installation. Afterwards go to System > Configuration > Payment Methods and configure the Paymill payment method (insert your Paymill test or live keys).
 
