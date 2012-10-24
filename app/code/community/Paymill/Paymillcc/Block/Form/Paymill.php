@@ -30,6 +30,16 @@ class Paymill_Paymillcc_Block_Form_Paymill extends Mage_Payment_Block_Form
             Mage::app()->getStore()
         );
         
+        $this->paymillLibVersion = Mage::getStoreConfig(
+            'payment/paymillcc/paymill_lib_version', 
+            Mage::app()->getStore()
+        );
+        
+        $this->paymillApiEndpoint = Mage::getStoreConfig(
+            'payment/paymillcc/paymill_api_endpoint', 
+            Mage::app()->getStore()
+        );
+        
         if ($this->paymillDebugMode == "") {
             $this->paymillDebugMode = "false";
         }
