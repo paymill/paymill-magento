@@ -1,4 +1,5 @@
 <?php $_code=$this->getMethodCode() ?> 
+<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>paymill/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>paymill/paymill_styles.css" />
 <!-- 
     The payment form.
@@ -85,8 +86,10 @@
     var PAYMILL_PUBLIC_KEY = '<?php print $this->paymillPublicApiKey; ?>';
 </script>
 <script type="text/javascript" src="<?php print $this->paymillBridgeEndpoint; ?>"></script>
-<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>paymill/jquery.min.js"></script>
 <script type="text/javascript">
+    if (!jQuery) {
+        setTimeout(50);
+    }
     jQuery.noConflict();
 
     jQuery(document).ready(function(){
