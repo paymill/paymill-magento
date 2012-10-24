@@ -1,7 +1,9 @@
 Paymill-Magento
 ====================
 
-Paymill extension for Magento (Version 1.5.x - 1.7.x)
+Paymill extension for Magento (Tested on version 1.5.x - 1.7.x)
+
+![Paymill creditcard payment form](https://raw.github.com/Paymill/Paymill-Magento/master/paymill/paymill_form_de.png)
 
 # Installation
 
