@@ -9,7 +9,7 @@ Paymill extension for Magento (Tested on version 1.5.x - 1.7.x)
 
 You have two installation options:
 
-## Installtion via Magento Connect
+## Installation via Magento Connect
 
 To install via Magento Connect login via your Magento shop backend and go to System > Magento Connect > Magento Connect Manager and upload the archive file contained in this repository (PaymillPayment-x.x.x.tgz).
 
