@@ -1,10 +1,14 @@
 <?php $_code=$this->getMethodCode() ?> 
-
+<link rel="stylesheet" type="text/css" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>paymill/paymill_styles.css" />
 <!-- 
     The payment form.
     Important: do not process any card data to the server (leave name attribute away)
 -->
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display: none">
+    <li>
+        <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>/paymill/icon_mastercard.png" />
+        <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>/paymill/icon_visa.png" />
+    </li>
     <li>
         <label for="paymillcc_cardholder" class="required"><em>*</em><?php echo Mage::helper('paymillcc')->__('Credit Card Holder') ?></label>
         <div class="input-box">
@@ -15,8 +19,9 @@
     <li>
         <label for="paymillcc_number" class="required"><em>*</em><?php echo Mage::helper('paymillcc')->__('Credit Card Number') ?></label>
         <div class="input-box">
-            <input type="text" id="paymillcc_number" class="input-text" value="" autocomplete="off">
+            <input type="text" id="paymillcc_number" class="input-text" value="" autocomplete="off"> 
             <div class="validation-advice" id="number_error" style="display: none"></div>
+            <div id="paymill_card_type" style="display: none; color: #666; margin-top: 2px;"></div>
         </div>
     </li>
     <li>
@@ -69,19 +74,35 @@
         <!-- this gets the transaction token -->
         <input type="hidden" id="paymill_transaction_token" type="text" value="" name="payment[paymill_transaction_token]" />
     </li>
+    <?php if ($this->showPaymillLabel) { ?>
+    <li>
+        <div class="paymill_powered"><div class="paymill_credits"><?php echo Mage::helper('paymillcc')->__('Secure credit card payment powered by') ?> <a href="http://www.paymill.de" target="_blank">Paymill</a></div></div>
+    </li>
+    <?php } ?>
 </ul>
 
 <script type="text/javascript">
     var PAYMILL_PUBLIC_KEY = '<?php print $this->paymillPublicApiKey; ?>';
 </script>
 <script type="text/javascript" src="<?php print $this->paymillBridgeEndpoint; ?>"></script>
-<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS); ?>jquery.min.js"></script>
+<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>paymill/jquery.min.js"></script>
 <script type="text/javascript">
     jQuery.noConflict();
 
     jQuery(document).ready(function(){
 
         jQuery('#payment-buttons-container button').first().attr("onclick", "paymill_payment_save_override()");
+        
+        // bind change listener to show the cardtype
+        jQuery('#paymillcc_number').change(function() {
+            if (paymill.cardType(jQuery('#paymillcc_number').val()) == "Visa") {
+                jQuery('#paymill_card_type').html("Visa").show();
+            } else if (paymill.cardType(jQuery('#paymillcc_number').val()) == "MasterCard") {
+                jQuery('#paymill_card_type').html("MasterCard").show();
+            } else {
+                jQuery('#paymill_card_type').hide();
+            }
+        });
 
     });
     

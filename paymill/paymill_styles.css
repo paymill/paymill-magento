@@ -1,0 +1,16 @@
+.paymill_powered {
+	border: 1px solid #ccc;
+	width: 300px;
+	padding: 4px;
+	background: white url('icon_paymill.png') no-repeat center right;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+.paymill_powered > .paymill_credits {
+	width: 200px;
+	color: #666;
+}
+.paymill_powered > a {
+	color: #666;
+	text-decoration: underline;
+}

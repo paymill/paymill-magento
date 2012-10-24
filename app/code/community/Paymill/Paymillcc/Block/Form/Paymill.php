@@ -25,6 +25,11 @@ class Paymill_Paymillcc_Block_Form_Paymill extends Mage_Payment_Block_Form
             Mage::app()->getStore()
         );
         
+        $this->showPaymillLabel = Mage::getStoreConfig(
+            'payment/paymillcc/paymill_show_credits', 
+            Mage::app()->getStore()
+        );
+        
         if ($this->paymillDebugMode == "") {
             $this->paymillDebugMode = "false";
         }

@@ -76,6 +76,9 @@
                 <allowspecific>0</allowspecific>
                 <paymill_bridge_endpoint>https://bridge.paymill.de/</paymill_bridge_endpoint>
                 <paymill_api_endpoint>https://api.paymill.de/v1/</paymill_api_endpoint>
+                <paymill_show_credits>1</paymill_show_credits>
+                <paymill_accepted_currencies>eur</paymill_accepted_currencies>
+                <paymill_lib_version>v1</paymill_lib_version>
             </paymillcc>
          </payment>
     </default>
