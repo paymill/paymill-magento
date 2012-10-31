@@ -197,7 +197,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
             number.removeClass('validation-failed');
         }
 
-        if (!paymill. validateCvc(cvc.val())) {
+        if (!paymill.validateCvc(cvc.val())) {
             cvc_error.html(error_msg_cvc_invalid).show();
             cvc.addClass('validation-failed');
             result = false;
