@@ -1,7 +1,9 @@
 Paymill-Magento
 ====================
 
-Paymill extension for Magento (Tested on version 1.5.x - 1.7.x)
+Paymill extension for Magento (Tested on version 1.5.x - 1.7.x). This extension installs two payment methods: Credic card and direct debit. The second is available in Germany only.
+
+Paymill credit card form:
 
 ![Paymill creditcard payment form](https://raw.github.com/Paymill/Paymill-Magento/master/paymill/paymill_form_de.png)
 
@@ -11,7 +13,7 @@ You have two installation options:
 
 ## Installation via Magento Connect
 
-To install via Magento Connect login via your Magento shop backend and go to System > Magento Connect > Magento Connect Manager and upload the archive file contained in this repository (PaymillPayment-x.x.x.tgz).
+To install via Magento Connect login via your Magento shop backend and go to System > Magento Connect > Magento Connect Manager and install via the Magento Connect Extension key (you get this in the Magento Connect marketplace).
 
 ## Installation from this git repository 
 
@@ -28,6 +30,8 @@ Afterwards go to System > Configuration > Payment Methods and configure the Paym
 In case of any errors turn on the debug mode in the Paymill payment method configuration. Open the javascript console in your browser and check what's being logged during the checkout process. Additionally you can check the logfiles of your Magento installation (system.log and exception.log).
 
 Depending on the Paymill API Version you use, select the Paymill-Wrapper version in the configuration.
+
+Note: On 31st of December, 2012 support for V1 ends. Please make sure that you migrate to V2 until then. To do so just switch to V2 in the configuration and insert https://api.paymill.de/v2/ as API URL.
 
 # Notes about the payment process
 
