@@ -7,6 +7,10 @@ Paymill credit card form:
 
 ![Paymill creditcard payment form](https://raw.github.com/Paymill/Paymill-Magento/master/paymill/paymill_form_de.png)
 
+Paymill direct debit form:
+
+![Paymill creditcard payment form](https://raw.github.com/Paymill/Paymill-Magento/master/paymill/paymill_debit_form_de.png)
+
 # Installation
 
 You have two installation options:
