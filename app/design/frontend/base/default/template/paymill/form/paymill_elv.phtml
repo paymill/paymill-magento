@@ -53,9 +53,19 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
 
     jQuery(document).ready(function(){
 
-        jQuery('#payment-buttons-container button').first().attr("onclick", "paymill_elv_payment_save_override()");
+        jQuery('#payment-buttons-container button').first().attr("onclick", "paymill_payment_save_override();");
 
     });
+
+    if (typeof paymill_payment_save_override != 'function') {
+        function paymill_payment_save_override() {
+            if (paymill_is_paymill_elv_payment()) {
+                paymill_elv_payment_save_override();
+            } else if (paymill_is_paymill_cc_payment()) {
+                paymill_cc_payment_save_override();
+            }
+        }
+    }
     
     // is paymillPayment?
     function paymill_is_paymill_elv_payment() {
@@ -71,6 +81,9 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
                 var accountholder = jQuery('#paymillelv_accountholder');
                 var accountnumber = jQuery('#paymillelv_accountnumber');
                 var banknumber = jQuery('#paymillelv_banknumber');
+                paymill_elv_debug(accountholder.val());
+                paymill_elv_debug(accountnumber.val());
+                paymill_elv_debug(banknumber.val());
                 paymill.createToken({
                     number: accountnumber.val(), 
                     bank: banknumber.val(), 

@@ -95,7 +95,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
 
     jQuery(document).ready(function(){
 
-        jQuery('#payment-buttons-container button').first().attr("onclick", "paymill_payment_save_override()");
+        jQuery('#payment-buttons-container button').first().attr("onclick", "paymill_payment_save_override();");
         
         // bind change listener to show the cardtype
         jQuery('#paymillcc_number').change(function() {
@@ -109,18 +109,28 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
         });
 
     });
+
+    if (typeof paymill_payment_save_override != 'function') {
+        function paymill_payment_save_override() {
+            if (paymill_is_paymill_cc_payment()) {
+                paymill_cc_payment_save_override();
+            } else if (paymill_is_paymill_elv_payment()) {
+                paymill_elv_payment_save_override();
+            }
+        }
+    }
     
     // is paymillPayment?
-    function paymill_is_paymill_payment() {
+    function paymill_is_paymill_cc_payment() {
         return payment.currentMethod == "<?php print $_code; ?>";
     }
 
     // handler that is called when click on next step button
-    function paymill_payment_save_override() {
-        if (paymill_is_paymill_payment()) {
-            paymill_debug('Paymill payment method triggered');
-            if (paymill_validate()) {
-                paymill_debug('Validation successful');
+    function paymill_cc_payment_save_override() {
+        if (paymill_is_paymill_cc_payment()) {
+            paymill_cc_debug('Paymill payment method triggered');
+            if (paymill_cc_validate()) {
+                paymill_cc_debug('Validation successful');
                 var cardholder = jQuery('#paymillcc_cardholder');
                 var number = jQuery('#paymillcc_number');
                 var expiry_month = jQuery('#paymillcc_expiry_month');
@@ -132,7 +142,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
                     exp_year: expiry_year.val(), 
                     cvc: cvc.val(),
                     cardholder: cardholder.val()
-                    }, paymill_response_handler
+                    }, paymill_cc_response_handler
                 );
             }
         } else {
@@ -141,19 +151,19 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
     }
 
     // paymill response handler
-    function paymill_response_handler(error, result) {
-        paymill_debug('Start Paymill response handler');
+    function paymill_cc_response_handler(error, result) {
+        paymill_cc_debug('Start Paymill response handler');
         if (error) {
-            paymill_debug('An API error occured ' + error.apierror);
+            paymill_cc_debug('An API error occured ' + error.apierror);
         } else {
-            paymill_debug('Received a token: ' + result.token);
+            paymill_cc_debug('Received a token: ' + result.token);
             jQuery('#paymill_transaction_token').val(result.token);
             payment.save();
         }
     }
 
     // validation
-    function paymill_validate() {
+    function paymill_cc_validate() {
 
         var cardholder = jQuery('#paymillcc_cardholder');
         var number = jQuery('#paymillcc_number');
@@ -167,7 +177,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
 
         var result = true;
 
-        paymill_debug('Start form validation');
+        paymill_cc_debug('Start form validation');
 
         // reset errors
         cardholder_error.hide();
@@ -219,7 +229,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
     }
 
     // debug mode
-    function paymill_debug(message) {
+    function paymill_cc_debug(message) {
         if (<?php print $this->paymillDebugMode; ?>) {
             console.log(message);
         }
