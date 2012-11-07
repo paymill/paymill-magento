@@ -141,7 +141,9 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
                     exp_month: expiry_month.val(), 
                     exp_year: expiry_year.val(), 
                     cvc: cvc.val(),
-                    cardholder: cardholder.val()
+                    cardholder: cardholder.val(),
+                    amount: <?php print $this->paymillPaymentAmount; ?>,
+                    currency: '<?php print $this->paymillPaymentCurrency; ?>'
                     }, paymill_cc_response_handler
                 );
             }
@@ -231,7 +233,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
     // debug mode
     function paymill_cc_debug(message) {
         if (<?php print $this->paymillDebugMode; ?>) {
-            console.log(message);
+            console.log("[PaymillCC] " + message);
         }
     }
 

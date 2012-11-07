@@ -135,6 +135,8 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
      * Specify currency support
      */
     public function canUseForCurrency($currency) {
+
+        Mage::getSingleton('core/session')->setPaymillPaymentCurrency($currency);
         
         $acceptedCurrencies = Mage::getStoreConfig(
             'payment/paymillcc/paymill_accepted_currencies', 
@@ -154,6 +156,8 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
      * @return boolean Returns true if the payment method is available for the current context
      */ 
     public function isAvailable($quote = null) {
+
+        Mage::getSingleton('core/session')->setPaymillPaymentAmount(floatval($quote->getBaseGrandTotal()));
 
         // is active
         $paymillActive = Mage::getStoreConfig(

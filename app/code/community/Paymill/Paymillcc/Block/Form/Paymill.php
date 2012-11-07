@@ -8,8 +8,8 @@ class Paymill_Paymillcc_Block_Form_Paymill extends Mage_Payment_Block_Form
 
     protected function _construct()
     {
+        
         // read some configuration data
-
         $this->paymillPublicApiKey = Mage::getStoreConfig(
             'payment/paymillcc/paymill_public_api_key', 
             Mage::app()->getStore()
@@ -39,6 +39,9 @@ class Paymill_Paymillcc_Block_Form_Paymill extends Mage_Payment_Block_Form
             'payment/paymillcc/paymill_api_endpoint', 
             Mage::app()->getStore()
         );
+
+        $this->paymillPaymentAmount = Mage::getSingleton('core/session')->getPaymillPaymentAmount();
+        $this->paymillPaymentCurrency = Mage::getSingleton('core/session')->getPaymillPaymentCurrency();
         
         if ($this->paymillDebugMode == "") {
             $this->paymillDebugMode = "false";

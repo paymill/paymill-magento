@@ -81,9 +81,6 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
                 var accountholder = jQuery('#paymillelv_accountholder');
                 var accountnumber = jQuery('#paymillelv_accountnumber');
                 var banknumber = jQuery('#paymillelv_banknumber');
-                paymill_elv_debug(accountholder.val());
-                paymill_elv_debug(accountnumber.val());
-                paymill_elv_debug(banknumber.val());
                 paymill.createToken({
                     number: accountnumber.val(), 
                     bank: banknumber.val(), 
@@ -162,7 +159,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
     // debug mode
     function paymill_elv_debug(message) {
         if (<?php print $this->paymillDebugMode; ?>) {
-            console.log(message);
+            console.log("[PaymillELV] " + message);
         }
     }
 
