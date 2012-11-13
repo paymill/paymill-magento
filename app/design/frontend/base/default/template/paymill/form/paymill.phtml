@@ -13,7 +13,7 @@
     <li>
         <label for="paymillcc_cardholder" class="required"><em>*</em><?php echo Mage::helper('paymillcc')->__('Credit Card Holder') ?></label>
         <div class="input-box">
-            <input type="text" class="input-text required-entry" id="paymillcc_cardholder" value="" autocomplete="off">
+            <input type="text" class="input-text" id="paymillcc_cardholder" value="" autocomplete="off">
             <div class="validation-advice" id="cardholder_error" style="display: none"></div>
         </div>
     </li>
@@ -36,7 +36,7 @@
         <label for="paymillcc_expiry" class="required"><em>*</em><?php echo Mage::helper('paymillcc')->__('Expiration Date') ?></label>
         <div class="input-box">
             <div class="v-fix">
-                <select id="paymillcc_expiry_month" class="month required-entry" autocomplete="off">
+                <select id="paymillcc_expiry_month" class="month" autocomplete="off">
                     <option value="" selected="selected">--</option>
                     <option value="01">01 - Januar</option>
                     <option value="02">02 - Februar</option>
@@ -53,7 +53,7 @@
                 </select>
             </div>
             <div class="v-fix">
-                <select id="paymillcc_expiry_year" class="year required-entry" autocomplete="off">
+                <select id="paymillcc_expiry_year" class="year" autocomplete="off">
                     <option value="" selected="selected">--</option>
                     <option value="2012">2012</option>
                     <option value="2013">2013</option>
@@ -235,6 +235,47 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
         if (<?php print $this->paymillDebugMode; ?>) {
             console.log("[PaymillCC] " + message);
         }
+    }
+
+    // handling for onestep extension
+    function paymill_onestep_cc(onestep_callback) {
+        if (paymill_is_paymill_cc_payment()) {
+            paymill_cc_debug('Paymill payment method triggered');
+            if (paymill_cc_validate()) {
+                paymill_cc_debug('Validation successful');
+                var cardholder = jQuery('#paymillcc_cardholder');
+                var number = jQuery('#paymillcc_number');
+                var expiry_month = jQuery('#paymillcc_expiry_month');
+                var expiry_year = jQuery('#paymillcc_expiry_year');
+                var cvc = jQuery('#paymillcc_cvc');
+                paymill.createToken({
+                    number: number.val(), 
+                    exp_month: expiry_month.val(), 
+                    exp_year: expiry_year.val(), 
+                    cvc: cvc.val(),
+                    cardholder: cardholder.val(),
+                    amount: <?php print $this->paymillPaymentAmount; ?>,
+                    currency: '<?php print $this->paymillPaymentCurrency; ?>'
+                    }, function(error, result) {
+                        paymill_cc_debug('Start Paymill response handler');
+                        if (error) {
+                            paymill_cc_debug('An API error occured ' + error.apierror);
+                            return false;
+                        } else {
+                            paymill_cc_debug('Received a token: ' + result.token);
+                            jQuery('#paymill_transaction_token').val(result.token);
+                            onestep_callback();
+                        }
+                    }
+                );
+                return false;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        return false;
     }
 
 </script>
