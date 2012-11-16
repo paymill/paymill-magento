@@ -142,7 +142,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
                     exp_year: expiry_year.val(), 
                     cvc: cvc.val(),
                     cardholder: cardholder.val(),
-                    amount: <?php print $this->paymillPaymentAmount; ?>,
+                    amount: '<?php print $this->paymillPaymentAmount; ?>',
                     currency: '<?php print $this->paymillPaymentCurrency; ?>'
                     }, paymill_cc_response_handler
                 );
@@ -254,7 +254,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
                     exp_year: expiry_year.val(), 
                     cvc: cvc.val(),
                     cardholder: cardholder.val(),
-                    amount: <?php print $this->paymillPaymentAmount; ?>,
+                    amount: '<?php print $this->paymillPaymentAmount; ?>',
                     currency: '<?php print $this->paymillPaymentCurrency; ?>'
                     }, function(error, result) {
                         paymill_cc_debug('Start Paymill response handler');
