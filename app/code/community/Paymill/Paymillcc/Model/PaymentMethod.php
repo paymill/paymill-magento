@@ -219,7 +219,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         $result = $this->_processPayment(array(
             'libVersion' => $libVersion,
             'token' => $token,
-            'amount' => $amount * 100,
+            'amount' => round($amount * 100),
             'currency' => strtolower($payment->getOrder()->getOrderCurrency()->getCode()),
             'name' => $billing->getName(),
             'email' => $order->getCustomerEmail(),
