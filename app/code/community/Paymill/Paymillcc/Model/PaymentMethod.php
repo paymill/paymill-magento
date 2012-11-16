@@ -157,7 +157,9 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
      */ 
     public function isAvailable($quote = null) {
 
-        Mage::getSingleton('core/session')->setPaymillPaymentAmount(floatval($quote->getBaseGrandTotal()));
+        $amount = number_format($quote->getBaseGrandTotal(), 2, '.', '');
+
+        Mage::getSingleton('core/session')->setPaymillPaymentAmount($amount);
 
         // is active
         $paymillActive = Mage::getStoreConfig(
@@ -204,13 +206,14 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             Mage::app()->getStore()
         );
         
-        if ($paymillLibraryVersion == "v1") {
-            $libBase = 'lib/paymill/v1/lib/';
-            $libVersion = 'v1';
-        } elseif ($paymillLibraryVersion == "v2") {
+        // keep this for further versions 
+        if ($paymillLibraryVersion == "v2") {
             $libBase = 'lib/paymill/v2/lib/';
             $libVersion = 'v2';
-        }        
+        } else {
+            $libBase = 'lib/paymill/v2/lib/';
+            $libVersion = 'v2';
+        }
         
         // process the payment
         $result = $this->_processPayment(array(
@@ -271,27 +274,17 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
                 
         require_once $params['libBase'] . 'Services/Paymill/Transactions.php';
         require_once $params['libBase'] . 'Services/Paymill/Clients.php';
-        
+        require_once $params['libBase'] . 'Services/Paymill/Payments.php';
+
         $clientsObject = new Services_Paymill_Clients(
             $params['privateKey'], $params['apiUrl']
         );
         $transactionsObject = new Services_Paymill_Transactions(
             $params['privateKey'], $params['apiUrl']
         );
-        
-        // In the PHP-Wrapper version v1 an explicit creditcard object exists.
-        // This was replaced by a payments object in v2.
-        if ($params['libVersion'] == 'v1') {
-            require_once $params['libBase'] . 'Services/Paymill/Creditcards.php';
-            $creditcardsObject = new Services_Paymill_Creditcards(
-                $params['privateKey'], $params['apiUrl']
-            );
-        } elseif ($params['libVersion'] == 'v2') {
-            require_once $params['libBase'] . 'Services/Paymill/Payments.php';
-            $creditcardsObject = new Services_Paymill_Payments(
-                $params['privateKey'], $params['apiUrl']
-            );
-        }
+        $creditcardsObject = new Services_Paymill_Payments(
+            $params['privateKey'], $params['apiUrl']
+        );
         
         // perform conection to the Paymill API and trigger the payment
         try {
@@ -317,9 +310,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
 
             // create transaction
             $transactionParams['client'] = $client['id'];
-            if ($params['libVersion'] == 'v2') {
-                $transactionParams['payment'] = $creditcard['id'];
-            }
+            $transactionParams['payment'] = $creditcard['id'];
             $transaction = $transactionsObject->create($transactionParams);
             if (!isset($transaction['id'])) {
                 call_user_func_array($logger, array("No transaction created" . var_export($transaction, true)));
