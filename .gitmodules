@@ -1,3 +1,0 @@
-[submodule "lib/paymill/v2"]
-	path = lib/paymill/v2
-	url = https://github.com/Paymill/Paymill-v2-PHP.git
