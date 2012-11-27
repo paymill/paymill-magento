@@ -220,7 +220,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             'libVersion' => $libVersion,
             'token' => $token,
             'amount' => round($amount * 100),
-            'currency' => strtolower($payment->getOrder()->getOrderCurrency()->getCode()),
+            'currency' => strtoupper($payment->getOrder()->getOrderCurrency()->getCode()),
             'name' => $billing->getName(),
             'email' => $order->getCustomerEmail(),
             'description' => 'Order ' 
@@ -250,10 +250,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         
         // setup the logger
         $logger = $params['loggerCallback'];
-               
-        // reformat paramters
-        $params['currency'] = strtolower($params['currency']);
-        
+                       
         // setup client params
         $clientParams = array(
             'email' => $params['email'],
@@ -292,7 +289,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             // create card
             $creditcard = $creditcardsObject->create($creditcardParams);
             if (!isset($creditcard['id'])) {
-                call_user_func_array($logger, array("No creditcard created: " . var_export($creditcard, true)));
+                call_user_func_array($logger, array("No creditcard created: " . var_export($creditcard, true) . " with params " . var_export($creditcardParams, true)));
                 return false;
             } else {
                 call_user_func_array($logger, array("Creditcard created: " . $creditcard['id']));
