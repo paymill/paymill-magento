@@ -258,7 +258,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         );
 
         // setup credit card params
-        $creditcardParams = array(
+        $paymentParams = array(
             'token' => $params['token']
         );
 
@@ -279,24 +279,13 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         $transactionsObject = new Services_Paymill_Transactions(
             $params['privateKey'], $params['apiUrl']
         );
-        $creditcardsObject = new Services_Paymill_Payments(
+        $paymentsObject = new Services_Paymill_Payments(
             $params['privateKey'], $params['apiUrl']
         );
         
         // perform conection to the Paymill API and trigger the payment
         try {
 
-            // create card
-            $creditcard = $creditcardsObject->create($creditcardParams);
-            if (!isset($creditcard['id'])) {
-                call_user_func_array($logger, array("No creditcard created: " . var_export($creditcard, true) . " with params " . var_export($creditcardParams, true)));
-                return false;
-            } else {
-                call_user_func_array($logger, array("Creditcard created: " . $creditcard['id']));
-            }
-
-            // create client
-            $clientParams['creditcard'] = $creditcard['id'];
             $client = $clientsObject->create($clientParams);
             if (!isset($client['id'])) {
                 call_user_func_array($logger, array("No client created" . var_export($client, true)));
@@ -305,9 +294,19 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
                 call_user_func_array($logger, array("Client created: " . $client['id']));
             }
 
+            // create card
+            $paymentParams['client'] = $client['id'];
+            $payment = $paymentsObject->create($paymentParams);
+            if (!isset($payment['id'])) {
+                call_user_func_array($logger, array("No payment (credit card) created: " . var_export($payment, true) . " with params " . var_export($paymentParams, true)));
+                return false;
+            } else {
+                call_user_func_array($logger, array("Payment (credit card) created: " . $payment['id']));
+            }            
+
             // create transaction
-            $transactionParams['client'] = $client['id'];
-            $transactionParams['payment'] = $creditcard['id'];
+            //$transactionParams['client'] = $client['id'];
+            $transactionParams['payment'] = $payment['id'];
             $transaction = $transactionsObject->create($transactionParams);
             if (!isset($transaction['id'])) {
                 call_user_func_array($logger, array("No transaction created" . var_export($transaction, true)));
