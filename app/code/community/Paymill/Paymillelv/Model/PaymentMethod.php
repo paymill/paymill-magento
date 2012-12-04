@@ -199,7 +199,7 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
         // process the payment
         $result = $this->_processPayment(array(
             'token' => $token,
-            'amount' => $amount * 100,
+            'amount' => round($amount * 100),
             'currency' => strtolower($payment->getOrder()->getOrderCurrency()->getCode()),
             'name' => $billing->getName(),
             'email' => $order->getCustomerEmail(),
