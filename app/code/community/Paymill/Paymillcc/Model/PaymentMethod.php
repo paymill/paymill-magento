@@ -340,7 +340,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             call_user_func_array($logger, array("Exception thrown from paymill wrapper: " . $ex->getMessage()));
             return false;
         }        
-        
+        Mage::getSingleton('checkout/session')->getQuote()->setIsActive(false)->save();
         return true;
     }
     

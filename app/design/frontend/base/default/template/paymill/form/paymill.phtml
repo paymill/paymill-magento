@@ -112,10 +112,12 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
 
     if (typeof paymill_payment_save_override != 'function') {
         function paymill_payment_save_override() {
-            if (paymill_is_paymill_cc_payment()) {
+            if (payment.currentMethod == "paymillcc") {
                 paymill_cc_payment_save_override();
-            } else if (paymill_is_paymill_elv_payment()) {
+            } else if (payment.currentMethod == "paymillelv") {
                 paymill_elv_payment_save_override();
+            } else {
+                payment.save();
             }
         }
     }
