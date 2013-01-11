@@ -39,16 +39,16 @@ With some little adjustments the OneStepCheckout extension is supported for paym
 
 After line 927 add:
 
-  function paymill_onestep_callback_cc() {
-    console.log("onestep callback");
-    $('onestepcheckout-form').submit();
-  }
+    function paymill_onestep_callback_cc() {
+      console.log("onestep callback");
+      $('onestepcheckout-form').submit();
+    }
 
 And after around line 948 add: 
 
-  if (payment.currentMethod == 'paymillcc') {
-    if (form.validator.validate()) {
-      paymill_onestep_cc(paymill_onestep_callback_cc);
-      return false;
+    if (payment.currentMethod == 'paymillcc') {
+      if (form.validator.validate()) {
+        paymill_onestep_cc(paymill_onestep_callback_cc);
+        return false;
+      }
     }
-  }
