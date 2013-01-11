@@ -37,14 +37,22 @@ The payment is processed when an order is placed in the shop frontend.
 
 With some little adjustments the OneStepCheckout extension is supported for paymill. 
 
-After line 927 add:
+After 
+
+    <script type="text/javascript">
+
+in line 927 add:
 
     function paymill_onestep_callback_cc() {
       console.log("onestep callback");
       $('onestepcheckout-form').submit();
     }
 
-And after around line 948 add: 
+And after
+
+    var form = new VarienForm('onestepcheckout-form');
+
+in line 948 add: 
 
     if (payment.currentMethod == 'paymillcc') {
       if (form.validator.validate()) {
