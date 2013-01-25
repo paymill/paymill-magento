@@ -156,34 +156,37 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
      */
     public function isAvailable($quote = null)
     {
+        if (is_object($quote)) {
+            $amount = number_format($quote->getBaseGrandTotal(), 2, '.', '');
 
-        $amount = number_format($quote->getBaseGrandTotal(), 2, '.', '');
+            Mage::getSingleton('core/session')->setPaymillPaymentAmount($amount);
 
-        Mage::getSingleton('core/session')->setPaymillPaymentAmount($amount);
+            // is active
+            $paymillActive = Mage::getStoreConfig(
+                            'payment/paymillcc/active', Mage::app()->getStore()
+            );
 
-        // is active
-        $paymillActive = Mage::getStoreConfig(
-                        'payment/paymillcc/active', Mage::app()->getStore()
-        );
+            if (!$paymillActive) {
+                return false;
+            }
 
-        if (!$paymillActive) {
-            return false;
+            // get minimum order amount
+            $paymillMinimumOrderAmount = Mage::getStoreConfig(
+                            'payment/paymillcc/paymill_minimum_order_amount', Mage::app()->getStore()
+            );
+
+            if ($quote && $quote->getBaseGrandTotal() <= 0.5) {
+                return false;
+            }
+
+            if ($quote && $quote->getBaseGrandTotal() <= $paymillMinimumOrderAmount) {
+                return false;
+            }
+            
+            return true;
         }
-
-        // get minimum order amount
-        $paymillMinimumOrderAmount = Mage::getStoreConfig(
-                        'payment/paymillcc/paymill_minimum_order_amount', Mage::app()->getStore()
-        );
-
-        if ($quote && $quote->getBaseGrandTotal() <= 0.5) {
-            return false;
-        }
-
-        if ($quote && $quote->getBaseGrandTotal() <= $paymillMinimumOrderAmount) {
-            return false;
-        }
-
-        return true;
+        
+        return false;
     }
 
     /**
@@ -231,7 +234,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
                     'payment/paymillcc/paymill_api_endpoint', Mage::app()->getStore()
             ),
             'loggerCallback' => array('Paymill_Paymillcc_Model_PaymentMethod', 'logAction')
-        ));
+                ));
 
         return $result;
     }

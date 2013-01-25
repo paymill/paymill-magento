@@ -154,30 +154,32 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
      */
     public function isAvailable($quote = null)
     {
+        if (is_object($quote)) {
+            // is active
+            $paymillActive = Mage::getStoreConfig(
+                            'payment/paymillelv/active', Mage::app()->getStore()
+            );
 
-        // is active
-        $paymillActive = Mage::getStoreConfig(
-                        'payment/paymillelv/active', Mage::app()->getStore()
-        );
+            if (!$paymillActive) {
+                return false;
+            }
 
-        if (!$paymillActive) {
-            return false;
+            // get minimum order amount
+            $paymillMinimumOrderAmount = Mage::getStoreConfig(
+                            'payment/paymillelv/paymill_minimum_order_amount', Mage::app()->getStore()
+            );
+
+            if ($quote && $quote->getBaseGrandTotal() <= 0.5) {
+                return false;
+            }
+
+            if ($quote && $quote->getBaseGrandTotal() <= $paymillMinimumOrderAmount) {
+                return false;
+            }
+
+            return true;
         }
-
-        // get minimum order amount
-        $paymillMinimumOrderAmount = Mage::getStoreConfig(
-                        'payment/paymillelv/paymill_minimum_order_amount', Mage::app()->getStore()
-        );
-
-        if ($quote && $quote->getBaseGrandTotal() <= 0.5) {
-            return false;
-        }
-
-        if ($quote && $quote->getBaseGrandTotal() <= $paymillMinimumOrderAmount) {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 
     /**
@@ -212,7 +214,7 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
                     'payment/paymillelv/paymill_api_endpoint', Mage::app()->getStore()
             ),
             'loggerCallback' => array('Paymill_Paymillcc_Model_PaymentMethod', 'logAction')
-        ));
+                ));
 
         return $result;
     }
