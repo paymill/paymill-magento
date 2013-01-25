@@ -7,82 +7,81 @@ require_once 'lib/Zend/Log/Writer/Stream.php';
 
 class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
 {
+
     /**
-    * unique internal payment method identifier
-    *
-    * @var string [a-z0-9_]
-    */
+     * unique internal payment method identifier
+     *
+     * @var string [a-z0-9_]
+     */
     protected $_code = 'paymillelv';
- 
-    protected $_formBlockType = 'paymillelv/form_paymill'; 
+    protected $_formBlockType = 'paymillelv/form_paymill';
     protected $_infoBlockType = 'paymillelv/info_paymill';
 
     /**
      * Is this payment method a gateway (online auth/charge) ?
      */
     protected $_isGateway = true;
- 
+
     /**
      * Can authorize online?
      */
     protected $_canAuthorize = true;
- 
+
     /**
      * Can capture funds online?
      */
     protected $_canCapture = false;
- 
+
     /**
      * Can capture partial amounts online?
      */
     protected $_canCapturePartial = false;
- 
+
     /**
      * Can refund online?
      */
     protected $_canRefund = false;
- 
+
     /**
      * Can void transactions online?
      */
     protected $_canVoid = false;
- 
+
     /**
      * Can use this payment method in administration panel?
      */
     protected $_canUseInternal = false;
- 
+
     /**
      * Can show this payment method as an option on checkout payment page?
      */
     protected $_canUseCheckout = true;
- 
+
     /**
      * Is this payment method suitable for multi-shipping checkout?
      */
     protected $_canUseForMultishipping = true;
- 
+
     /**
      * Can save credit card information for future processing?
      */
     protected $_canSaveCc = false;
- 
+
     /**
      */
     public function assignData($data)
     {
-         
+
         if (!($data instanceof Varien_Object)) {
             $data = new Varien_Object($data);
         }
-        
+
         $info = $this->getInfoInstance();
-         
+
         // read the paymill_transaction_token from the credit 
         // card form and store it for later use
         $info->setAdditionalInformation(
-            "paymill_elv_transaction_token", 
-            $data->paymill_elv_transaction_token
+                "paymill_elv_transaction_token", $data->paymill_elv_transaction_token
         );
         return $this;
     }
@@ -100,27 +99,27 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
         }
         return $this;
     }
-    
+
     /**
      * This method is triggered after order is placed.
      *
      * @return boolean Returns true if the payment was successfully processed
-     */ 
+     */
     public function authorize(Varien_Object $payment, $amount)
     {
         $info = $this->getInfoInstance();
         // retrieve the transaction_token and save it for later processing
         $token = $info->getAdditionalInformation("paymill_elv_transaction_token");
-           
+
         // process the payment
         $result = $this->processPayment($payment, $amount, $token);
         if ($result == false) {
             throw new Exception("Payment was not successfully processed. See log.");
         }
-        
+
         return $this;
     }
-     
+
     /**
      * This method triggers the payment.
      * It is triggered when the invoice is created.
@@ -134,47 +133,46 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
     /**
      * Specify currency support
      */
-    public function canUseForCurrency($currency) {
-        
+    public function canUseForCurrency($currency)
+    {
+
         $acceptedCurrencies = Mage::getStoreConfig(
-            'payment/paymillelv/paymill_accepted_currencies', 
-            Mage::app()->getStore()
+                        'payment/paymillelv/paymill_accepted_currencies', Mage::app()->getStore()
         );
         $acceptedCurrenciesExploded = explode(',', trim(strtolower($acceptedCurrencies)));
-        
+
         if (!in_array(strtolower($currency), $acceptedCurrenciesExploded)) {
             return false;
         }
-        
+
         return true;
     }
 
     /**
      * Specify minimum order amount from config
      * @return boolean Returns true if the payment method is available for the current context
-     */ 
-    public function isAvailable($quote = null) {
+     */
+    public function isAvailable($quote = null)
+    {
 
         // is active
         $paymillActive = Mage::getStoreConfig(
-            'payment/paymillelv/active', 
-            Mage::app()->getStore()
-        ); 
-        
+                        'payment/paymillelv/active', Mage::app()->getStore()
+        );
+
         if (!$paymillActive) {
             return false;
         }
-        
+
         // get minimum order amount
         $paymillMinimumOrderAmount = Mage::getStoreConfig(
-            'payment/paymillelv/paymill_minimum_order_amount', 
-            Mage::app()->getStore()
-        ); 
-        
+                        'payment/paymillelv/paymill_minimum_order_amount', Mage::app()->getStore()
+        );
+
         if ($quote && $quote->getBaseGrandTotal() <= 0.5) {
             return false;
         }
-        
+
         if ($quote && $quote->getBaseGrandTotal() <= $paymillMinimumOrderAmount) {
             return false;
         }
@@ -188,13 +186,13 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
      * @param $amount The amount to be captures
      * @return boolean $result Returns true if the payment was successfully processed
      */
-    public function processPayment(Varien_Object $payment, $amount, $token) {
+    public function processPayment(Varien_Object $payment, $amount, $token)
+    {
         // get some relevant objects
         $order = $payment->getOrder();
         $billing = $order->getBillingAddress();
-        $customer = Mage::getModel('customer/session')->getCustomer();  
-        
-        $libBase = 'lib/paymill/v2/lib/';  
+
+        $libBase = 'lib/paymill/v2/lib/';
 
         // process the payment
         $result = $this->_processPayment(array(
@@ -203,30 +201,29 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
             'currency' => strtolower($payment->getOrder()->getOrderCurrency()->getCode()),
             'name' => $billing->getName(),
             'email' => $order->getCustomerEmail(),
-            'description' => 'Order ' 
-                . Mage::getStoreConfig('design/head/default_title') 
-                . ': ' . sprintf('#%s, %s', $order->getIncrementId(), $order->getCustomerEmail()),
+            'description' => 'Order from: '
+            . Mage::getStoreConfig('general/store_information/name', Mage::app()->getStore())
+            . ' ' . sprintf('#%s, %s', $order->getIncrementId(), $order->getCustomerEmail()),
             'libBase' => $libBase,
             'privateKey' => Mage::getStoreConfig(
-                'payment/paymillelv/paymill_private_api_key', 
-                Mage::app()->getStore()
+                    'payment/paymillelv/paymill_private_api_key', Mage::app()->getStore()
             ),
             'apiUrl' => Mage::getStoreConfig(
-                'payment/paymillelv/paymill_api_endpoint', 
-                Mage::app()->getStore()
+                    'payment/paymillelv/paymill_api_endpoint', Mage::app()->getStore()
             ),
             'loggerCallback' => array('Paymill_Paymillcc_Model_PaymentMethod', 'logAction')
-        )); 
+        ));
 
         return $result;
     }
-    
+
     /**
      * Processes the payment against the paymill API
      * @param $params array The settings array
      * @return boolean
      */
-    private function _processPayment($params) {  
+    private function _processPayment($params)
+    {
 
         // setup the logger
         $logger = $params['loggerCallback'];
@@ -255,21 +252,21 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
         require_once $params['libBase'] . 'Services/Paymill/Transactions.php';
         require_once $params['libBase'] . 'Services/Paymill/Clients.php';
         require_once $params['libBase'] . 'Services/Paymill/Payments.php';
-         
+
         $clientsObject = new Services_Paymill_Clients(
-            $params['privateKey'], $params['apiUrl']
+                        $params['privateKey'], $params['apiUrl']
         );
         $transactionsObject = new Services_Paymill_Transactions(
-            $params['privateKey'], $params['apiUrl']
+                        $params['privateKey'], $params['apiUrl']
         );
-        
+
         $paymentsObject = new Services_Paymill_Payments(
-            $params['privateKey'], $params['apiUrl']
+                        $params['privateKey'], $params['apiUrl']
         );
 
         // perform conection to the Paymill API and trigger the payment
         try {
-            
+
             // create client
             $client = $clientsObject->create($clientParams);
             if (!isset($client['id'])) {
@@ -321,22 +318,22 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
                 call_user_func_array($logger, array("Transaction could not be issued."));
                 return false;
             }
-
         } catch (Services_Paymill_Exception $ex) {
             // paymill wrapper threw an exception
             call_user_func_array($logger, array("Exception thrown from paymill wrapper: " . $ex->getMessage()));
             return false;
-        }        
+        }
 
         return true;
     }
-    
+
     /**
      * Logs an event
      * @param $message The message to be logged
      */
-    public static function logAction($message) {
+    public static function logAction($message)
+    {
         Mage::log($message);
     }
+
 }
-?>
