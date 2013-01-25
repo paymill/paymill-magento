@@ -203,7 +203,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
 
         // check the library version
         $paymillLibraryVersion = Mage::getStoreConfig(
-                        'payment/paymillcc/paymill_lib_version', Mage::app()->getStore()
+            'payment/paymillcc/paymill_lib_version', Mage::app()->getStore()
         );
 
         // keep this for further versions 
@@ -228,13 +228,13 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             . ' ' . sprintf('#%s, %s', $order->getIncrementId(), $order->getCustomerEmail()),
             'libBase' => $libBase,
             'privateKey' => Mage::getStoreConfig(
-                    'payment/paymillcc/paymill_private_api_key', Mage::app()->getStore()
+                'payment/paymillcc/paymill_private_api_key', Mage::app()->getStore()
             ),
             'apiUrl' => Mage::getStoreConfig(
-                    'payment/paymillcc/paymill_api_endpoint', Mage::app()->getStore()
+                'payment/paymillcc/paymill_api_endpoint', Mage::app()->getStore()
             ),
             'loggerCallback' => array('Paymill_Paymillcc_Model_PaymentMethod', 'logAction')
-                ));
+        ));
 
         return $result;
     }

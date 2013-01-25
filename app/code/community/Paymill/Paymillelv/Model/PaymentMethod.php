@@ -208,13 +208,13 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
             . ' ' . sprintf('#%s, %s', $order->getIncrementId(), $order->getCustomerEmail()),
             'libBase' => $libBase,
             'privateKey' => Mage::getStoreConfig(
-                    'payment/paymillelv/paymill_private_api_key', Mage::app()->getStore()
+                'payment/paymillelv/paymill_private_api_key', Mage::app()->getStore()
             ),
             'apiUrl' => Mage::getStoreConfig(
-                    'payment/paymillelv/paymill_api_endpoint', Mage::app()->getStore()
+                'payment/paymillelv/paymill_api_endpoint', Mage::app()->getStore()
             ),
             'loggerCallback' => array('Paymill_Paymillcc_Model_PaymentMethod', 'logAction')
-                ));
+        ));
 
         return $result;
     }
