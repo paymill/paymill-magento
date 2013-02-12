@@ -144,7 +144,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
                     exp_year: expiry_year.val(), 
                     cvc: cvc.val(),
                     cardholder: cardholder.val(),
-                    amount: '<?php print $this->paymillPaymentAmount; ?>',
+                    amount_int: '<?php print round($this->paymillPaymentAmount * 100); ?>',
                     currency: '<?php print $this->paymillPaymentCurrency; ?>'
                     }, paymill_cc_response_handler
                 );
