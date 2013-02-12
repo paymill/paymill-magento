@@ -23,3 +23,8 @@
 "Paymill library version","Paymill-Wrapper Version"
 "Secure credit card payment powered by","Secure credit card payment powered by"
 "Show Paymill label","Show Paymill label"
+"The account holder is missing","The account holder is missing"
+"The account number is invalid","The account number is invalid"
+"The bank code is invalid","The bank code is invalid"
+"Error while performing your payment. The payment was not processed.","Fehler beim Ausführen Ihrer Zahlung. Die Zahlung wurde nicht verarbeitet."
+"Payment was not successfully processed. See log.","Die Zahlung wurde nicht erfolgreich verarbeitet. Siehe Log."

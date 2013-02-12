@@ -13,7 +13,7 @@
 <!-- do not show this configuration options in store scope -->
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
-                    <show_in_store>0</show_in_store>
+                    <show_in_store>1</show_in_store>
                     <comment><![CDATA[<a href="https://www.paymill.de/" target="_blank">Click here to get a Paymill account</a>]]></comment>
                     <fields>
 <!-- is this payment method active for the website? -->

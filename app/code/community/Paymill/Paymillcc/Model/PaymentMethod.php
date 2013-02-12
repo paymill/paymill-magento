@@ -95,7 +95,9 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         $token = $info->getAdditionalInformation("paymill_transaction_token");
         if (!$token) {
             self::logAction("No transaction code was received in PaymentMethod (Paymill_Paymillcc_Model_PaymentMethod::validate)");
-            Mage::throwException("Error while performing your payment. The payment was not processed.");
+            Mage::throwException(
+                Mage::helper('paymillelv')->__("Error while performing your payment. The payment was not processed.")
+            );
         }
         return $this;
     }
@@ -115,7 +117,9 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         $result = $this->processPayment($payment, $amount, $token);
         if ($result == false) {
             $payment->setStatus('ERROR')->setIsTransactionClosed(1)->save();
-            throw new Exception("Payment was not successfully processed. See log.");
+            throw new Exception(
+                 Mage::helper('paymillcc')->__("Payment was not successfully processed. See log.")
+            );
         }
 
         $transactionId = Mage::getSingleton('core/session')->getPaymillTransactionId();

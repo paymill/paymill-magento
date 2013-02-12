@@ -127,9 +127,9 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
         accountholder_error.hide();
 
         // error messages
-        error_msg_accountholder_missing = "Bitte geben Sie den Karteninhaber an";
-        error_msg_accountnumber_invalid = "Die Kontonummer ist ungültig";
-        error_msg_banknumber_invalid = "Die Bankleitzahl ist ungültig";
+        error_msg_accountholder_missing = "<?php echo Mage::helper('paymillelv')->__("The account holder is missing"); ?>";
+        error_msg_accountnumber_invalid = "<?php echo Mage::helper('paymillelv')->__("The account number is invalid"); ?>"
+        error_msg_banknumber_invalid = "<?php echo Mage::helper('paymillelv')->__("The bank code is invalid"); ?>"
 
         if (accountholder.val() == "") {
             accountholder_error.html(error_msg_accountholder_missing).show();
