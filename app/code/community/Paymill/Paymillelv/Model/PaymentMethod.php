@@ -20,7 +20,7 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
     /**
      * Is this payment method a gateway (online auth/charge) ?
      */
-    protected $_isGateway = true;
+    protected $_isGateway = false;
 
     /**
      * Can authorize online?
@@ -45,7 +45,7 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
     /**
      * Can void transactions online?
      */
-    protected $_canVoid = false;
+    protected $_canVoid = true;
 
     /**
      * Can use this payment method in administration panel?
@@ -114,11 +114,16 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
         // process the payment
         $result = $this->processPayment($payment, $amount, $token);
         if ($result == false) {
+            $payment->setStatus('ERROR')->setIsTransactionClosed(1)->save();
             throw new Exception("Payment was not successfully processed. See log.");
         }
 
         $transactionId = Mage::getSingleton('core/session')->getPaymillTransactionId();
         $info->setAdditionalInformation('paymill_transaction_id', $transactionId);
+        $payment->setStatus('APPROVED')
+                ->setTransactionId($transactionId)
+                ->setIsTransactionClosed(1)
+                ->save();
         
         return $this;
     }
