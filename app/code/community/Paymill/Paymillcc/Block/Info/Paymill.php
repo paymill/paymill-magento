@@ -11,6 +11,15 @@ class Paymill_Paymillcc_Block_Info_Paymill extends Mage_Payment_Block_Info_Cc
     protected function _prepareSpecificInformation($transport = null)
     {
         $transport = parent::_prepareSpecificInformation($transport);
-        return $transport->setData(array());
+        $additionalInformation = array();
+        if(Mage::app()->getStore()->isAdmin()) {
+            $order = Mage::getSingleton('sales/order'); 
+            $order->load($this->getRequest()->getParam('order_id'));
+            $additionalInformation = array(
+                'Transaction ID' => ' ' . $order->getPayment()
+                                            ->getAdditionalInformation('paymill_transaction_id')
+            );
+        }
+        return $transport->setData($additionalInformation);
     }
 }

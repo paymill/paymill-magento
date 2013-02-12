@@ -117,6 +117,9 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             throw new Exception("Payment was not successfully processed. See log.");
         }
 
+        $transactionId = Mage::getSingleton('core/session')->getPaymillTransactionId();
+        $info->setAdditionalInformation('paymill_transaction_id', $transactionId);
+        
         return $this;
     }
 
@@ -182,10 +185,10 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             if ($quote && $quote->getBaseGrandTotal() <= $paymillMinimumOrderAmount) {
                 return false;
             }
-            
+
             return true;
         }
-        
+
         return false;
     }
 
@@ -203,7 +206,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
 
         // check the library version
         $paymillLibraryVersion = Mage::getStoreConfig(
-            'payment/paymillcc/paymill_lib_version', Mage::app()->getStore()
+                        'payment/paymillcc/paymill_lib_version', Mage::app()->getStore()
         );
 
         // keep this for further versions 
@@ -228,10 +231,10 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             . ' ' . sprintf('#%s, %s', $order->getIncrementId(), $order->getCustomerEmail()),
             'libBase' => $libBase,
             'privateKey' => Mage::getStoreConfig(
-                'payment/paymillcc/paymill_private_api_key', Mage::app()->getStore()
+                    'payment/paymillcc/paymill_private_api_key', Mage::app()->getStore()
             ),
             'apiUrl' => Mage::getStoreConfig(
-                'payment/paymillcc/paymill_api_endpoint', Mage::app()->getStore()
+                    'payment/paymillcc/paymill_api_endpoint', Mage::app()->getStore()
             ),
             'loggerCallback' => array('Paymill_Paymillcc_Model_PaymentMethod', 'logAction')
         ));
@@ -311,6 +314,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
                 call_user_func_array($logger, array("No transaction created" . var_export($transaction, true)));
                 return false;
             } else {
+                Mage::getSingleton('core/session')->setPaymillTransactionId($transaction['id']);
                 call_user_func_array($logger, array("Transaction created: " . $transaction['id']));
             }
 
