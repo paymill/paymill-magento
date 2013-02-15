@@ -73,6 +73,7 @@
     </li>
     <li>
         <!-- this gets the transaction token -->
+        <input type="hidden" id="paymill_order_amount" value="<?php print round($this->paymillPaymentAmount * 100); ?>">
         <input type="hidden" id="paymill_transaction_token" type="text" value="" name="payment[paymill_transaction_token]" />
     </li>
     <?php if ($this->showPaymillLabel) { ?>
@@ -144,7 +145,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
                     exp_year: expiry_year.val(), 
                     cvc: cvc.val(),
                     cardholder: cardholder.val(),
-                    amount_int: '<?php print round($this->paymillPaymentAmount * 100); ?>',
+                    amount_int: jQuery('#paymill_order_amount').val(),
                     currency: '<?php print $this->paymillPaymentCurrency; ?>'
                     }, paymill_cc_response_handler
                 );
