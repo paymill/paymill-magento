@@ -1,9 +1,9 @@
 <?php
 
-class Paymill_Paymillelv_Block_Info_Paymill extends Mage_Payment_Block_Info_Cc
+class Paymill_Paymillcc_Block_Info_Paymill extends Mage_Payment_Block_Info_Cc
 {
     /**
-     * Prepare payment info
+     * Prepare credit card related payment info
      *
      * @param Varien_Object|array $transport
      * @return Varien_Object
@@ -13,13 +13,17 @@ class Paymill_Paymillelv_Block_Info_Paymill extends Mage_Payment_Block_Info_Cc
         $transport = parent::_prepareSpecificInformation($transport);
         $additionalInformation = array();
         if(Mage::app()->getStore()->isAdmin()) {
-            $order = Mage::getSingleton('sales/order'); 
-            $order->load($this->getRequest()->getParam('order_id'));
-            $additionalInformation = array(
-                'Transaction ID' => ' ' . $order->getPayment()
-                                            ->getAdditionalInformation('paymill_transaction_id')
-            );
+            $orderId = $this->getRequest()->getParam('order_id');
+            if (!empty($orderId)) {
+                $order = Mage::getSingleton('sales/order'); 
+                $order->load();
+                $additionalInformation = array(
+                    'Transaction ID' => ' ' . $order->getPayment()
+                                                ->getAdditionalInformation('paymill_transaction_id')
+                );
+            }
         }
+        
         return $transport->setData($additionalInformation);
     }
 }
