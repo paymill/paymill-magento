@@ -1,13 +1,13 @@
 <?php $_code=$this->getMethodCode() ?> 
-<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>paymill/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>paymill/paymill_styles.css" />
+<script src="<?php echo Mage::getDesign()->getSkinUrl('paymill/jquery.min.js'); ?>"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo Mage::getDesign()->getSkinUrl('paymill/paymill_styles.css'); ?>" />
 <!-- 
     The payment form.
     Important: do not process any card data to the server (leave name attribute away)
 -->
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display: none">
     <li>
-        <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>/paymill/icon_elv.png" />
+        <img src="<?php echo Mage::getDesign()->getSkinUrl('paymill/icon_elv.png'); ?>" />
     </li>
     <li>
         <label for="paymillelv_accountholder" class="required"><em>*</em>Kontoinhaber</label>

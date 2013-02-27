@@ -148,9 +148,8 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
      */
     public function canUseForCurrency($currency)
     {
-
+        $currency = Mage::getSingleton('checkout/session')->getQuote()->getQuoteCurrencyCode();
         Mage::getSingleton('core/session')->setPaymillPaymentCurrency($currency);
-
         $acceptedCurrencies = Mage::getStoreConfig(
                         'payment/paymillcc/paymill_accepted_currencies', Mage::app()->getStore()
         );
