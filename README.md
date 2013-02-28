@@ -13,9 +13,9 @@ Paymill direct debit form:
 
 # Installation from this git repository 
 
-Use the following command to clone the complete repository including the submodules:
+Download the complete module by using the link below:
     
-    git clone --recursive https://github.com/Paymill/Paymill-Magento.git
+    https://github.com/Paymill/Paymill-Magento/archive/master.zip
 
 To install the extension merge the contents of this cloned repository with your Magento installation. 
 
