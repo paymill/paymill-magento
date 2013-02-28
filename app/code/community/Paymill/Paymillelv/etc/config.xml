@@ -20,6 +20,7 @@
             <paymillelv_setup>
                 <setup>
                     <module>Paymill_Paymillelv</module>
+                    <class>Mage_Customer_Model_Entity_Setup</class>
                 </setup>
                 <connection>
                     <use>core_setup</use>

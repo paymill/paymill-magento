@@ -81,8 +81,9 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         // read the paymill_transaction_token from the credit 
         // card form and store it for later use
         $info->setAdditionalInformation(
-                "paymill_transaction_token", $data->paymill_transaction_token
+            "paymill_transaction_token", $data->paymill_transaction_token
         );
+        
         return $this;
     }
 
@@ -93,7 +94,7 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
     {
         $info = $this->getInfoInstance();
         $token = $info->getAdditionalInformation("paymill_transaction_token");
-        if (!$token) {
+        if (!$token && is_null(Mage::getSingleton("paymillcc/customerdata")->loadByUserId(Mage::getSingleton('customer/session')->getCustomer()->getId()))) {
             self::logAction("No transaction code was received in PaymentMethod (Paymill_Paymillcc_Model_PaymentMethod::validate)");
             Mage::throwException(
                 Mage::helper('paymillelv')->__("Error while performing your payment. The payment was not processed.")
@@ -122,6 +123,15 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             );
         }
 
+        if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+            if (is_null(Mage::getSingleton("paymillcc/customerdata")->loadByUserId(Mage::getSingleton('customer/session')->getCustomer()->getId()))) {
+                Mage::getSingleton("paymillcc/customerdata")->setEntry(
+                    Mage::getSingleton('customer/session')->getCustomer()->getId(),
+                    Mage::getSingleton('core/session')->getPaymillCcClientToken() . '|' . Mage::getSingleton('core/session')->getPaymillCcPaymentToken()
+                );
+            }
+        }
+        
         $transactionId = Mage::getSingleton('core/session')->getPaymillTransactionId();
         $info->setAdditionalInformation('paymill_transaction_id', $transactionId);
         $payment->setStatus('APPROVED')
@@ -151,8 +161,9 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
         $currency = Mage::getSingleton('checkout/session')->getQuote()->getQuoteCurrencyCode();
         Mage::getSingleton('core/session')->setPaymillPaymentCurrency($currency);
         $acceptedCurrencies = Mage::getStoreConfig(
-                        'payment/paymillcc/paymill_accepted_currencies', Mage::app()->getStore()
+            'payment/paymillcc/paymill_accepted_currencies', Mage::app()->getStore()
         );
+        
         $acceptedCurrenciesExploded = explode(',', trim(strtolower($acceptedCurrencies)));
 
         if (!in_array(strtolower($currency), $acceptedCurrenciesExploded)) {
@@ -226,9 +237,8 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
             $libBase = 'lib/paymill/v2/lib/';
             $libVersion = 'v2';
         }
-
-        // process the payment
-        $result = $this->_processPayment(array(
+        
+        $data = array(
             'libVersion' => $libVersion,
             'token' => $token,
             'amount' => round($amount * 100),
@@ -246,8 +256,20 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
                     'payment/paymillcc/paymill_api_endpoint', Mage::app()->getStore()
             ),
             'loggerCallback' => array('Paymill_Paymillcc_Model_PaymentMethod', 'logAction')
-        ));
+        );
+        
+        $paymillUser = Mage::getSingleton("paymillcc/customerdata")->loadByUserId(Mage::getSingleton('customer/session')->getCustomer()->getId());
+        if (!is_null($paymillUser)){
+            $token = explode('|', $paymillUser->getUserData());
+            $data['client_id']  = $token[0];
+            $data['payment_id'] = $token[1];
+        }
+        
+        // process the payment
+        $result = $this->_processPayment($data);
+        
 
+        
         return $result;
     }
 
@@ -296,33 +318,44 @@ class Paymill_Paymillcc_Model_PaymentMethod extends Mage_Payment_Model_Method_Cc
 
         // perform conection to the Paymill API and trigger the payment
         try {
+            if (!array_key_exists('client_id', $params)) {
+                $client = $clientsObject->create($clientParams);
+                if (!isset($client['id'])) {
+                    call_user_func_array($logger, array("No client created" . var_export($client, true)));
+                    return false;
+                } else {
+                    call_user_func_array($logger, array("Client created: " . $client['id']));
+                }
 
-            $client = $clientsObject->create($clientParams);
-            if (!isset($client['id'])) {
-                call_user_func_array($logger, array("No client created" . var_export($client, true)));
-                return false;
+                // create card
+                $paymentParams['client'] = $client['id'];
             } else {
-                call_user_func_array($logger, array("Client created: " . $client['id']));
+                $paymentParams['client'] = $params['client_id'];
             }
-
-            // create card
-            $paymentParams['client'] = $client['id'];
+            
             $payment = $paymentsObject->create($paymentParams);
-            if (!isset($payment['id'])) {
-                call_user_func_array($logger, array("No payment (credit card) created: " . var_export($payment, true) . " with params " . var_export($paymentParams, true)));
-                return false;
-            } else {
-                call_user_func_array($logger, array("Payment (credit card) created: " . $payment['id']));
-            }
+            if (!array_key_exists('client_id', $params)) {
+                if (!isset($payment['id'])) {
+                    call_user_func_array($logger, array("No payment (credit card) created: " . var_export($payment, true) . " with params " . var_export($paymentParams, true)));
+                    return false;
+                } else {
+                    call_user_func_array($logger, array("Payment (credit card) created: " . $payment['id']));
+                }
 
-            // create transaction
-            //$transactionParams['client'] = $client['id'];
-            $transactionParams['payment'] = $payment['id'];
+                // create transaction
+                //$transactionParams['client'] = $client['id'];
+                $transactionParams['payment'] = $payment['id'];
+            } else {
+                $transactionParams['payment'] = $params['payment_id'];
+            }
+            
             $transaction = $transactionsObject->create($transactionParams);
             if (!isset($transaction['id'])) {
                 call_user_func_array($logger, array("No transaction created" . var_export($transaction, true)));
                 return false;
             } else {
+                Mage::getSingleton('core/session')->setPaymillCcClientToken($client['id']);
+                Mage::getSingleton('core/session')->setPaymillCcPaymentToken($payment['id']);
                 Mage::getSingleton('core/session')->setPaymillTransactionId($transaction['id']);
                 call_user_func_array($logger, array("Transaction created: " . $transaction['id']));
             }

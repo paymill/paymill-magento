@@ -2,7 +2,7 @@
 <config>
     <modules>
        <Paymill_Paymillcc>
-          <version>1.0.2</version>
+          <version>1.0.3</version>
        </Paymill_Paymillcc>
     </modules>
     <global>
@@ -14,7 +14,17 @@
         <models>
             <paymillcc>
                 <class>Paymill_Paymillcc_Model</class>
+                <resourceModel>paymillcc_mysql4</resourceModel>
             </paymillcc>
+            
+            <paymillcc_mysql4>
+                <class>Paymill_Paymillcc_Model_Mysql4</class>
+                <entities>
+                    <customerdata>
+                        <table>paymill_additional_customer_data</table>
+                    </customerdata>
+                </entities>
+            </paymillcc_mysql4>
         </models>
         <resources>
             <paymillcc_setup>
@@ -78,7 +88,7 @@
                 <paymill_api_endpoint>https://api.paymill.de/v2/</paymill_api_endpoint>
                 <paymill_show_credits>1</paymill_show_credits>
                 <paymill_accepted_currencies>EUR</paymill_accepted_currencies>
-                <paymill_lib_version>v1</paymill_lib_version>
+                <paymill_lib_version>v2</paymill_lib_version>
             </paymillcc>
          </payment>
     </default>

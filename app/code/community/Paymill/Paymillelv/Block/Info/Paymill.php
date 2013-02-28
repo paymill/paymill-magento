@@ -16,7 +16,7 @@ class Paymill_Paymillcc_Block_Info_Paymill extends Mage_Payment_Block_Info_Cc
             $orderId = $this->getRequest()->getParam('order_id');
             if (!empty($orderId)) {
                 $order = Mage::getSingleton('sales/order'); 
-                $order->load();
+                $order->load($orderId);
                 $additionalInformation = array(
                     'Transaction ID' => ' ' . $order->getPayment()
                                                 ->getAdditionalInformation('paymill_transaction_id')
