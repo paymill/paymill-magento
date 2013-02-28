@@ -2,7 +2,7 @@
 <config>
     <modules>
        <Paymill_Paymillelv>
-          <version>1.0.2</version>
+          <version>1.0.3</version>
        </Paymill_Paymillelv>
     </modules>
     <global>
@@ -14,7 +14,16 @@
         <models>
             <paymillelv>
                 <class>Paymill_Paymillelv_Model</class>
+                <resourceModel>paymillelv_mysql4</resourceModel>
             </paymillelv>
+            <paymillelv_mysql4>
+                <class>Paymill_Paymillelv_Model_Mysql4</class>
+                <entities>
+                    <customerdata>
+                        <table>paymill_elv_additional_customer_data</table>
+                    </customerdata>
+                </entities>
+            </paymillelv_mysql4>
         </models>
         <resources>
             <paymillelv_setup>

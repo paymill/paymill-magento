@@ -93,12 +93,13 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
     {
         $info = $this->getInfoInstance();
         $token = $info->getAdditionalInformation("paymill_elv_transaction_token");
-        if (!$token) {
+        if (!$token && is_null(Mage::getSingleton("paymillelv/customerdata")->loadByUserId(Mage::getSingleton('customer/session')->getCustomer()->getId()))) {
             self::logAction("No transaction code was received in PaymentMethod (Paymill_Paymillelv_Model_PaymentMethod::validate)");
             Mage::throwException(
                 Mage::helper('paymillelv')->__("Error while performing your payment. The payment was not processed.")
             );
         }
+        
         return $this;
     }
 
@@ -121,7 +122,16 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
                  Mage::helper('paymillelv')->__("Payment was not successfully processed. See log.")
             );
         }
-
+        
+        if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+            if (is_null(Mage::getSingleton("paymillelv/customerdata")->loadByUserId(Mage::getSingleton('customer/session')->getCustomer()->getId()))) {
+                Mage::getSingleton("paymillelv/customerdata")->setEntry(
+                    Mage::getSingleton('customer/session')->getCustomer()->getId(),
+                    Mage::getSingleton('core/session')->getPaymillElvClientToken() . '|' . Mage::getSingleton('core/session')->getPaymillElvPaymentToken()
+                );
+            }
+        }
+        
         $transactionId = Mage::getSingleton('core/session')->getPaymillTransactionId();
         $info->setAdditionalInformation('paymill_transaction_id', $transactionId);
         $payment->setStatus('APPROVED')
@@ -208,9 +218,8 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
         $billing = $order->getBillingAddress();
 
         $libBase = 'lib/paymill/v2/lib/';
-
-        // process the payment
-        $result = $this->_processPayment(array(
+        
+        $data = array(
             'token' => $token,
             'amount' => round($amount * 100),
             'currency' => strtolower($payment->getOrder()->getOrderCurrency()->getCode()),
@@ -226,8 +235,18 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
             'apiUrl' => Mage::getStoreConfig(
                     'payment/paymillelv/paymill_api_endpoint', Mage::app()->getStore()
             ),
-            'loggerCallback' => array('Paymill_Paymillcc_Model_PaymentMethod', 'logAction')
-        ));
+            'loggerCallback' => array('Paymill_Paymillelv_Model_PaymentMethod', 'logAction')
+        );
+        
+        $paymillUser = Mage::getSingleton("paymillelv/customerdata")->loadByUserId(Mage::getSingleton('customer/session')->getCustomer()->getId());
+        if (!is_null($paymillUser)){
+            $token = explode('|', $paymillUser->getUserData());
+            $data['client_id']  = $token[0];
+            $data['payment_id'] = $token[1];
+        }
+        
+        // process the payment
+        $result = $this->_processPayment($data);
 
         return $result;
     }
@@ -281,7 +300,7 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
 
         // perform conection to the Paymill API and trigger the payment
         try {
-
+            if (!array_key_exists('client_id', $params)) {
             // create client
             $client = $clientsObject->create($clientParams);
             if (!isset($client['id'])) {
@@ -294,22 +313,34 @@ class Paymill_Paymillelv_Model_PaymentMethod extends Mage_Payment_Model_Method_C
 
             // create card
             $paymentParams['client'] = $client['id'];
-            $payment = $paymentsObject->create($paymentParams);
-            if (!isset($payment['id'])) {
-                call_user_func_array($logger, array("No payment created: " . var_export($payment, true)));
-                return false;
+            
             } else {
-                call_user_func_array($logger, array("Payment created: " . $payment['id']));
-                call_user_func_array($logger, array("Payment: " . var_export($payment, true)));
+                $paymentParams['client'] = $params['client_id'];
             }
+            
+            $payment = $paymentsObject->create($paymentParams);
+            if (!array_key_exists('client_id', $params)) {
+                if (!isset($payment['id'])) {
+                    call_user_func_array($logger, array("No payment created: " . var_export($payment, true)));
+                    return false;
+                } else {
+                    call_user_func_array($logger, array("Payment created: " . $payment['id']));
+                    call_user_func_array($logger, array("Payment: " . var_export($payment, true)));
+                }
 
-            // create transaction        
-            $transactionParams['payment'] = $payment['id'];
+                // create transaction        
+                $transactionParams['payment'] = $payment['id'];
+
+            }else {
+                $transactionParams['payment'] = $params['payment_id'];
+            }
             $transaction = $transactionsObject->create($transactionParams);
             if (!isset($transaction['id'])) {
                 call_user_func_array($logger, array("No transaction created" . var_export($transaction, true)));
                 return false;
             } else {
+                Mage::getSingleton('core/session')->setPaymillElvClientToken($client['id']);
+                Mage::getSingleton('core/session')->setPaymillElvPaymentToken($payment['id']);
                 Mage::getSingleton('core/session')->setPaymillTransactionId($transaction['id']);
                 call_user_func_array($logger, array("Transaction created: " . $transaction['id']));
                 call_user_func_array($logger, array("Transaction: " . $transaction));

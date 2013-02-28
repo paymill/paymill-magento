@@ -21,7 +21,7 @@
                 <class>Paymill_Paymillcc_Model_Mysql4</class>
                 <entities>
                     <customerdata>
-                        <table>paymill_additional_customer_data</table>
+                        <table>paymill_cc_additional_customer_data</table>
                     </customerdata>
                 </entities>
             </paymillcc_mysql4>

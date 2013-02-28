@@ -1,30 +1,22 @@
-2013-02-28T16:53:33+00:00 DEBUG (7): Client created: client_68cc65a3770d72f1202a
-2013-02-28T16:53:34+00:00 DEBUG (7): Payment (credit card) created: pay_4edcdc8c84ab8aef6e1562e43481
-2013-02-28T16:53:34+00:00 DEBUG (7): Transaction created: tran_ab1994b10f5499415f59c5c6893a
-2013-02-28T16:57:03+00:00 DEBUG (7): Client created: client_48e496f4d636230e93cd
-2013-02-28T16:57:03+00:00 DEBUG (7): Payment (credit card) created: pay_386b4640a78082ffa51e251dfe3b
-2013-02-28T16:57:03+00:00 DEBUG (7): Transaction created: tran_c62381caf4547d0ddd1872799117
-2013-02-28T17:01:47+00:00 DEBUG (7): Client created: client_6ae2cba07c9b90d04735
-2013-02-28T17:01:47+00:00 DEBUG (7): Payment (credit card) created: pay_692ad5d1b2827a239e4d3e793712
-2013-02-28T17:01:48+00:00 DEBUG (7): Transaction created: tran_4a02b0b6b7028ae67173d395fde8
-2013-02-28T17:03:07+00:00 DEBUG (7): Client created: client_8c53f664f690af028833
-2013-02-28T17:03:07+00:00 DEBUG (7): Payment (credit card) created: pay_3595c709b86ee3580ff9f20395f4
-2013-02-28T17:03:07+00:00 DEBUG (7): Transaction created: tran_4ee46240e1d781cdf1ea43697275
-2013-02-28T17:06:03+00:00 DEBUG (7): Client created: client_255244dda2c4f6d79a89
-2013-02-28T17:06:03+00:00 DEBUG (7): Payment (credit card) created: pay_96088d0e4869d2fbb41ded46ef6b
-2013-02-28T17:06:03+00:00 DEBUG (7): Transaction created: tran_1136d6df36548adc4206c0566c12
-2013-02-28T17:07:40+00:00 DEBUG (7): Client created: client_896c6b8edee284c5b90f
-2013-02-28T17:07:40+00:00 DEBUG (7): Payment (credit card) created: pay_e6eb82c6669771a9219c964602f7
-2013-02-28T17:07:41+00:00 DEBUG (7): Transaction created: tran_3908da79fabe8d0aa8bd1c5e37ff
-2013-02-28T17:09:52+00:00 DEBUG (7): Client created: client_910b3a0b5dd58eec0907
-2013-02-28T17:09:52+00:00 DEBUG (7): Payment (credit card) created: pay_df16964377b4f2d0cfa10c39049a
-2013-02-28T17:09:52+00:00 DEBUG (7): Transaction created: tran_70a42c4f0adedf7cf82016338316
-2013-02-28T19:18:44+00:00 DEBUG (7): Client created: client_269196b6a9957ed2abe2
-2013-02-28T19:18:45+00:00 DEBUG (7): Payment (credit card) created: pay_8dd42b465f57bbb15e6b31a4b0d2
-2013-02-28T19:18:45+00:00 DEBUG (7): Transaction created: tran_eac919eb1009b48a8d64698227ce
-2013-02-28T19:24:55+00:00 DEBUG (7): Client created: client_0b932e80192fb68c0261
-2013-02-28T19:24:55+00:00 DEBUG (7): Payment (credit card) created: pay_6c6a4a7dac5f8183d85a7cc623fa
-2013-02-28T19:24:55+00:00 DEBUG (7): Transaction created: tran_f8434e691ea6521b667d93418bc2
-2013-02-28T19:25:58+00:00 DEBUG (7): Client created: client_2b1c403fa89f59bce9d1
-2013-02-28T19:25:58+00:00 DEBUG (7): Payment (credit card) created: pay_5aef091d2301cff9350fbbb68e68
-2013-02-28T19:25:59+00:00 DEBUG (7): Transaction created: tran_95d12ba8e0f9279b57cee3f098ac
+2013-02-28T20:37:33+00:00 DEBUG (7): Client created: client_44fdfb23ca82e4bc4e4d
+2013-02-28T20:37:33+00:00 DEBUG (7): Client: array (
+  'id' => 'client_44fdfb23ca82e4bc4e4d',
+  'email' => 'testuser@payintelligent.de',
+  'description' => 'Test Tester',
+  'created_at' => 1362083853,
+  'updated_at' => 1362083853,
+  'payment' => 
+  array (
+  ),
+  'subscription' => NULL,
+)
+2013-02-28T20:37:34+00:00 DEBUG (7): No payment created: array (
+  'error' => 
+  array (
+    'messages' => 
+    array (
+      'required' => 'Parameter is mandatory',
+    ),
+    'field' => 'code',
+  ),
+)

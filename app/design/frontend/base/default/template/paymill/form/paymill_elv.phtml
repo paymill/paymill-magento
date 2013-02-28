@@ -9,6 +9,7 @@
     <li>
         <img src="<?php echo Mage::getDesign()->getSkinUrl('paymill/icon_elv.png'); ?>" />
     </li>
+    <?php if (is_null(Mage::getSingleton("paymillelv/customerdata")->loadByUserId(Mage::getSingleton('customer/session')->getCustomer()->getId()))): ?>
     <li>
         <label for="paymillelv_accountholder" class="required"><em>*</em>Kontoinhaber</label>
         <div class="input-box">
@@ -30,10 +31,14 @@
             <div class="validation-advice" id="banknumber_error" style="display: none"></div>
         </div>
     </li>
-    <li>
-        <!-- this gets the transaction token -->
-        <input type="hidden" id="paymill_elv_transaction_token" type="text" value="" name="payment[paymill_elv_transaction_token]" />
-    </li>
+    <?php endif; ?>
+    <?php if (!is_null(Mage::getSingleton("paymillelv/customerdata")->loadByUserId(Mage::getSingleton('customer/session')->getCustomer()->getId()))): ?>
+    <input type="hidden" id="paymill_elv_existing_customer" value="true">
+    <?php elseif (is_null(Mage::getSingleton("paymillelv/customerdata")->loadByUserId(Mage::getSingleton('customer/session')->getCustomer()->getId()))): ?>
+    <input type="hidden" id="paymill_elv_existing_customer" value="false">
+    <?php endif; ?>
+    <!-- this gets the transaction token -->
+    <input type="hidden" id="paymill_elv_transaction_token" type="text" value="" name="payment[paymill_elv_transaction_token]" />
     <?php if ($this->showPaymillLabel) { ?>
     <li>
         <div class="paymill_powered"><div class="paymill_credits">Sicheres Lastschriftverfahren powered by <a href="http://www.paymill.de" target="_blank">Paymill</a></div></div>
@@ -52,17 +57,23 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
     jQuery.noConflict();
 
     jQuery(document).ready(function(){
-
-        //jQuery('#payment-buttons-container button').first().attr("onclick", "paymill_payment_save_override();");
-
+        jQuery('#payment-buttons-container button').first().attr("onclick", "paymill_payment_save_override();");
     });
     
     if (typeof paymill_payment_save_override != 'function') {
         function paymill_payment_save_override() {
             if (payment.currentMethod == "paymillcc") {
-                paymill_cc_payment_save_override();
+                if (jQuery('#paymill_existing_customer').val() == 'false') {
+                    paymill_cc_payment_save_override();
+                } else {
+                    payment.save();
+                }
             } else if (payment.currentMethod == "paymillelv") {
-                paymill_elv_payment_save_override();
+                if (jQuery('#paymill_elv_existing_customer').val() == 'false') {
+                    paymill_elv_payment_save_override();
+                } else {
+                    payment.save();
+                }
             } else {
                 payment.save();
             }

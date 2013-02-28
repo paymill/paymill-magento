@@ -1,6 +1,6 @@
 <?php
 
-class Paymill_Paymillcc_Block_Info_Paymill extends Mage_Payment_Block_Info_Cc
+class Paymill_Paymillelv_Block_Info_Paymill extends Mage_Payment_Block_Info_Cc
 {
     /**
      * Prepare credit card related payment info
