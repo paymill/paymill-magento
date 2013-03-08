@@ -1,7 +1,7 @@
 <?php $_code = $this->getMethodCode() ?>
 <script src="<?php echo Mage::getDesign()->getSkinUrl('paymill/jquery.min.js'); ?>"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo Mage::getDesign()->getSkinUrl('paymill/paymill_styles.css'); ?>" />
-<!-- 
+<!--
     The payment form.
     Important: do not process any card data to the server (leave name attribute away)
 -->
@@ -21,7 +21,7 @@
     <li>
         <label for="paymillcc_number" class="required"><em>*</em><?php echo Mage::helper('paymillcc')->__('Credit Card Number') ?></label>
         <div class="input-box">
-            <input type="text" id="paymillcc_number" class="input-text" value="" autocomplete="off"> 
+            <input type="text" id="paymillcc_number" class="input-text" value="" autocomplete="off">
             <div class="validation-advice" id="number_error" style="display: none"></div>
             <div id="paymill_card_type" style="display: none; color: #666; margin-top: 2px;"></div>
         </div>
@@ -89,7 +89,7 @@
 </ul>
 <!--
 PaymillPayment
-Wrapper version: <?php print $this->paymillLibVersion; ?>; 
+Wrapper version: <?php print $this->paymillLibVersion; ?>;
 API enpoint: <?php print $this->paymillApiEndpoint; ?>
 -->
 <script type="text/javascript">
@@ -100,7 +100,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
     jQuery.noConflict();
 
     jQuery(document).ready(function(){
-        jQuery('#payment-buttons-container button').first().attr("onclick", "paymill_payment_save_override();");
+        jQuery('#payment-buttons-container button:first').attr("onclick", "paymill_payment_save_override();");
         // bind change listener to show the cardtype
         jQuery('#paymillcc_number').change(function() {
             if (paymill.cardType(jQuery('#paymillcc_number').val()) == "Visa") {
@@ -113,7 +113,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
         });
 
     });
-    
+
     if (typeof paymill_payment_save_override != 'function') {
         function paymill_payment_save_override() {
             if (payment.currentMethod == "paymillcc") {
@@ -133,7 +133,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
             }
         }
     }
-    
+
     // is paymillPayment?
     function paymill_is_paymill_cc_payment() {
         return payment.currentMethod == "<?php print $_code; ?>";
@@ -151,9 +151,9 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
                 var expiry_year = jQuery('#paymillcc_expiry_year');
                 var cvc = jQuery('#paymillcc_cvc');
                 paymill.createToken({
-                    number: number.val(), 
-                    exp_month: expiry_month.val(), 
-                    exp_year: expiry_year.val(), 
+                    number: number.val(),
+                    exp_month: expiry_month.val(),
+                    exp_year: expiry_year.val(),
                     cvc: cvc.val(),
                     cardholder: cardholder.val(),
                     amount_int: jQuery('#paymill_order_amount').val(),
@@ -263,9 +263,9 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
                 var expiry_year = jQuery('#paymillcc_expiry_year');
                 var cvc = jQuery('#paymillcc_cvc');
                 paymill.createToken({
-                    number: number.val(), 
-                    exp_month: expiry_month.val(), 
-                    exp_year: expiry_year.val(), 
+                    number: number.val(),
+                    exp_month: expiry_month.val(),
+                    exp_year: expiry_year.val(),
                     cvc: cvc.val(),
                     cardholder: cardholder.val(),
                     amount: '<?php print $this->paymillPaymentAmount; ?>',
