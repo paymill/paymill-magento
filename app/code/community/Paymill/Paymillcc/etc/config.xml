@@ -2,7 +2,7 @@
 <config>
     <modules>
        <Paymill_Paymillcc>
-          <version>1.0.4</version>
+          <version>1.0.5</version>
        </Paymill_Paymillcc>
     </modules>
     <global>
@@ -16,7 +16,7 @@
                 <class>Paymill_Paymillcc_Model</class>
                 <resourceModel>paymillcc_mysql4</resourceModel>
             </paymillcc>
-            
+
             <paymillcc_mysql4>
                 <class>Paymill_Paymillcc_Model_Mysql4</class>
                 <entities>
