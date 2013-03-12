@@ -110,6 +110,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
     function paymill_elv_response_handler(error, result) {
         paymill_elv_debug('Start Paymill response handler');
         if (error) {
+            alert("API returned error" + error.apierror);
             paymill_elv_debug('An API error occured ' + error.apierror);
         } else {
             paymill_elv_debug('Received a token: ' + result.token);
