@@ -11,19 +11,19 @@ Paymill direct debit form:
 
 ![Paymill creditcard payment form](https://raw.github.com/Paymill/Paymill-Magento/master/paymill/paymill_debit_form_de.png)
 
-# Installation from this git repository 
+# Installation from this git repository
 
 Download the complete module by using the link below:
-    
+
     https://github.com/Paymill/Paymill-Magento/archive/master.zip
 
-To install the extension merge the contents of this cloned repository with your Magento installation. 
+To install the extension merge the contents of this cloned repository with your Magento installation.
 
 # Configuration
 
 Afterwards go to System > Configuration > Payment Methods and configure the Paymill payment methods you intend to use (insert your Paymill test or live keys for each payment method).
 
-In the configuration set API-URL to https://api.paymill.de/v2/.
+In the configuration set API-URL to https://api.paymill.com/v2/.
 
 # In case of errors
 
@@ -31,13 +31,13 @@ In case of any errors turn on the debug mode in the Paymill payment method confi
 
 # Notes about the payment process
 
-The payment is processed when an order is placed in the shop frontend. 
+The payment is processed when an order is placed in the shop frontend.
 
 # Support for OneStepCheckout (onestepcheckout.com)
 
-With some little adjustments the OneStepCheckout extension is supported for paymill. 
+With some little adjustments the OneStepCheckout extension is supported for paymill.
 
-After 
+After
 
     <script type="text/javascript">
 
@@ -52,7 +52,7 @@ And after
 
     var form = new VarienForm('onestepcheckout-form');
 
-in line 948 add: 
+in line 948 add:
 
     if (payment.currentMethod == 'paymillcc') {
       if (form.validator.validate()) {
