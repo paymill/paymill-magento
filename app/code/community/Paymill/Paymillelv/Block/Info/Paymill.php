@@ -13,17 +13,22 @@ class Paymill_Paymillelv_Block_Info_Paymill extends Mage_Payment_Block_Info_Cc
         $transport = parent::_prepareSpecificInformation($transport);
         $additionalInformation = array();
         if(Mage::app()->getStore()->isAdmin()) {
-            $orderId = $this->getRequest()->getParam('order_id');
-            if (!empty($orderId)) {
-                $order = Mage::getSingleton('sales/order'); 
-                $order->load($orderId);
+            $order = Mage::registry('current_order');
+            if(!$order && Mage::registry('current_shipment')) {
+                $order = Mage::registry('current_shipment')->getOrder();
+            }
+            elseif (!$order && Mage::registry('current_invoice')) {
+                $order = Mage::registry('current_invoice')->getOrder();
+            } elseif (!$order && Mage::registry('current_creditmemo')) {
+                $order = Mage::registry('current_creditmemo')->getOrder();
+            }
+            if($order) {
                 $additionalInformation = array(
-                    'Transaction ID' => ' ' . $order->getPayment()
-                                                ->getAdditionalInformation('paymill_transaction_id')
+                    'Transaction ID' => ' ' . $order->getPayment()->getAdditionalInformation('paymill_transaction_id')
                 );
             }
         }
-        
+
         return $transport->setData($additionalInformation);
     }
 }
