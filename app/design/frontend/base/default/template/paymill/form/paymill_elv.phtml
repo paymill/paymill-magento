@@ -57,7 +57,8 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
     jQuery.noConflict();
 
     jQuery(document).ready(function(){
-        jQuery('#payment-buttons-container button:first').attr("onclick", "paymill_payment_save_override();");
+        jQuery('#payment-buttons-container button:first').prop("onclick", null);
+        jQuery('#payment-buttons-container button:first').click(paymill_payment_save_override);
     });
 
     if (typeof paymill_payment_save_override != 'function') {
