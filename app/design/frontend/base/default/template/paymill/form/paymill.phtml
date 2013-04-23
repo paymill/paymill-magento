@@ -101,6 +101,7 @@ API enpoint: <?php print $this->paymillApiEndpoint; ?>
 
     jQuery(document).ready(function(){
         jQuery('#payment-buttons-container button:first').prop("onclick", null);
+        jQuery('#payment-buttons-container button:first').unbind('click');
         jQuery('#payment-buttons-container button:first').click(paymill_payment_save_override);
         // bind change listener to show the cardtype
         jQuery('#paymillcc_number').change(function() {
