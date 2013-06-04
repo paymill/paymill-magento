@@ -1,0 +1,61 @@
+<?php $_code=$this->getMethodCode() ?>
+<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+    <li>
+        <p class="paymill-payment-errors alert-error" style="display:none;"></p>
+    </li>
+    <li>
+        <label class="card-number-label">
+            <?php echo $this->__("paymill_Number") ?>
+        </label>
+    </li>            
+    <li>
+        <input class="card-number" type="text" size="20" value="4111111111111111"/>
+    </li>            
+    <li>
+        <label class="card-cvc-label">
+            <?php echo $this->__("paymill_Cvc") ?>
+        </label>
+    </li>
+    <li>
+        <input class="card-cvc" type="text" size="4" value="111"/>
+    </li>
+    <li>
+        <div class="card-icon"></div>
+    </li>
+    <li>
+        <label class="card-holdername-label">
+            <?php echo $this->__("paymill_Holder") ?>
+        </label>
+    </li>
+    <li>
+        <input class="card-holdername" type="text" size="20" value="lala"/>
+    </li>
+    <li>
+        <label class="card-expiry-label">
+                <?php echo $this->__("paymill_Date") ?>
+        </label>
+    </li>
+    <li> 
+        <div>
+            <input class="card-expiry-month" type="text" size="2" value="12"/>
+            <span> / </span>
+            <input class="card-expiry-year" type="text" size="4" value="2015"/>
+        </div>
+    </li>
+    <li>
+        <input class="paymill-payment-name"          type="hidden" value="paymill_credit_card"                                            />
+        <input class="paymill-token"                 type="hidden" value=""                                                               />
+        <input class="paymill-payment-amount"        type="hidden" value="<?php echo $this->getPaymentHelper()->getAmount() ?>"           />
+        <input class="paymill-payment-currency"      type="hidden" value="<?php echo $this->getPaymentHelper()->getCurrency() ?>"         />
+        <input class="paymill-option-debug"          type="hidden" value="<?php echo $this->getDataHelper()->isInDebugMode() ?>"          />
+        <input class="paymill-option-logo"           type="hidden" value="<?php echo $this->getDataHelper()->isShowingLabels() ?>"        />
+        <input class="paymill-info-image-path"       type="hidden" value="<?php echo $this->getDataHelper()->getImagePath() ?>"           />
+        <input class="paymill-info-public_key"       type="hidden" value="<?php echo $this->getDataHelper()->getPublicKey() ?>"           />
+        <input class="paymill-payment-error-number"  type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_cc") ?>"/>
+        <input class="paymill-payment-error-holder"  type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_cc") ?>"/>
+        <input class="paymill-payment-error-payment" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_payment") ?>"  />
+        <input class="paymill-payment-error-expdate" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_expdate") ?>"  />
+        <input class="paymill-payment-error-string"  type="hidden" value=""                                                               />
+                
+    </li>
+</ul>

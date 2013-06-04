@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <payment>
+            <groups>
+                <paymill  translate="label">
+                    <label>paymill_Basic_Setting</label>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <sort_order>700</sort_order>
+                    <fields>
+                        <version>
+                            <label>v3.0.0</label>
+                            <sort_order>1</sort_order>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <frontend_type>label</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </version>
+                        <public_key translate="label, tooltip, comment">
+                            <label>paymill_Public_Key</label>
+                            <sort_order>2</sort_order>
+                            <tooltip>paymill_public_key_tooltip</tooltip>
+                            <comment>paymill_public_key_comment</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </public_key>
+                        <private_key translate="label, tooltip, comment">
+                            <label>paymill_Private_Key</label>
+                            <sort_order>3</sort_order>
+                            <tooltip>paymill_private_key_tooltip.</tooltip>
+                            <comment>paymill_private_key_comment</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </private_key>
+                        <debugging_active translate="label">
+                            <label>paymill_Activate_Debugging</label>
+                            <sort_order>6</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </debugging_active>
+                        <save_fc_data translate="label">
+                            <label>paymill_Save_fc_data</label>
+                            <sort_order>7</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </save_fc_data>
+                        <logging_active translate="label">
+                            <label>paymill_Activate_Logging</label>
+                            <sort_order>8</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </logging_active>
+                        <show_label translate="label">
+                            <label>paymill_Show_Label</label>
+                            <sort_order>9</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_label>
+                    </fields>
+                </paymill>
+                
+                <paymill_creditcard module="paymill" translate="label">
+                    <label>paymill_credit_card_label</label>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <sort_order>800</sort_order>
+                    <fields>
+                        <version>
+                            <label>v3.0.0</label>
+                            <sort_order>100</sort_order>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <frontend_type>label</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </version>
+
+                        <active translate="label">
+                            <label>paymill_opt_Enabled</label>
+                            <sort_order>200</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        
+                        <specificcountry translate="label">
+                            <label>paymill_opt_Countries</label>
+                            <sort_order>300</sort_order>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <can_be_empty>1</can_be_empty>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </specificcountry>
+                        
+                        <sort_order translate="label">
+                            <label>paymill_opt_Sort</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>400</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sort_order>
+                    </fields>
+                </paymill_creditcard>
+                
+                <paymill_lastschrift module="paymill" translate="label">
+                    <label>paymill_direct_debit_label</label>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <sort_order>800</sort_order>
+                    <fields>
+                        <version>
+                            <label>v3.0.0</label>
+                            <sort_order>100</sort_order>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <frontend_type>label</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </version>
+
+                        <active translate="label">
+                            <label>paymill_opt_Enabled</label>
+                            <sort_order>200</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        
+                        <specificcountry translate="label">
+                            <label>paymill_opt_Countries</label>
+                            <sort_order>300</sort_order>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <can_be_empty>1</can_be_empty>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </specificcountry>
+                        
+                        <sort_order translate="label">
+                            <label>paymill_opt_Sort</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>400</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sort_order>
+                    </fields>
+                </paymill_lastschrift>
+            </groups>
+        </payment>
+    </sections>
+</config>

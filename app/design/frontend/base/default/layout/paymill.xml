@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<layout version="0.1.0">
+    <checkout_onepage_index>
+        <reference name="head">  
+            <block type="core/text" name="google.cdn.jquery">
+		<action method="setText">
+                    <text><![CDATA[<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script><script type="text/javascript" src="https://bridge.paymill.com/"></script>]]></text>
+                </action>
+            </block>
+<!--            <block type="core/text" name="bridge.paymill">
+                <action method="setText">
+                    <text><![CDATA[]]></text>
+                </action>
+            </block>-->
+            <block type="core/
+                <action method="addJs">
+                    <script>paymill/paymentForm.js</script>
+                    <params/>
+                    <sort_order>300</sort_order>
+                </action>
+        </reference>
+    </checkout_onepage_index>
+</layout>
