@@ -1,21 +1,11 @@
 <?php
+require_once dirname(__FILE__) . '/../../../../../../lib/Paymill/v2/lib/Services/PaymentProcessor.php';
 /**
  * The Payment Helper contains methods dealing with payment relevant information.
  * Examples for this might be f.Ex customer data, formating of basket amounts or similar.
  */
 class Paymill_Paymill_Helper_Payment extends Mage_Core_Helper_Abstract
 {
-    /**
-     * Returns the AuthorizedAmount in the smallest possible unit (f.Ex. cent for the EUR currency).
-     * The AuthorizedAmount is the amount the token has been created with.
-     * @return int AuthorizedAmount in the smallest avaliable unit
-     * @todo fill stub
-     */
-    public function getAuthorizedAmount()
-    {
-         Mage::throwException("Paymenthelper getAuthorizedAmount() not implemented");
-    }
-    
     /**
      * Returns the order amount in the smallest possible unit (f.Ex. cent for the EUR currency)
      * <p align = "center" color = "red">At the moment, only currencies with a 1:100 conversion are supported. Special cases need to be added if necessary</p>
@@ -55,7 +45,6 @@ class Paymill_Paymill_Helper_Payment extends Mage_Core_Helper_Abstract
     /**
      * Returns the current customers email adress.
      * @return string the customers email adress
-     * @todo fill stub
      */
     public function getCustomerEmail()
     {
@@ -75,5 +64,53 @@ class Paymill_Paymill_Helper_Payment extends Mage_Core_Helper_Abstract
         $customerEmail = $this->getCustomerEmail();
         $description = $storename. " " . $customerEmail;
         return $description;
+    }
+    
+    public function getPaymentType($code){
+        //Creditcard
+        if($code === "paymill_creditcard"){
+            $type = "cc";
+        }
+        //Directdebit
+        if($code === ""){
+            $type = "elv";
+        }
+        
+        return $type;
+    }
+
+
+    /**
+     * Returns an instance of the paymentProcessor class.
+     * @return \PaymentProcessor
+     */
+    public function createPaymentProcessor($currencyCode, $token, $authorizedAmount)
+    {
+        Mage::helper('paymill')->setStoreId();
+        $privateKey                 = Mage::helper('paymill')->getPrivateKey();
+        $apiUrl                     = Mage::helper('paymill')->getApiUrl();
+        $libBase                    = null;
+        $params                     = array();
+        $params['token']            = $token;
+        $params['authorizedAmount'] = $authorizedAmount;
+        $params['amount']           = $this->getAmount();
+        $params['currency']         = $this->getCurrency();
+        $params['payment']          = $this->getPaymentType($currencyCode); // The chosen payment (cc | elv) 
+        $params['name']             = $this->getCustomerName();
+        $params['email']            = $this->getCustomerEmail();
+        $params['description']      = $this->getDescription();
+        
+        $loggingClassInstance = $this->createLoggingManager();
+        return new PaymentProcessor($privateKey, $apiUrl, $libBase, $params, $loggingClassInstance);
+    }
+    
+    /**
+     * Returns an instance of the LoggingManager class.
+     * @todo fill stub
+     */
+    public function createLoggingManager()
+    {
+        return null;
+        return new LoggingManager();
     }
 }

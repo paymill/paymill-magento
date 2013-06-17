@@ -26,7 +26,7 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getPublicKey()
     {
-        return $this->getGeneralOption("public_key");
+        return trim($this->getGeneralOption("public_key"));
     }
     
     /**
@@ -35,7 +35,7 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getPrivateKey()
     {
-        return $this->getGeneralOption("private_key");
+        return trim($this->getGeneralOption("private_key"));
     }
     
     /**
@@ -80,7 +80,16 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getImagePath()
     {
-        return dirname(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))))) . '/skin/frontend/base/default/images/paymill';
+        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'skin/frontend/base/default/images/paymill/';
+    }
+    
+    /**
+     * Returns the path to the js directory as a string
+     * @return string Path
+     */
+    public function getJscriptPath()
+    {
+        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'js/paymill/';
     }
     
     /**

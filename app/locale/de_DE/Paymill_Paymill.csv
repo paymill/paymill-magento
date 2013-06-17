@@ -21,7 +21,7 @@
 "paymill_public_key_tooltip","Bitte geben Sie hier Ihren Public Key ein."
 "paymill_public_key_comment","Ihren Public Key können Sie dem Paymill Cockpit entnehmen."
 "paymill_private_key_tooltip","Bitte geben Sie hier Ihren Private Key ein."
-"paymill_private_key_comment","Ihren Private Key "können Sie dem Paymill Cockpit entnehmen."
+"paymill_private_key_comment","Ihren Private Key können Sie dem Paymill Cockpit entnehmen."
 "paymill_error_text_invalid_number_cc","Bitte geben Sie eine gültige Kreditkartennummer ein."
 "paymill_error_text_invalid_number_elv","Bitte geben Sie eine gültige Kontonummer ein"
 "paymill_error_text_invalid_expdate","Ungültiges Ablaufdatum"
