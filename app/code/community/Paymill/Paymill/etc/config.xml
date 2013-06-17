@@ -18,7 +18,16 @@
 <!-- model group alias to be used in Mage::getModel('paymill/...') -->
             <paymill>
                 <class>Paymill_Paymill_Model</class>
+                <resourceModel>paymill_mysql4</resourceModel>
             </paymill>
+            <paymill_mysql4>
+                <class>Paymill_Paymill_Model_Mysql4</class>
+                <entities>
+                    <log>
+                        <table>paymill_log</table>
+                    </log>
+                </entities>
+            </paymill_mysql4>
         </models>
  
         <helpers>

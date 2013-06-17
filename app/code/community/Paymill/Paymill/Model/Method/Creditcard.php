@@ -50,11 +50,18 @@ class Paymill_Paymill_Model_Method_Creditcard extends Paymill_Paymill_Model_Meth
      */
     public function authorize($payment, $amount)
     {
-        $token = Mage::getSingleton('core/session')->getToken(); 
-        $tokenAmount = Mage::getSingleton('core/session')->getTokenAmount();
-        $paymentHelper = Mage::helper("paymill/payment");
-        $paymentHelper->createPaymentProcessor($this->getCode(), $token, $tokenAmount);
+        try{
+            $token = Mage::getSingleton('core/session')->getToken(); 
+            $tokenAmount = Mage::getSingleton('core/session')->getTokenAmount();
+            $paymentHelper = Mage::helper("paymill/payment");
+            $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token, $tokenAmount);
+            $paymentProcessor->processPayment();
+        } catch (Exception $ex){
+            Mage::throwException($ex->getMessage());
+        }
         
-        Mage::throwException("Token $token with amount $tokenAmount.");
+        Mage::throwException("End here for Dev Purpose");
+        //Finish as usual
+        return parent::authorize($payment, $amount);
     }
 }

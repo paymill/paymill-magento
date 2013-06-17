@@ -1,5 +1,4 @@
 <?php
-require_once dirname(__FILE__) . '/../../../../../../lib/Paymill/v2/lib/Services/PaymentProcessor.php';
 /**
  * The Payment Helper contains methods dealing with payment relevant information.
  * Examples for this might be f.Ex customer data, formating of basket amounts or similar.
@@ -86,6 +85,7 @@ class Paymill_Paymill_Helper_Payment extends Mage_Core_Helper_Abstract
      */
     public function createPaymentProcessor($currencyCode, $token, $authorizedAmount)
     {
+        require_once Mage::getBaseDir('lib') . '/Paymill/v2/lib/Services/paymentProcessor.php';
         Mage::helper('paymill')->setStoreId();
         $privateKey                 = Mage::helper('paymill')->getPrivateKey();
         $apiUrl                     = Mage::helper('paymill')->getApiUrl();
