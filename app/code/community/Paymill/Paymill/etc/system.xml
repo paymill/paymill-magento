@@ -32,7 +32,7 @@
                         <private_key translate="label, tooltip, comment">
                             <label>paymill_Private_Key</label>
                             <sort_order>3</sort_order>
-                            <tooltip>paymill_private_key_tooltip.</tooltip>
+                            <tooltip>paymill_private_key_tooltip</tooltip>
                             <comment>paymill_private_key_comment</comment>
                             <frontend_type>text</frontend_type>
                             <show_in_default>1</show_in_default>
