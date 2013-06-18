@@ -65,6 +65,11 @@ class Paymill_Paymill_Helper_Payment extends Mage_Core_Helper_Abstract
         return $description;
     }
     
+    /**
+     * Returns the short tag of the Payment
+     * @param String $code
+     * @return string
+     */
     public function getPaymentType($code){
         //Creditcard
         if($code === "paymill_creditcard"){
