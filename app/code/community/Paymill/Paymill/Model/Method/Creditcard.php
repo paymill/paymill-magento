@@ -42,13 +42,9 @@ class Paymill_Paymill_Model_Method_Creditcard extends Paymill_Paymill_Model_Meth
     }
     
     /**
-     * Gets Excecuted when the checkout button is pressed.
-     * @param type $payment
-     * @param type $amount
-     * @throws Exception
-     * @todo Fill stub
+     * Deals with payment processing when debit mode is active
      */
-    public function authorize($payment, $amount)
+    public function debit()
     {
         try{
             $token = Mage::getSingleton('core/session')->getToken(); 
@@ -59,9 +55,14 @@ class Paymill_Paymill_Model_Method_Creditcard extends Paymill_Paymill_Model_Meth
         } catch (Exception $ex){
             Mage::throwException($ex->getMessage());
         }
-        
-        Mage::throwException("End here for Dev Purpose");
-        //Finish as usual
-        return parent::authorize($payment, $amount);
+    }
+    
+    /**
+     * Deals with payment processing when preAuth mode is active
+     * @todo fill stub
+     */
+    public function preAuth()
+    {
+        Mage::throwException("PreAuth not implemented exception");
     }
 }

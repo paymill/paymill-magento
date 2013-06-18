@@ -72,4 +72,33 @@ abstract class Paymill_Paymill_Model_Method_Abstract extends Mage_Payment_Model_
 
         return $this->_getHelper()->__($this->getConfigData('title', $storeId));
     }
+    
+    /**
+     * Gets Excecuted when the checkout button is pressed.
+     * @param Varien_Object $payment
+     * @param float $amount
+     * @throws Exception
+     */
+    public function authorize(Varien_Object $payment, $amount)
+    {
+        if(true){//Debit Mode
+            $this->debit();
+        } else{ //preAuth Mode
+            $this->preAuth();
+        }
+        
+        Mage::throwException("End here for Dev Purpose");
+        //Finish as usual
+        return parent::authorize($payment, $amount);
+    }
+    
+    /**
+     * Deals with payment processing when debit mode is active
+     */
+    public abstract function debit();
+    
+    /**
+     * Deals with payment processing when preAuth mode is active
+     */
+    public abstract function preAuth();
 }
