@@ -26,7 +26,7 @@ class Paymill_Paymill_Model_Log extends Mage_Core_Model_Abstract
         if($isLogging){
             $this->setId(null)
             ->setEntryDate(null)
-            ->setVersion($dataHelper->getGeneralOption("version"))
+            ->setVersion($dataHelper->getVersion())
             ->setMerchantInfo($merchantInfo)
             ->setDevInfo($devInfo)
             ->setDevInfoAdditional($devInfoAdditional)
