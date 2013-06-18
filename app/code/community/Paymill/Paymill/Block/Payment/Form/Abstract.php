@@ -24,24 +24,4 @@ abstract class Paymill_Paymill_Block_Payment_Form_Abstract extends Mage_Payment_
         $dataHelper->setStoreId();
         return $dataHelper;
     }
-
-    /**
-     * Returns the state of the One Step Checkout option set in teh backend.
-     * @return boolean OneStepCheckoutState
-     * @todo Fill stub
-     */
-    public function getOneStepCheckoutState()
-    {
-        Mage::throwException("Formclass getOneStepCheckoutState() not implemented.");
-    }
-    
-    /**
-     * Returns the Amount for the Javascript to generate the Token from.
-     * @return integer Amount without decimals
-     * @todo Fill stub
-     */
-    public function getAmount()
-    {
-        Mage::throwException("Formclass getAmount() not implemented.");
-    }
 }
