@@ -105,7 +105,14 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
         if(!(isset($this->_storeId))){
              Mage::throwException("No Store Id has been set.");
         }
-        return Mage::getStoreConfig('payment/'.$choice.'/'.$optionName, $this->_storeId);
+        
+        try{
+            $value = Mage::getStoreConfig('payment/'.$choice.'/'.$optionName, $this->_storeId);
+        }catch(Exception $ex){
+            $value = null;
+        }
+        
+        return $value;
     }
     
     /**
