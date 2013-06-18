@@ -115,7 +115,6 @@ class Paymill_Paymill_Helper_Payment extends Mage_Core_Helper_Abstract
      */
     public function createLoggingManager()
     {
-        return null;
-        return new LoggingManager();
+        return Mage::getModel('paymill/log');
     }
 }
