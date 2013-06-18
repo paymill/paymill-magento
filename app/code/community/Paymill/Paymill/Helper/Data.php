@@ -26,7 +26,7 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getVersion()
     {
-        return $this->getGeneralOption("version");
+        return "v3.0.0";
     }
 
 
@@ -119,7 +119,7 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
         try{
             $value = Mage::getStoreConfig('payment/'.$choice.'/'.$optionName, $this->_storeId);
         }catch(Exception $ex){
-            $value = null;
+            $value = "An Error has occoured getting the config element";
         }
         
         return $value;
