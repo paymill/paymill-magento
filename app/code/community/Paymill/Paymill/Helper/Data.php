@@ -21,6 +21,16 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
     
     
     /**
+     * Returns the version of the plugin as a string
+     * @return String Version
+     */
+    public function getVersion()
+    {
+        return $this->getGeneralOption("version");
+    }
+
+
+    /**
      * Returns the Public Key from the Backend as a string
      * @return String
      */
