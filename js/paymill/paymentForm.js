@@ -1,6 +1,5 @@
 //Backend Options
 var PAYMILL_PUBLIC_KEY                      = null;
-var PAYMILL_SHOW_LOGO                       = null;
 
 //State Descriptors
 var PAYMILL_PAYMENT_NAME                    = null;
@@ -78,7 +77,6 @@ function paymillSubmitForm()
     //Gather Data
     PAYMILL_PAYMENT_NAME = pmQuery('.paymill-payment-name').val();
     PAYMILL_PUBLIC_KEY   = pmQuery('.paymill-info-public_key').val();
-    PAYMILL_SHOW_LOGO    = pmQuery('.paymill-option-logo').val();
     PAYMILL_ERROR_STRING = "";
     pmQuery('.paymill-payment-errors').hide();
             
