@@ -12,13 +12,5 @@ and open the template in the editor.
                 </action>
             </block>
         </reference>
-    </checkout_onepage_index>
-
-    <add_paymill_now>
-        <reference name="head">  
-            <action method="addJs">
-                <script>paymill/paymentForm.js</script>
-            </action>
-        </reference>
-    </add_paymill_now>
+    </checkout_onepage_index>   
 </layout>
