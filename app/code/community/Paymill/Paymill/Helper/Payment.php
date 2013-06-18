@@ -33,10 +33,8 @@ class Paymill_Paymill_Helper_Payment extends Mage_Core_Helper_Abstract
      */
     public function getCustomerName()
     {
-        $customerAddressId  = Mage::getSingleton('customer/session')->getCustomer()->getBilling(); 
-        $address            = Mage::getModel('customer/address')->load($customerAddressId);
-        $custFirstName      = $address['firstname'];
-        $custLastName       = $address['lastname'];
+        $custFirstName      = Mage::getSingleton('checkout/session')->getQuote()->getCustomerFirstname();
+        $custLastName       = Mage::getSingleton('checkout/session')->getQuote()->getCustomerLastname();
         $custFullName       = $custFirstName . " " . $custLastName;
         return $custFullName;
     }
@@ -47,9 +45,7 @@ class Paymill_Paymill_Helper_Payment extends Mage_Core_Helper_Abstract
      */
     public function getCustomerEmail()
     {
-        $customerAddressId = Mage::getSingleton('customer/session')->getCustomer()->getBilling(); 
-        $address = Mage::getModel('customer/address')->load($customerAddressId);
-        return $address['email'];
+        return Mage::getSingleton('checkout/session')->getQuote()->getCustomerEmail();
     }
     
     /**
@@ -97,8 +93,8 @@ class Paymill_Paymill_Helper_Payment extends Mage_Core_Helper_Abstract
         $libBase                    = null;
         $params                     = array();
         $params['token']            = $token;
-        $params['authorizedAmount'] = $authorizedAmount;
-        $params['amount']           = $this->getAmount();
+        $params['authorizedAmount'] = (int)$authorizedAmount;
+        $params['amount']           = (int)$this->getAmount();
         $params['currency']         = $this->getCurrency();
         $params['payment']          = $this->getPaymentType($currencyCode); // The chosen payment (cc | elv) 
         $params['name']             = $this->getCustomerName();
