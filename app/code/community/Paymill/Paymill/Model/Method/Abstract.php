@@ -61,7 +61,7 @@ abstract class Paymill_Paymill_Model_Method_Abstract extends Mage_Payment_Model_
     }
 
     /**
-     * Get the title of every RatePAY payment option with payment fee if available
+     * Get the title of every payment option with payment fee if available
      *
      * @return string
      */
@@ -71,6 +71,29 @@ abstract class Paymill_Paymill_Model_Method_Abstract extends Mage_Payment_Model_
         $storeId = $quote ? $quote->getStoreId() : null;
 
         return $this->_getHelper()->__($this->getConfigData('title', $storeId));
+    }
+    
+    /**
+     * Assing data to information model object for fast checkout
+     * Saves Session Variables.
+     * @param mixed $data
+     */
+    public function assignData($data)
+    {
+        //Recieve Data
+        $postData = Mage::app()->getRequest()->getPost();
+        $token = $postData['payment']['paymill-payment-token'];
+        $tokenAmount = $postData['payment']['paymill-payment-amount'];
+        
+        //Save Data into session
+        Mage::getSingleton('core/session')->setToken($token);
+        Mage::getSingleton('core/session')->setTokenAmount($tokenAmount);
+        
+        //Save Data for FC
+        
+        
+        //Finish as usual
+        return parent::assignData($data);
     }
     
     /**
