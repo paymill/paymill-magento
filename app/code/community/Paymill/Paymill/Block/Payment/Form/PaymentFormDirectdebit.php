@@ -1,5 +1,5 @@
 <?php
-class Paymill_Paymill_Block_Payment_Form_Directdebit extends Paymill_Paymill_Block_Payment_Form_Abstract
+class Paymill_Paymill_Block_Payment_Form_PaymentFormDirectdebit extends Paymill_Paymill_Block_Payment_Form_PaymentFormAbstract
 {
     /**
      * Construct

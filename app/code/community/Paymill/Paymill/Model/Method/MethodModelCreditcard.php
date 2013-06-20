@@ -1,5 +1,5 @@
 <?php
-class Paymill_Paymill_Model_Method_Creditcard extends Paymill_Paymill_Model_Method_Abstract
+class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill_Model_Method_MethodModelAbstract
 {
     /**
      * Magento method code
@@ -16,7 +16,7 @@ class Paymill_Paymill_Model_Method_Creditcard extends Paymill_Paymill_Model_Meth
      * 
      * @var string 
      */
-    protected $_formBlockType = 'paymill/payment_form_creditcard';
+    protected $_formBlockType = 'paymill/payment_form_paymentFormCreditcard';
        
     /**
      * Deals with payment processing when preAuth mode is active

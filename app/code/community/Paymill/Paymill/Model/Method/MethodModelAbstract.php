@@ -1,5 +1,5 @@
 <?php
-abstract class Paymill_Paymill_Model_Method_Abstract extends Mage_Payment_Model_Method_Abstract
+abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Payment_Model_Method_Abstract
 {
     
     /**

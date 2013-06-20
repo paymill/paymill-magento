@@ -1,5 +1,5 @@
 <?php
-class Paymill_Paymill_Model_Method_Directdebit extends Paymill_Paymill_Model_Method_Abstract
+class Paymill_Paymill_Model_Method_MethodModelDirectdebit extends Paymill_Paymill_Model_Method_MethodModelAbstract
 {
     protected $_code = "paymill_directdebit";
     
@@ -10,7 +10,7 @@ class Paymill_Paymill_Model_Method_Directdebit extends Paymill_Paymill_Model_Met
      * 
      * @var string 
      */
-    protected $_formBlockType = 'paymill/payment_form_directdebit';
+    protected $_formBlockType = 'paymill/payment_form_paymentFormDirectdebit';
        
     
     /**

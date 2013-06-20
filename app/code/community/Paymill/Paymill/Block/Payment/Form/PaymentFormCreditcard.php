@@ -1,5 +1,5 @@
 <?php
-class Paymill_Paymill_Block_Payment_Form_Creditcard extends Paymill_Paymill_Block_Payment_Form_Abstract
+class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Paymill_Paymill_Block_Payment_Form_PaymentFormAbstract
 {
     /**
      * Construct

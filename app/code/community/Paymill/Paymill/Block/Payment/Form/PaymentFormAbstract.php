@@ -2,7 +2,7 @@
 /**
  * Abstract Form class to specify the basic requirements of any payment objects using the paymill lib
  */
-abstract class Paymill_Paymill_Block_Payment_Form_Abstract extends Mage_Payment_Block_Form
+abstract class Paymill_Paymill_Block_Payment_Form_PaymentFormAbstract extends Mage_Payment_Block_Form
 {
     /**
      * returns the PaymentHelper
