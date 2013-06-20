@@ -21,7 +21,13 @@ function debug(message)
 {   
     debug_state = pmQuery('.paymill-option-debug').val();
     if(debug_state == 1){
-        var displayName = PAYMILL_PAYMENT_NAME === 'paymill_creditcard' ? 'Credit Card' : 'Direct Debit';
+        var displayName = "";
+        if(PAYMILL_PAYMENT_NAME === 'paymill_creditcard'){
+            displayName = 'Credit Card';
+        }
+        if(PAYMILL_PAYMENT_NAME === 'paymill_directdebit'){
+            displayName = 'Direct Debit';
+        }
         console.log("["+ displayName +"] " + message);
     }
 }
@@ -43,6 +49,7 @@ function paymillShowCardIcon()
             break;
         default:
             pmQuery('.card-icon').hide();
+            debug("Creditcard number not according to any known pattern: "+paymill.cardType(pmQuery('.card-number').val()));
             break;
     }
 }
@@ -160,7 +167,10 @@ function paymillSubmitForm()
 
 pmQuery(document).ready(function() 
 {
-    pmQuery('.card-number').change(paymillShowCardIcon);
+    paymillShowCardIcon();
+    pmQuery('.card-cvc').keyup(function(){
+        console.log("Test");
+    });
     pmQuery('#payment-buttons-container button:first').prop("onclick", null);
     pmQuery('#payment-buttons-container button:first').unbind('click');
     pmQuery('#payment-buttons-container button:first').click(paymillSubmitForm);
