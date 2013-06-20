@@ -8,6 +8,5 @@ class Paymill_Paymill_Block_Payment_Form_Creditcard extends Paymill_Paymill_Bloc
     {
         parent::_construct();
         $this->setTemplate('paymill/payment/form/creditcard.phtml');
-        Mage::log("CC Form block");
-    }
+     }
 }
