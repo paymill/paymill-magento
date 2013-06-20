@@ -52,7 +52,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     protected $_code = 'paymill_abstract';
 
     /**
-     * Return Quote or Order Object depending what the Payment is
+     * Return Quote or Order Object depending on the type of the payment info
      *
      * @return Mage_Sales_Model_Order
      */
@@ -96,9 +96,6 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         Mage::getSingleton('core/session')->setToken($token);
         Mage::getSingleton('core/session')->setTokenAmount($tokenAmount);
         
-        //Save Data for FC
-        
-        
         //Finish as usual
         return parent::assignData($data);
     }
@@ -108,6 +105,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      * @param Varien_Object $payment
      * @param float $amount
      * @throws Exception
+     * @todo Define terms in which preAuth is chosen over debit
      */
     public function authorize(Varien_Object $payment, $amount)
     {
@@ -124,14 +122,42 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     
     /**
      * Deals with payment processing when debit mode is active
+     * @todo Add translations
      */
     public function debit()
     {
-         $token = Mage::getSingleton('core/session')->getToken(); 
+        //Gathering data from session
+        $token = Mage::getSingleton('core/session')->getToken(); 
         $tokenAmount = Mage::getSingleton('core/session')->getTokenAmount();
+                
+        //Create Payment Processor
         $paymentHelper = Mage::helper("paymill/payment");
+        $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
         $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token, $tokenAmount);
+        
+        //Loading Fast Checkout Data (if enabled and given)
+        if($fcHelper->isFastCheckoutEnabled()){
+            $clientId = $fcHelper->getClientId();
+            if(isset($clientId)){
+                $paymentId = $fcHelper->getPaymentId($this->_code);
+                if(isset($paymentId)){
+                    $paymentProcessor->setClientId($clientId);
+                    $paymentProcessor->setPaymentId($paymentId);
+                }
+            }  
+        }
+                
+        //Process Payment
         $paymentProcessor->processPayment();
+        
+        //Save Data for Fast Checkout (if enabled)
+        if($fcHelper->isFastCheckoutEnabled()){ //Fast checkout enabled
+            if(!$fcHelper->hasData()){
+                $clientId = $paymentProcessor->getClientId();
+                $paymentId = $paymentProcessor->getPaymentId();
+                $fcHelper->saveData($clientId, $paymentId);
+            }
+        }
         
     }
     
