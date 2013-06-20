@@ -61,9 +61,9 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns the state of the "FastCheckout" Switch from the Backend as a Boolean
      * @return Boolean
      */
-    public function isSavingFastCheckoutData()
+    public function isFastCheckoutEnabled()
     {
-        return $this->getGeneralOption("save_fc_data");
+        return $this->getGeneralOption("fc_active");
     }
     
     /**
@@ -109,6 +109,7 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
      * @param   String $optionName  Name of the desired option as a string
      * @return  mixed               Value of the Backend Option             
      * @throws  Exception           "No Store Id has been set."
+     * @todo Translations for Exceptions
      */
     private function getBackendOption($choice, $optionName)
     {
