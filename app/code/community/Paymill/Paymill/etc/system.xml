@@ -127,7 +127,7 @@
                     </fields>
                 </paymill_creditcard>
                 
-                <paymill_lastschrift module="paymill" translate="label">
+                <paymill_directdebit module="paymill" translate="label">
                     <label>paymill_direct_debit_label</label>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -174,7 +174,7 @@
                             <show_in_store>1</show_in_store>
                         </sort_order>
                     </fields>
-                </paymill_lastschrift>
+                </paymill_directdebit>
             </groups>
         </payment>
     </sections>

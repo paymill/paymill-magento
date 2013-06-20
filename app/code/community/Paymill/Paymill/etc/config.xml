@@ -74,13 +74,13 @@
                 <payment_action>authorize</payment_action>
             </paymill_creditcard>
             
-            <paymill_lastschrift>
+            <paymill_directdebit>
                 <active>0</active>
                 <model>paymill/method_directdebit</model>
                 <order_status>pending_payment</order_status>
                 <title>paymill_direct_debit</title>
                 <payment_action>authorize</payment_action>
-            </paymill_lastschrift>
+            </paymill_directdebit>
          </payment>
     </default>
     
