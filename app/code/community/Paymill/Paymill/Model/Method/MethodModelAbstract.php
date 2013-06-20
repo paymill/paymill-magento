@@ -8,6 +8,13 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      * @var boolean
      */
     protected $_isGateway = false;
+    
+    /**
+     * Can use the Authorize method
+     * 
+     * @var boolean 
+     */
+    protected $_canAuthorize = true;
 
     /**
      * Can this method use for checkout

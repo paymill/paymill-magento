@@ -55,9 +55,9 @@ class Paymill_Paymill_Helper_Payment extends Mage_Core_Helper_Abstract
      */
     public function getDescription()
     {
-        $storename = Mage::app()->getStore()->getName();
+        $orderId = Mage::getSingleton('checkout/session')->getQuote()->getReservedOrderId();
         $customerEmail = $this->getCustomerEmail();
-        $description = $storename. " " . $customerEmail;
+        $description = $orderId. ", " . $customerEmail;
         return $description;
     }
     
