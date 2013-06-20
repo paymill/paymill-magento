@@ -26,6 +26,9 @@
                     <log>
                         <table>paymill_log</table>
                     </log>
+                    <fastcheckout>
+                        <table>paymill_fastCheckout</table>
+                    </fastcheckout>
                 </entities>
             </paymill_mysql4>
         </models>
