@@ -94,6 +94,8 @@ function paymillSubmitForm()
     }
     
     if(PAYMILL_PAYMENT_NAME === "paymill_directdebit"){
+        PAYMILL_ERROR_TEXT_IVALID_NUMBER_ELV = pmQuery('.paymill-payment-error-number').val();
+        PAYMILL_ERROR_TEXT_IVALID_HOLDER_ELV = pmQuery('.paymill-payment-error-holder').val();
         PAYMILL_ERROR_TEXT_IVALID_BANKCODE = pmQuery('.paymill-payment-error-bankcode').val();
     }
     
