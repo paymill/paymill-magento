@@ -4,7 +4,7 @@
 "paymill_Public_Key","Public Key"
 "paymill_Private_Key","Private Key"
 "paymill_Activate_Debugging","Debugging aktivieren"
-"paymill_Save_fc_data","Speichern von One Step Checkout Daten erlauben"
+"paymill_fc_active","One Step Checkout erlauben"
 "paymill_Activate_Logging","Logging aktivieren"
 "paymill_Show_Label","Paymill Label im Checkout anzeigen"
 "paymill_credit_card_label","Kreditkarte"
