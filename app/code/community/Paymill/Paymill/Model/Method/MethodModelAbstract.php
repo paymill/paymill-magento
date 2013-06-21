@@ -152,7 +152,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         
         //Save Data for Fast Checkout (if enabled)
         if($fcHelper->isFastCheckoutEnabled()){ //Fast checkout enabled
-            if(!$fcHelper->hasData()){
+            if(!$fcHelper->hasData($this->_code)){
                 $clientId = $paymentProcessor->getClientId();
                 $paymentId = $paymentProcessor->getPaymentId();
                 $fcHelper->saveData($clientId, $paymentId);
