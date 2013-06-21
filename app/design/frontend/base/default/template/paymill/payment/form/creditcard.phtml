@@ -1,5 +1,5 @@
 <?php $_code=$this->getMethodCode() ?>
-<script type="text/javascript" src="<?php echo $this->getDataHelper()->getJscriptPath()."paymentForm.js"?>"></script>
+<script type="text/javascript" src="<?php echo Mage::helper('paymill')->getJscriptPath()."paymentForm.js"?>"></script>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
     <li>
         <p class="paymill-payment-errors alert-error" style="display:none;"></p>
@@ -43,14 +43,14 @@
             <input class="card-expiry-year" type="text" size="4" value="2015"/>
         </div>
     </li>
-    <?php if($this->getDataHelper()->isShowingLabels()){ echo "<li><div class='paymill_powered'><div class='paymill_credits'>Sichere Kreditkartenzahlung powered by <a href='http://www.paymill.de' target='_blank'>Paymill</a></div></div></li>";} ?>
+    <?php if(Mage::helper('paymill/optionHelper')->isShowingLabels()){ echo "<li><div class='paymill_powered'><div class='paymill_credits'>Sichere Kreditkartenzahlung powered by <a href='http://www.paymill.de' target='_blank'>Paymill</a></div></div></li>";} ?>
     <li>
         <input class="paymill-payment-token"         name="payment[paymill-payment-token]"         id="payment[paymill-payment-token]"         type="hidden" value=""                                                                     />
-        <input class="paymill-payment-amount"        name="payment[paymill-payment-amount]"        id="payment[paymill-payment-amount]"        type="hidden" value="<?php echo $this->getPaymentHelper()->getAmount() ?>"                 />
-        <input class="paymill-payment-currency"      name="payment[paymill-payment-currency]"      id="payment[paymill-payment-currency]"      type="hidden" value="<?php echo $this->getPaymentHelper()->getCurrency() ?>"               />
-        <input class="paymill-option-debug"          name="payment[paymill-option-debug]"          id="payment[paymill-option-debug]"          type="hidden" value="<?php echo $this->getDataHelper()->isInDebugMode() ?>"                />
-        <input class="paymill-info-image-path"       name="payment[paymill-info-image-path]"       id="payment[paymill-info-image-path]"       type="hidden" value="<?php echo $this->getDataHelper()->getImagePath() ?>"                 />
-        <input class="paymill-info-public_key"       name="payment[paymill-info-public_key]"       id="payment[paymill-info-public_key]"       type="hidden" value="<?php echo $this->getDataHelper()->getPublicKey() ?>"                 />
+        <input class="paymill-payment-amount"        name="payment[paymill-payment-amount]"        id="payment[paymill-payment-amount]"        type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getAmount() ?>"                 />
+        <input class="paymill-payment-currency"      name="payment[paymill-payment-currency]"      id="payment[paymill-payment-currency]"      type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getCurrency() ?>"               />
+        <input class="paymill-option-debug"          name="payment[paymill-option-debug]"          id="payment[paymill-option-debug]"          type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode() ?>"                />
+        <input class="paymill-info-image-path"       name="payment[paymill-info-image-path]"       id="payment[paymill-info-image-path]"       type="hidden" value="<?php echo Mage::helper('paymill')->getImagePath() ?>"                 />
+        <input class="paymill-info-public_key"       name="payment[paymill-info-public_key]"       id="payment[paymill-info-public_key]"       type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey() ?>"                 />
         <input class="paymill-payment-error-number"  name="payment[paymill-payment-error-number]"  id="payment[paymill-payment-error-number]"  type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_cc") ."<br/>\n" ?>"/>
         <input class="paymill-payment-error-holder"  name="payment[paymill-payment-error-holder]"  id="payment[paymill-payment-error-holder]"  type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_cc") ."<br/>\n" ?>"/>
         <input class="paymill-payment-error-expdate" name="payment[paymill-payment-error-expdate]" id="payment[paymill-payment-error-expdate]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_expdate")   ."<br/>\n" ?>"/>

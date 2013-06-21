@@ -19,14 +19,10 @@ class Paymill_Paymill_Model_Log extends Mage_Core_Model_Abstract
      */
     public function log($merchantInfo, $devInfo, $devInfoAdditional = null)
     {
-        $dataHelper = Mage::helper("paymill");
-        $dataHelper->setStoreId();
-        $isLogging = $dataHelper->isLogging();
-        
-        if($isLogging){
+        if(Mage::helper("paymill/optionHelper")->isLogging()){
             $this->setId(null)
             ->setEntryDate(null)
-            ->setVersion($dataHelper->getVersion())
+            ->setVersion(Mage::helper("paymill")->getVersion())
             ->setMerchantInfo($merchantInfo)
             ->setDevInfo($devInfo)
             ->setDevInfoAdditional($devInfoAdditional)

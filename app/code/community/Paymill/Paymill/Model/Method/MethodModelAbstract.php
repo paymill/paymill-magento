@@ -131,7 +131,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         $tokenAmount = Mage::getSingleton('core/session')->getTokenAmount();
                 
         //Create Payment Processor
-        $paymentHelper = Mage::helper("paymill/payment");
+        $paymentHelper = Mage::helper("paymill/paymentHelper");
         $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
         $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token, $tokenAmount);
         

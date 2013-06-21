@@ -87,7 +87,7 @@ class Paymill_Paymill_Model_Fastcheckout extends Mage_Core_Model_Abstract
      */
     private function getCurrentUserId()
     {
-        return Mage::helper("paymill/fastCheckout")->getUserId();
+        return Mage::helper("paymill/customerHelper")->getUserId();
     }
     
     /**
