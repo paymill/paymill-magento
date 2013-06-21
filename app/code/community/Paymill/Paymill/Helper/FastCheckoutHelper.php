@@ -6,25 +6,11 @@
 class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstract
 {
     /**
-     * Returns the Id of the user currently  logged in.
-     * Returns null if there is no logged in user.
-     * @return String userId
-     */
-    public function getUserId()
-    {
-        $result = null;
-        if(Mage::getSingleton('customer/session')->isLoggedIn()){
-            $result = Mage::getSingleton('customer/session')->getId();
-        }
-        return $result;
-    }
-    
-    /**
      * Calls the Data helper to get the state of the Fast Checkout option
      */
     public function isFastCheckoutEnabled()
     {
-        return Mage::helper("paymill")->isFastCheckoutEnabled();
+        return Mage::helper("paymill/optionHelper")->isFastCheckoutEnabled();
     }
     
     

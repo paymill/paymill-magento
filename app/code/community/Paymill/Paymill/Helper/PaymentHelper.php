@@ -3,7 +3,7 @@
  * The Payment Helper contains methods dealing with payment relevant information.
  * Examples for this might be f.Ex customer data, formating of basket amounts or similar.
  */
-class Paymill_Paymill_Helper_Payment extends Mage_Core_Helper_Abstract
+class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
 {
     /**
      * Returns the order amount in the smallest possible unit (f.Ex. cent for the EUR currency)
@@ -28,35 +28,14 @@ class Paymill_Paymill_Helper_Payment extends Mage_Core_Helper_Abstract
     }
     
     /**
-     * Returns the current customers full name
-     * @return string the customers full name
-     */
-    public function getCustomerName()
-    {
-        $custFirstName      = Mage::getSingleton('checkout/session')->getQuote()->getCustomerFirstname();
-        $custLastName       = Mage::getSingleton('checkout/session')->getQuote()->getCustomerLastname();
-        $custFullName       = $custFirstName . " " . $custLastName;
-        return $custFullName;
-    }
-    
-    /**
-     * Returns the current customers email adress.
-     * @return string the customers email adress
-     */
-    public function getCustomerEmail()
-    {
-        return Mage::getSingleton('checkout/session')->getQuote()->getCustomerEmail();
-    }
-    
-    /**
      * Returns the description you want to display in the Paymill Backend.
-     * The current format is [Shopname] [Email adress of the customer]
+     * The current format is [OrderId] [Email adress of the customer]
      * @return string
      */
     public function getDescription()
     {
         $orderId = Mage::getSingleton('checkout/session')->getQuote()->getReservedOrderId();
-        $customerEmail = $this->getCustomerEmail();
+        $customerEmail = Mage::helper("paymill/customerHelper")->getCustomerEmail();
         $description = $orderId. ", " . $customerEmail;
         return $description;
     }
@@ -90,30 +69,20 @@ class Paymill_Paymill_Helper_Payment extends Mage_Core_Helper_Abstract
     public function createPaymentProcessor($paymentCode, $token, $authorizedAmount)
     {
         require_once Mage::getBaseDir('lib') . '/Paymill/v2/lib/Services/paymentProcessor.php';
-        Mage::helper('paymill')->setStoreId();
-        $privateKey                 = Mage::helper('paymill')->getPrivateKey();
+        $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
         $apiUrl                     = Mage::helper('paymill')->getApiUrl();
         $libBase                    = null;
+        
         $params                     = array();
         $params['token']            = $token;
         $params['authorizedAmount'] = (int)$authorizedAmount;
         $params['amount']           = (int)$this->getAmount();
         $params['currency']         = $this->getCurrency();
         $params['payment']          = $this->getPaymentType($paymentCode); // The chosen payment (cc | elv) 
-        $params['name']             = $this->getCustomerName();
-        $params['email']            = $this->getCustomerEmail();
+        $params['name']             = Mage::helper("paymill/customerHelper")->getCustomerName();
+        $params['email']            = Mage::helper("paymill/customerHelper")->getCustomerEmail();
         $params['description']      = $this->getDescription();
         
-        $loggingClassInstance = $this->createLoggingManager();
-        return new PaymentProcessor($privateKey, $apiUrl, $libBase, $params, $loggingClassInstance);
-    }
-    
-    /**
-     * Returns an instance of the LoggingManager class.
-     * @todo fill stub
-     */
-    public function createLoggingManager()
-    {
-        return Mage::getModel('paymill/log');
+        return new PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
     }
 }
