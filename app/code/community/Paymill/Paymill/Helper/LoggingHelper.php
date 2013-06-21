@@ -15,4 +15,13 @@ class Paymill_Paymill_Helper_LoggingHelper extends Mage_Core_Helper_Abstract
     {
         Mage::getModel('paymill/log')->log($merchantInfo, $devInfo, $devInfoAdditional);
     }
+    
+    /**
+     * Returns a collection of all log-entries
+     * @return Collection Description
+     */
+    public function getEntries(){
+        $collection = Mage::getModel('paymill/log')->getCollection();
+        return $collection;
+    }
 }
