@@ -115,14 +115,12 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
             $this->preAuth();
         }
         
-        Mage::throwException("End here for Dev Purpose");
         //Finish as usual
         return parent::authorize($payment, $amount);
     }
     
     /**
      * Deals with payment processing when debit mode is active
-     * @todo Add translations
      */
     public function debit()
     {
