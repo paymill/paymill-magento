@@ -1,5 +1,7 @@
 "paymill_credit_card","Kreditkarte"
 "paymill_direct_debit","Lastschrift"
+"paymill_creditcard","Kreditkarte"
+"paymill_directdebit","Lastschrift"
 "paymill_Basic_Setting","Paymill Grundeinstellungen"
 "paymill_Public_Key","Public Key"
 "paymill_Private_Key","Private Key"
@@ -41,5 +43,5 @@
 "paymill_backend_log_merchant_info","Händler Informationen"
 "paymill_backend_log_dev_info","Entwickler Informationen"
 "paymill_backend_log_dev_info_additional","Weitere Entwickler Informationen"
-"
+"paymill_checkout_generating_invoice","Rechnung wird generiert"
 

@@ -17,6 +17,13 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     protected $_canAuthorize = true;
 
     /**
+     * Can use the Capture method
+     * 
+     * @var boolean 
+     */
+    protected $_canCapture = true;
+
+    /**
      * Can this method use for checkout
      *
      * @var boolean
@@ -95,6 +102,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         //Save Data into session
         Mage::getSingleton('core/session')->setToken($token);
         Mage::getSingleton('core/session')->setTokenAmount($tokenAmount);
+        Mage::getSingleton('core/session')->setPaymentCode($this->getCode());
         
         //Finish as usual
         return parent::assignData($data);
@@ -157,10 +165,17 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
             }
         }
         
+        //Create the Invoice
+        $order = $this->getOrder();
+        $invoiceId = Mage::getModel('sales/order_invoice_api')->create($order->getIncrementId(), array());
+        $invoice = Mage::getModel('sales/order_invoice')->loadByIncrementId($invoiceId);
+        $invoice->capture()->save(); 
+        
     }
     
     /**
      * Deals with payment processing when preAuth mode is active
      */
     public abstract function preAuth();
+    
 }

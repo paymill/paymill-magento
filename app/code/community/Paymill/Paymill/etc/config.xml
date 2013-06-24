@@ -15,7 +15,6 @@
         </blocks>
 
         <models>
-<!-- model group alias to be used in Mage::getModel('paymill/...') -->
             <paymill>
                 <class>Paymill_Paymill_Model</class>
                 <resourceModel>paymill_mysql4</resourceModel>
@@ -38,8 +37,7 @@
                 <class>Paymill_Paymill_Helper</class>
             </paymill>
         </helpers>
- 
-<!-- declare resource setup for new module -->
+
         <resources>
             <paymill_setup>
                 <setup>
@@ -104,6 +102,17 @@
                 </Paymill_Paymill>
             </modules>
         </translate>
+        <events>
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <paymill_paymill_model_observer>
+                        <type>model</type>
+                        <class>Paymill_Paymill_Model_Observer</class>
+                        <method>generateInvoice</method>
+                    </paymill_paymill_model_observer>
+                </observers>
+            </checkout_onepage_controller_success_action>
+        </events>
     </frontend>
     
     <adminhtml>
