@@ -116,25 +116,5 @@
                 </Paymill_Paymill>
             </modules>
         </translate>
-        <layout>
-            <updates>
-                <paymill>
-                    <file>paymill.xml</file>
-                </paymill>
-            </updates>
-        </layout>
     </adminhtml>
-    
-    <admin>
-        <routers>
-            <paymill>
-                <use>admin</use>
-                <args>
-                    <module>Paymill_Paymill</module>
-                    <frontName>paymill</frontName>
-                </args>
-            </paymill>
-        </routers>
-    </admin>
-    
 </config>
