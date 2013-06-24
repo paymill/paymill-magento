@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <logs>
+            <title>Paymill</title>
+            <sort_order>60</sort_order>
+            <children>
+                <paymill_log translate="title" module="paymill">
+                    <title>paymill_log</title>
+                    <sort_order>10</sort_order>
+                    <action>paymill/adminhtml_log</action>
+                </paymill_log>
+            </children>
+        </logs>
+    </menu>
+</config>
