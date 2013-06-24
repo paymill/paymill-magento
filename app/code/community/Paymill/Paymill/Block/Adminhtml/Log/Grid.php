@@ -20,8 +20,6 @@ class Paymill_Paymill_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Widg
      */
     public function __construct()
     {
-
-        Mage::helper("paymill/loggingHelper")->log("Logging Grid","Creating Instance");
         parent::__construct();
         $this->setId('log_grid');
         $this->setDefaultSort('id');
@@ -62,7 +60,6 @@ class Paymill_Paymill_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Widg
      */
     protected function _prepareCollection()
     {
-        Mage::helper("paymill/loggingHelper")->log("Logging Grid","Preparing Collection");
         $collection = Mage::getModel('paymill/log')->getCollection();
         $this->setCollection($collection);
         return parent::_prepareCollection();
@@ -75,7 +72,6 @@ class Paymill_Paymill_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Widg
      */
     protected function _prepareColumns()
     {
-        Mage::helper("paymill/loggingHelper")->log("Logging Grid","Preparing Columns");
         $this->addColumn('entry_date', array(
             'header' => Mage::helper('paymill')->__('paymill_backend_log_entry_date'),
             'index' => 'entry_date',

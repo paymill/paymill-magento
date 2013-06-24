@@ -9,16 +9,17 @@ class Paymill_Paymill_Adminhtml_LogController extends Mage_Adminhtml_Controller_
      */
     protected function _initAction()
     {
-        Mage::helper("paymill/loggingHelper")->log("Logging Controller","Initializing Log");
-        $this->loadLayout()->_setActiveMenu('log/paymill');
+        $this->loadLayout()->_setActiveMenu('log/paymill_log');
         return $this;
     }
     
     /**
-     * Render the logs layout
+     * Action initially called
      */
     public function indexAction()
-    {
-        $this->_initAction()->renderLayout();
-    }
+    {  
+        // Let's call our initAction method which will set some basic params for each action
+        $this->_initAction()
+            ->renderLayout();
+    }   
 }
