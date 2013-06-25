@@ -29,6 +29,11 @@ class Paymill_Paymill_Model_Transaction extends Mage_Core_Model_Abstract
                 'isPreAuthenticated' => $isPreAuthenticated,
             );
         
+        //Invoke exception in the handling below if the orderId is an empty string
+        if($orderId === ""){
+            $orderId = null;
+        }
+        
         try{
             $this->setId(null)
                 ->setUserId($userId)
