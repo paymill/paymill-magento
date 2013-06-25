@@ -11,7 +11,7 @@ class Paymill_Paymill_Helper_RefundHelper extends Mage_Core_Helper_Abstract
      */
     private function getTransactionId($orderId)
     {
-        throw new Exception("Method not implemented.");
+        return Mage::getModel("paymill/transaction")->getTransactionId($orderId);
     }
     
     /**
