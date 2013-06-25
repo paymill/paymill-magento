@@ -21,6 +21,14 @@ class Paymill_Paymill_Model_Transaction extends Mage_Core_Model_Abstract
      */
     public function saveValueSet($userId, $orderId, $transactionId, $isPreAuthenticated = 0)
     {
+        //Formatting Arguments in an array for debug-log display reasons
+        $arguments = array(
+                'userId' => $userId,
+                'orderId' => $orderId,
+                'transactionId' => $transactionId,
+                'isPreAuthenticated' => $isPreAuthenticated,
+            );
+        
         try{
             $this->setId(null)
                 ->setUserId($userId)
@@ -28,16 +36,10 @@ class Paymill_Paymill_Model_Transaction extends Mage_Core_Model_Abstract
                         ->setTransactionId($transactionId)
                             ->setIsPreAuthenticated($isPreAuthenticated)
                                 ->save();
+            Mage::helper('paymill/loggingHelper')->log("Transaction Data saved.", print_r($arguments, true));
             return true;
             
         } catch (Exception $ex){
-            $arguments = array(
-                'userId' => $userId,
-                'orderId' => $orderId,
-                'transactionId' => $transactionId,
-                'isPreAuthenticated' => $isPreAuthenticated,
-            );
-            
             Mage::helper('paymill/loggingHelper')->log("Transaction Data not saved.", $ex->getMessage(), print_r($arguments, true));
             return false;
         }  
