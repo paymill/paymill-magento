@@ -8,9 +8,6 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
      */
     protected $_code          = "paymill_creditcard";
     
-    
-    protected $_canSaveCc     = false;
-    
     /**
      * Form block identifier
      * 

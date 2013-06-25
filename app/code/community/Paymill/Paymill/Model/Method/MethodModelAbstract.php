@@ -163,19 +163,20 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
                 $paymentId = $paymentProcessor->getPaymentId();
                 $fcHelper->saveData($clientId, $paymentId);
             }
-        }
-        
-        //Create the Invoice
-        $order = $this->getOrder();
-        $invoiceId = Mage::getModel('sales/order_invoice_api')->create($order->getIncrementId(), array());
-        $invoice = Mage::getModel('sales/order_invoice')->loadByIncrementId($invoiceId);
-        $invoice->capture()->save(); 
-        
+        }        
     }
     
     /**
      * Deals with payment processing when preAuth mode is active
      */
     public abstract function preAuth();
+    
+    /**
+     * Gets called when a creditmemo gets generated
+     */
+    public function refund(Varien_Object $payment, $amount)
+    {
+        Mage::throwException("Refund not implemented exception");
+    }
     
 }

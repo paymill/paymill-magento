@@ -3,8 +3,6 @@ class Paymill_Paymill_Model_Method_MethodModelDirectdebit extends Paymill_Paymil
 {
     protected $_code = "paymill_directdebit";
     
-    protected $_canSaveCc     = false;
-    
     /**
      * Form block identifier
      * 
