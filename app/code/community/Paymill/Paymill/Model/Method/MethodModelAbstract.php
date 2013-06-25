@@ -145,9 +145,9 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         if($fcHelper->isFastCheckoutEnabled()){
             $clientId = $fcHelper->getClientId();
             if(isset($clientId)){
+                $paymentProcessor->setClientId($clientId);
                 $paymentId = $fcHelper->getPaymentId($this->_code);
                 if(isset($paymentId)){
-                    $paymentProcessor->setClientId($clientId);
                     $paymentProcessor->setPaymentId($paymentId);
                 }
             }  
@@ -158,7 +158,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         
         //Save Transaction Data
         $userId = Mage::helper("paymill/customerHelper")->getUserId();
-        $orderId = $this->getOrderId();
+        $orderId = $paymentHelper->getOrderId();
         $transactionId = $paymentProcessor->getTransactionId();
         Mage::getModel("paymill/transaction")->saveValueSet($userId, $orderId, $transactionId);
         

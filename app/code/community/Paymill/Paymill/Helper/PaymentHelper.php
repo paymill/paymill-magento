@@ -34,7 +34,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function getDescription()
     {
-        $orderId = Mage::getSingleton('checkout/session')->getQuote()->getReservedOrderId();
+        $orderId = $this->getOrderId();
         $customerEmail = Mage::helper("paymill/customerHelper")->getCustomerEmail();
         $description = $orderId. ", " . $customerEmail;
         return $description;
@@ -56,6 +56,13 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         }
         
         return $type;
+    }
+    
+    /**
+     * Returns the reserved order id
+     */
+    public function getOrderId(){
+        return Mage::getSingleton('checkout/session')->getQuote()->getReservedOrderId();
     }
     
     
