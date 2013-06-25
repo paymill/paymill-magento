@@ -118,9 +118,9 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     public function authorize(Varien_Object $payment, $amount)
     {
         if(true){//Debit Mode
-            $this->debit();
+            $this->debit($payment, $amount);
         } else{ //preAuth Mode
-            $this->preAuth();
+            $this->preAuth($payment, $amount);
         }
         
         //Finish as usual
@@ -130,7 +130,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     /**
      * Deals with payment processing when debit mode is active
      */
-    public function debit()
+    public function debit(Varien_Object $payment, $amount)
     {
         //Gathering data from session
         $token = Mage::getSingleton('core/session')->getToken(); 
@@ -169,7 +169,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     /**
      * Deals with payment processing when preAuth mode is active
      */
-    public abstract function preAuth();
+    public abstract function preAuth(Varien_Object $payment, $amount);
     
     /**
      * Gets called when a creditmemo gets generated
