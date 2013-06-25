@@ -28,7 +28,7 @@ $installer->run("
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `user_id` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
         `order_id` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-        `transaction_id` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+        `transaction_id` varchar(250) COLLATE utf8_unicode_ci NULL,
         `is_pre_authenticated` tinyint(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 0,
         PRIMARY KEY (`id`),
         UNIQUE KEY `order_id` (`order_id`)

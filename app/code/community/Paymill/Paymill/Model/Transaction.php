@@ -30,17 +30,34 @@ class Paymill_Paymill_Model_Transaction extends Mage_Core_Model_Abstract
             );
         
         //Invoke exception in the handling below if the orderId is an empty string
+        $id = null;
         if($orderId === ""){
             $orderId = null;
         }
         
         try{
-            $this->setId(null)
+            $collection = Mage::getModel('paymill/transaction')->getCollection();
+            $collection->addFilter('order_id', $orderId);
+            $obj = $collection->getFirstItem();
+            $objId = $obj->getId();
+            
+        } catch (Exception $ex){
+            Mage::helper('paymill/loggingHelper')->log("Exception ".$ex->getMessage()." caught during getting the orders transaction table index", $orderId);
+            $objId = "";
+        }
+        
+        if($objId != ""){
+            $id = $objId;
+        }
+        
+        try{
+            $this->setId($id)
                 ->setUserId($userId)
                     ->setOrderId($orderId)
                         ->setTransactionId($transactionId)
                             ->setIsPreAuthenticated($isPreAuthenticated)
                                 ->save();
+            
             Mage::helper('paymill/loggingHelper')->log("Transaction Data saved.", print_r($arguments, true));
             return true;
             
@@ -61,19 +78,5 @@ class Paymill_Paymill_Model_Transaction extends Mage_Core_Model_Abstract
         $collection->addFilter('order_id', $orderId);
         $obj = $collection->getFirstItem();
         return $obj->getTransactionId();
-    }
-    
-    /**
-     * Returns the state of the isPreAuthenticated Flag for the chosen order
-     * @param String $orderId Id of the chosen order
-     * @return boolean Flag state
-     */
-    public function getPreAuthenticatedFlagState($orderId)
-    {
-        $collection = Mage::getModel('paymill/transaction')->getCollection();
-        $collection->addFilter('order_id', $orderId);
-        $obj = $collection->getFirstItem();
-        $flag = $obj->getIsPreAuthenticated();
-        return $flag === 0 ? false : true;
     }
 }

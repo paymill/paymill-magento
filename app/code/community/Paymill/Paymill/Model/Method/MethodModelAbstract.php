@@ -17,6 +17,13 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     protected $_canAuthorize = true;
 
     /**
+     * Can use the Refund method
+     * 
+     * @var boolean 
+     */
+    protected $_canRefund = true;
+
+    /**
      * Can use the Capture method
      * 
      * @var boolean 
@@ -118,9 +125,9 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     public function authorize(Varien_Object $payment, $amount)
     {
         if(true){//Debit Mode
-            $this->debit($payment, $amount);
-        } else{ //preAuth Mode
-            $this->preAuth($payment, $amount);
+            $this->debit();
+        } else{ //preAuth Mode (Option set and cc payment)
+            $this->preAuth();
         }
         
         //Finish as usual
@@ -130,7 +137,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     /**
      * Deals with payment processing when debit mode is active
      */
-    public function debit(Varien_Object $payment, $amount)
+    public function debit()
     {
         //Gathering data from session
         $token = Mage::getSingleton('core/session')->getToken(); 
@@ -173,19 +180,10 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     }
     
     /**
-     * Deals with payment processing when preAuth mode is active
-     */
-    public function preAuth(Varien_Object $payment, $amount)
-    {
-        Mage::throwException("preAuth not implemented exception");
-    }
-    
-    /**
      * Gets called when a creditmemo gets generated
      */
     public function refund(Varien_Object $payment, $amount)
     {
         Mage::throwException("Refund not implemented exception");
-    }
-    
+    }    
 }
