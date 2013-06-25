@@ -12,17 +12,7 @@ class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstrac
     {
         return Mage::helper("paymill/optionHelper")->isFastCheckoutEnabled();
     }
-    
-    /**
-     * Returns the clientId matched with the current user
-     * @return String clientId
-     */
-    public function getClientId()
-    {
-        $userId = Mage::helper("paymill/customer")->getUserId();
-        return Mage::getModel("paymill/fastcheckout")->getClientId($userId);
-    }
-    
+      
     /**
      * Returns the PaymentId associated with the current user
      * @param String $code PaymentMethodCode
@@ -30,7 +20,7 @@ class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstrac
      */
     public function getPaymentId($code)
     {
-        $userId = Mage::helper("paymill/customer")->getUserId();
+        $userId = Mage::helper("paymill/customerHelper")->getUserId();
         return Mage::getModel("paymill/fastcheckout")->getPaymentId($userId, $code);
     }
     
@@ -40,7 +30,7 @@ class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstrac
      * @return boolean
      */
     public function hasData($code){
-        $userId = Mage::helper("paymill/customer")->getUserId();
+        $userId = Mage::helper("paymill/customerHelper")->getUserId();
         if(Mage::getModel("paymill/fastcheckout")->hasFcData($userId, $code)){
             return true;
         }
@@ -55,8 +45,8 @@ class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstrac
      */
     public function saveData($code, $clientId, $paymentId)
     {
-        $userId = Mage::helper("paymill/customer")->getUserId();
+        $userId = Mage::helper("paymill/customerHelper")->getUserId();
         Mage::getModel("paymill/fastcheckout")->saveFcData($code, $userId, $clientId, $paymentId);
-    }
+    }    
     
 }
