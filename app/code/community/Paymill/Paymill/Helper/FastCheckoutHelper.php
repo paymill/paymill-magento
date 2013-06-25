@@ -47,4 +47,16 @@ class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstrac
         return false;
     }
     
+    /**
+     * Saves the dataset into the database
+     * @param String $code paymentCode
+     * @param String $clientId Description
+     * @param String $name Description
+     */
+    public function saveData($code, $clientId, $paymentId)
+    {
+        $userId = Mage::helper("paymill/customer")->getUserId();
+        Mage::getModel("paymill/fastcheckout")->saveFcData($code, $userId, $clientId, $paymentId);
+    }
+    
 }

@@ -57,8 +57,8 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         
         return $type;
     }
-
-
+    
+    
     /**
      * Returns an instance of the paymentProcessor class.
      * @param String $paymentCode name of the payment
