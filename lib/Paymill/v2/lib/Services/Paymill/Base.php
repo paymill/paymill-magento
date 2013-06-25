@@ -133,4 +133,13 @@ abstract class Services_Paymill_Base
 
         return $response['data'];
     }
+    
+    /**
+     * Returns the response of the last request as an array
+     * @return mixed Response
+     * @todo Add Unit test
+     */
+    public function getResponse(){
+        return $this->_httpClient->getResponse();
+    }
 }
