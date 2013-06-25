@@ -23,7 +23,7 @@ class Paymill_Paymill_Model_Observer{
                 $order = Mage::getModel('sales/order')->load($orderId);
                 if($order->canInvoice()) {
                     //Create the Invoice
-                    Mage::helper('paymill/loggingHelper')->log(Mage::helper('paymill')->__($paymentCode), Mage::helper('paymill')->__('paymill_checkout_generating_invoice'), $orderId); 
+                    Mage::helper('paymill/loggingHelper')->log(Mage::helper('paymill')->__($paymentCode), Mage::helper('paymill')->__('paymill_checkout_generating_invoice'), "Order Id: ".$orderId); 
                     $invoiceId = Mage::getModel('sales/order_invoice_api')->create($order->getIncrementId(), array());
                     Mage::getModel('sales/order_invoice_api')->capture($invoiceId);
                 }
