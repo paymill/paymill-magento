@@ -157,7 +157,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         $paymentProcessor->processPayment();
         
         //Save Transaction Data
-        $userId = Mage::helper("paymill/customer")->getUserId();
+        $userId = Mage::helper("paymill/customerHelper")->getUserId();
         $orderId = $this->getOrderId();
         $transactionId = $paymentProcessor->getTransactionId();
         Mage::getModel("paymill/transaction")->saveValueSet($userId, $orderId, $transactionId);
@@ -175,7 +175,10 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     /**
      * Deals with payment processing when preAuth mode is active
      */
-    public abstract function preAuth(Varien_Object $payment, $amount);
+    public function preAuth(Varien_Object $payment, $amount)
+    {
+        Mage::throwException("preAuth not implemented exception");
+    }
     
     /**
      * Gets called when a creditmemo gets generated
