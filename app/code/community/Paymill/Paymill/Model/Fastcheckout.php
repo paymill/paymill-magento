@@ -13,27 +13,11 @@ class Paymill_Paymill_Model_Fastcheckout extends Mage_Core_Model_Abstract
     
     
     /**
-     * Returns the clientId matched with the userId passed as an argument.
-     * If no match is found, the return value will be null.
-     * @param String $userId Unique identifier of the customer
-     * @return String clientId matched with the userId <b>can be null if no match is found</b>
-     * @todo fill stub
-     */
-    public function getClientId($userId)
-    {
-        $collection = Mage::getModel('paymill/fastcheckout')->getCollection();
-        $collection->addFilter('user_id', $userId);
-        $obj = $collection->getFirstItem();
-        $obj->getClientId();
-    }
-    
-    /**
      * Returns the paymentId matched with the userId passed as an argument.
      * If no match is found, the return value will be null.
      * @param String $userId Unique identifier of the customer
      * @param String $code PaymentMethodCode
      * @return String paymentId matched with the userId <b>can be null if no match is found</b>
-     * @todo fill stub
      */
     public function getPaymentId($userId, $code)
     {

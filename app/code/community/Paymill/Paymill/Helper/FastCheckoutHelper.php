@@ -12,7 +12,22 @@ class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstrac
     {
         return Mage::helper("paymill/optionHelper")->isFastCheckoutEnabled();
     }
-      
+    
+    /**
+     * Returns the clientId matched with the userId passed as an argument.
+     * If no match is found, the return value will be null.
+     * @param String $userId Unique identifier of the customer
+     * @return String clientId matched with the userId <b>can be null if no match is found</b>
+     */
+    public function getClientId()
+    {
+        $userId = Mage::helper("paymill/customerHelper")->getUserId();
+        $collection = Mage::getModel('paymill/fastcheckout')->getCollection();
+        $collection->addFilter('user_id', $userId);
+        $obj = $collection->getFirstItem();
+        return $obj->getClientId();
+    }
+    
     /**
      * Returns the PaymentId associated with the current user
      * @param String $code PaymentMethodCode
