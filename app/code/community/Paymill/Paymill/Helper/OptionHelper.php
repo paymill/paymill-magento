@@ -88,4 +88,13 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
     {
        return $this->getBackendOption("paymill", $optionName);
     }
+    
+    /**
+     * Returns the state of the "preAuth" Switch from the Backend as a Boolean
+     * @return boolean
+     */
+    public function isPreAuthorizing()
+    {
+        return $this->getGeneralOption("preAuth_active");
+    }
 }
