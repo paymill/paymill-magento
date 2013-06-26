@@ -44,4 +44,5 @@
 "paymill_backend_log_dev_info","Entwickler Informationen"
 "paymill_backend_log_dev_info_additional","Weitere Entwickler Informationen"
 "paymill_checkout_generating_invoice","Rechnung wird generiert"
+"paymill_preAuth_active","Kreditkarten transaktionen im Checkout authorisieren, Buchung bei Rechnungsgenerierung durchführen."
 

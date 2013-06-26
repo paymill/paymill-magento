@@ -124,7 +124,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      */
     public function authorize(Varien_Object $payment, $amount)
     {
-        if(true){//Debit Mode
+        if(!Mage::helper('paymill/optionHelper')->isPreAuthorizing()){//Debit Mode
             $this->debit();
         } else{ //preAuth Mode (Option set and cc payment)
             $this->preAuth();
