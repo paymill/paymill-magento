@@ -13,17 +13,15 @@ class Paymill_Paymill_Model_Transaction extends Mage_Core_Model_Abstract
     
     /**
      * Saves a set of data inro the database
-     * @param String $userId Unique customer id
      * @param String $orderId Unique ordernumber
      * @param String $transactionId Paymill transaction number
      * @param boolean $isPreAuthenticated flag for preAuth transactions
      * @return boolean Indicator of success
      */
-    public function saveValueSet($userId, $orderId, $transactionId, $isPreAuthenticated = 0)
+    public function saveValueSet($orderId, $transactionId, $isPreAuthenticated = 0)
     {
         //Formatting Arguments in an array for debug-log display reasons
         $arguments = array(
-                'userId' => $userId,
                 'orderId' => $orderId,
                 'transactionId' => $transactionId,
                 'isPreAuthenticated' => $isPreAuthenticated,
@@ -52,7 +50,6 @@ class Paymill_Paymill_Model_Transaction extends Mage_Core_Model_Abstract
         
         try{
             $this->setId($id)
-                ->setUserId($userId)
                     ->setOrderId($orderId)
                         ->setTransactionId($transactionId)
                             ->setIsPreAuthenticated($isPreAuthenticated)
@@ -65,18 +62,5 @@ class Paymill_Paymill_Model_Transaction extends Mage_Core_Model_Abstract
             Mage::helper('paymill/loggingHelper')->log("Transaction Data not saved.", $ex->getMessage(), print_r($arguments, true));
             return false;
         }  
-    }
-    
-    /**
-     * Returns the transactionId of the chosen order (by Id)
-     * @param String $orderId Id of the chosen order
-     * @return String Desired Transaction Id
-     */
-    public function getTransaction($orderId)
-    {
-        $collection = Mage::getModel('paymill/transaction')->getCollection();
-        $collection->addFilter('order_id', $orderId);
-        $obj = $collection->getFirstItem();
-        return $obj->getTransactionId();
     }
 }

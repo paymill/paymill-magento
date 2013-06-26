@@ -26,7 +26,6 @@ $installer->run("
     
     CREATE TABLE IF NOT EXISTS `{$this->getTable('paymill_transaction')}` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
-        `user_id` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
         `order_id` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
         `transaction_id` varchar(250) COLLATE utf8_unicode_ci NULL,
         `is_pre_authenticated` tinyint(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 0,

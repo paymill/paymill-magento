@@ -8,13 +8,17 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     /**
      * Returns the order amount in the smallest possible unit (f.Ex. cent for the EUR currency)
      * <p align = "center" color = "red">At the moment, only currencies with a 1:100 conversion are supported. Special cases need to be added if necessary</p>
+     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
      * @return int Amount in the smallest possible unit
      */
-    public function getAmount()
+    public function getAmount($object = null)
     {
-         $decimalTotal = Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal();
-         $amountTotal = $decimalTotal * 100;
-         return $amountTotal;
+        if($object == null){
+            $object = Mage::getSingleton('checkout/session')->getQuote();
+        }
+        $decimalTotal = $object->getGrandTotal();
+        $amountTotal = $decimalTotal * 100;
+        return $amountTotal;
     }
     
     /**
@@ -30,13 +34,15 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     /**
      * Returns the description you want to display in the Paymill Backend.
      * The current format is [OrderId] [Email adress of the customer]
+     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
      * @return string
      */
-    public function getDescription()
+    public function getDescription($object)
     {
-        $orderId = $this->getOrderId();
-        $customerEmail = Mage::helper("paymill/customerHelper")->getCustomerEmail();
+        $orderId = $this->getOrderId($object);
+        $customerEmail = Mage::helper("paymill/customerHelper")->getCustomerEmail($object);
         $description = $orderId. ", " . $customerEmail;
+        
         return $description;
     }
     
@@ -61,10 +67,23 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     
     /**
      * Returns the reserved order id
+     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
+     * @return String OrderId
      */
-    public function getOrderId()
+    public function getOrderId($object)
     {
-        return Mage::getSingleton('checkout/session')->getQuote()->getReservedOrderId();
+        $orderId = null;
+        
+        if($object instanceof Mage_Sales_Model_Order){
+            $orderId = $object->getIncrementId();
+        }
+        
+        if($object instanceof Mage_Sales_Model_Quote){
+            $orderId = $object->getReservedOrderId();
+        }
+        
+        
+        return $orderId;
     }
     
     
@@ -80,6 +99,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         require_once Mage::getBaseDir('lib') . '/Paymill/v2/lib/Services/Paymill/PaymentProcessor.php';
         $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
         $apiUrl                     = Mage::helper('paymill')->getApiUrl();
+        $quote                      = Mage::getSingleton('checkout/session')->getQuote();
         $libBase                    = null;
         
         $params                     = array();
@@ -88,9 +108,9 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         $params['amount']           = (int)$this->getAmount();
         $params['currency']         = $this->getCurrency();
         $params['payment']          = $this->getPaymentType($paymentCode); // The chosen payment (cc | elv) 
-        $params['name']             = Mage::helper("paymill/customerHelper")->getCustomerName();
-        $params['email']            = Mage::helper("paymill/customerHelper")->getCustomerEmail();
-        $params['description']      = $this->getDescription();
+        $params['name']             = Mage::helper("paymill/customerHelper")->getCustomerName($quote);
+        $params['email']            = Mage::helper("paymill/customerHelper")->getCustomerEmail($quote);
+        $params['description']      = $this->getDescription($quote);
         
         return new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
     }
@@ -173,37 +193,38 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         $amount                     = (int)$this->getAmount();
         $currency                   = $this->getCurrency();
         
-        $params                 = array( 'payment'  => $paymentId, 'amount'   => $amount, 'currency' => $currency );
-        Mage::helper('paymill/loggingHelper')->log("PreAuthorization created from Payment", $paymentId, $params);
-        
-        
+        $params                     = array( 'payment'  => $paymentId, 'amount'   => $amount, 'currency' => $currency );
         $preAuth                    = $preAuthObject->create($params);
         
-        return $preAuth;
+        Mage::helper('paymill/loggingHelper')->log("PreAuthorization created from Payment", $preAuth['preauthorization']['id'], print_r($params, true));
+        
+        return $preAuth['preauthorization'];
         
         
     }
     
     /**
      * Generates a transaction from the given arguments
-     * @param $name Description
+     * @param Mage_Sales_Model_Order $order
+     * @param String $preAuthorizationId
+     * @param float|double $amount
      * @return Boolean Indicator of success
      */
-    public function createTransactionFromPreAuth($preAuthorization)
+    public function createTransactionFromPreAuth($order, $preAuthorizationId, $amount)
     {
         require_once Mage::getBaseDir('lib') . '/Paymill/v2/lib/Services/Paymill/Transactions.php';
         $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
         $apiUrl                     = Mage::helper('paymill')->getApiUrl();
         $transactionsObject         = new Services_Paymill_Transactions($privateKey, $apiUrl);
         $params                     = array(
-                                                  'amount' => $this->getAmount(),
+                                                  'amount' => (int)($amount*100),
                                                 'currency' => $this->getCurrency(),
-                                             'description' => $this->getDescription(),
-                                         'preauthorization'=> $preAuthorization
+                                             'description' => $this->getDescription($order),
+                                         'preauthorization'=> $preAuthorizationId
                                         );
-        
-        Mage::helper('paymill/loggingHelper')->log("Creating Transaction from PreAuthorization", $params);
+                
         $transaction                = $transactionsObject->create($params);
+        Mage::helper('paymill/loggingHelper')->log("Creating Transaction from PreAuthorization", print_r($params, true), var_export($transaction,true));
         
         return $transaction; 
     }
@@ -220,5 +241,18 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         $obj = $collection->getFirstItem();
         $flag = $obj->getIsPreAuthenticated();
         return $flag === 0 ? false : true;
+    }
+    
+    /**
+     * Returns the transactionId of the chosen order (by Id)
+     * @param String $orderId Id of the chosen order
+     * @return String Desired Transaction Id
+     */
+    public function getTransaction($orderId)
+    {
+        $collection = Mage::getModel('paymill/transaction')->getCollection();
+        $collection->addFilter('order_id', $orderId);
+        $obj = $collection->getFirstItem();
+        return $obj->getTransactionId();
     }
 }

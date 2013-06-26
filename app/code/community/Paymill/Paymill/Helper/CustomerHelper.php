@@ -6,23 +6,25 @@ class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
 {
     /**
      * Returns the current customers full name
+     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
      * @return string the customers full name
      */
-    public function getCustomerName()
+    public function getCustomerName($object)
     {
-        $custFirstName      = Mage::getSingleton('checkout/session')->getQuote()->getCustomerFirstname();
-        $custLastName       = Mage::getSingleton('checkout/session')->getQuote()->getCustomerLastname();
+        $custFirstName      = $object->getBillingAddress()->getFirstname();
+        $custLastName       = $object->getBillingAddress()->getLastname();;
         $custFullName       = $custFirstName . " " . $custLastName;
         return $custFullName;
     }
     
     /**
      * Returns the current customers email adress.
+     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
      * @return string the customers email adress
      */
-    public function getCustomerEmail()
+    public function getCustomerEmail($object)
     {
-        return Mage::getSingleton('checkout/session')->getQuote()->getCustomerEmail();
+        return $object->getCustomerEmail();
     }
     
     /**
