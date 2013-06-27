@@ -37,6 +37,8 @@ class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
         $result = null;
         if(Mage::getSingleton('customer/session')->isLoggedIn()){
             $result = Mage::getSingleton('customer/session')->getId();
+        }else {
+            
         }
         return $result;
     }

@@ -61,7 +61,10 @@ class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstrac
     public function saveData($code, $clientId, $paymentId)
     {
         $userId = Mage::helper("paymill/customerHelper")->getUserId();
-        Mage::getModel("paymill/fastcheckout")->saveFcData($code, $userId, $clientId, $paymentId);
+        if(isset($userId)){
+            Mage::getModel("paymill/fastcheckout")->saveFcData($code, $userId, $clientId, $paymentId);
+        }
+        
     }    
     
 }
