@@ -10,7 +10,7 @@
         </label>
     </li>            
     <li>
-        <input class="elv-account" type="text" size="20" value="1234567890"/>
+        <input class="elv-account"   type="text" size="20" value="1234567890"/>
     </li>            
     <li>
         <label class="elv-bankcode-label">
@@ -18,7 +18,7 @@
         </label>
     </li>
     <li>
-        <input class="elv-bankcode" type="text" size="20" value="99999999"/>
+        <input class="elv-bankcode"  type="text" size="20" value="99999999"/>
     </li>
     <li>
         <label class="elv-holdername-label">
@@ -26,18 +26,19 @@
         </label>
     </li>
     <li>
-        <input class="elv-holdername" type="text" size="20" value="Max Mustermann"/>
+        <input class="elv-holdername"  size="20" value="Max Mustermann"/>
     </li>
     <?php if(Mage::helper('paymill/optionHelper')->isShowingLabels()){ echo "<li><div class='paymill_powered'><div class='paymill_credits'>Sichere Kreditkartenzahlung powered by <a href='http://www.paymill.de' target='_blank'>Paymill</a></div></div></li>";} ?>
     <li>
-        <input class="paymill-payment-token"         name="payment[paymill-payment-token]"         id="payment[paymill-payment-token]"         type="hidden" value=""                                                                     />
-        <input class="paymill-payment-amount"        name="payment[paymill-payment-amount]"        id="payment[paymill-payment-amount]"        type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getAmount() ?>"                 />
-        <input class="paymill-payment-currency"      name="payment[paymill-payment-currency]"      id="payment[paymill-payment-currency]"      type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getCurrency() ?>"               />
-        <input class="paymill-option-debug"          name="payment[paymill-option-debug]"          id="payment[paymill-option-debug]"          type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode() ?>"                />
-        <input class="paymill-info-image-path"       name="payment[paymill-info-image-path]"       id="payment[paymill-info-image-path]"       type="hidden" value="<?php echo Mage::helper('paymill')->getImagePath() ?>"                 />
-        <input class="paymill-info-public_key"       name="payment[paymill-info-public_key]"       id="payment[paymill-info-public_key]"       type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey() ?>"                 />
-        <input class="paymill-payment-error-number"  name="payment[paymill-payment-error-number]"  id="payment[paymill-payment-error-number]"  type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_elv") ."<br/>\n" ?>"/>
-        <input class="paymill-payment-error-holder"  name="payment[paymill-payment-error-holder]"  id="payment[paymill-payment-error-holder]"  type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_elv") ."<br/>\n" ?>"/>
-        <input class="paymill-payment-error-bankcode" name="payment[paymill-payment-error-bankcode]" id="payment[paymill-payment-error-bankcode]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_bankcode")   ."<br/>\n" ?>"/>
+        <input class="paymill-payment-token"                name="payment[paymill-payment-token]"               id="payment[paymill-payment-token]"             type="hidden" value=""                                                                     />
+        <input class="paymill-payment-amount"               name="payment[paymill-payment-amount]"              id="payment[paymill-payment-amount]"            type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getAmount() ?>"                 />
+        <input class="paymill-payment-currency"             name="payment[paymill-payment-currency]"            id="payment[paymill-payment-currency]"          type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getCurrency() ?>"               />
+        <input class="paymill-option-debug"                 name="payment[paymill-option-debug]"                id="payment[paymill-option-debug]"              type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode() ?>"                />
+        <input class="paymill-option-tokenTolerance-elv"    name="payment[paymill-option-tokenTolerance-elv]"   id="payment[paymill-option-tokenTolerance-elv]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getTokenTolerance($_code) ?>"                />
+        <input class="paymill-info-image-path"              name="payment[paymill-info-image-path]"             id="payment[paymill-info-image-path]"           type="hidden" value="<?php echo Mage::helper('paymill')->getImagePath() ?>"                 />
+        <input class="paymill-info-public_key"              name="payment[paymill-info-public_key]"             id="payment[paymill-info-public_key]"           type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey() ?>"                 />
+        <input class="paymill-payment-error-number"         name="payment[paymill-payment-error-number]"        id="payment[paymill-payment-error-number]"      type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_elv") ."<br/>\n" ?>"/>
+        <input class="paymill-payment-error-holder"         name="payment[paymill-payment-error-holder]"        id="payment[paymill-payment-error-holder]"      type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_elv") ."<br/>\n" ?>"/>
+        <input class="paymill-payment-error-bankcode"       name="payment[paymill-payment-error-bankcode]"      id="payment[paymill-payment-error-bankcode]"    type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_bankcode")   ."<br/>\n" ?>"/>
     </li>
 </ul>

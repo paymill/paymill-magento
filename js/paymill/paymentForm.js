@@ -89,6 +89,7 @@ function paymillSubmitForm()
         
     switch(PAYMILL_PAYMENT_NAME){
         case "paymill_creditcard":
+            PAYMILL_TOKEN_TOLERANCE = pmQuery('.paymill-option-tokenTolerance-cc').val();
         if (false == paymill.validateCardNumber(pmQuery('.card-number').val())) {
             PAYMILL_ERROR_STRING += PAYMILL_ERROR_TEXT_IVALID_NUMBER_CC;
             debug(PAYMILL_ERROR_TEXT_IVALID_NUMBER_CC);
@@ -104,7 +105,7 @@ function paymillSubmitForm()
         }
 
         var params = {
-            amount_int:     pmQuery('.paymill-payment-amount').val(),  // E.g. "15" for 0.15 Eur
+            amount_int:     (parseInt(pmQuery('.paymill-payment-amount').val()) + parseInt(PAYMILL_TOKEN_TOLERANCE)),  // E.g. "15" for 0.15 Eur
             currency:       pmQuery('.paymill-payment-currency').val(),    // ISO 4217 e.g. "EUR"
             number:         pmQuery('.card-number').val(),
             exp_month:      pmQuery('.card-expiry-month').val(),
@@ -115,6 +116,7 @@ function paymillSubmitForm()
             break;
 
         case "paymill_directdebit":
+            PAYMILL_TOKEN_TOLERANCE = pmQuery('.paymill-option-tokenTolerance-elv').val();
            if (false == pmQuery('.elv-holdername').val()) {
                 PAYMILL_ERROR_STRING += PAYMILL_ERROR_TEXT_IVALID_HOLDER_ELV;
                 debug(PAYMILL_ERROR_TEXT_IVALID_HOLDER_ELV);
@@ -128,7 +130,7 @@ function paymillSubmitForm()
                 debug(PAYMILL_ERROR_TEXT_IVALID_BANKCODE);
             }
             var params = {
-                amount_int:     pmQuery('.paymill-payment-amount').val(),  // E.g. "15" for 0.15 Eur
+                amount_int:     pmQuery('.paymill-payment-amount').val() + PAYMILL_TOKEN_TOLERANCE,  // E.g. "15" for 0.15 Eur
                 currency:       pmQuery('.paymill-payment-currency').val(),    // ISO 4217 e.g. "EUR"
                 number:         pmQuery('.elv-account').val(),
                 bank:           pmQuery('.elv-bankcode').val(),
@@ -166,13 +168,13 @@ pmQuery(document).ready(function()
     if(PAYMILL_PAYMENT_NAME === "paymill_creditcard"){
         PAYMILL_ERROR_TEXT_IVALID_NUMBER_CC = pmQuery('.paymill-payment-error-number').val();
         PAYMILL_ERROR_TEXT_IVALID_HOLDER_CC = pmQuery('.paymill-payment-error-holder').val();
-        PAYMILL_ERROR_TEXT_IVALID_EXPDATE = pmQuery('.paymill-payment-error-expdate').val();
+        PAYMILL_ERROR_TEXT_IVALID_EXPDATE   = pmQuery('.paymill-payment-error-expdate').val();
     }
     
     if(PAYMILL_PAYMENT_NAME === "paymill_directdebit"){
         PAYMILL_ERROR_TEXT_IVALID_NUMBER_ELV = pmQuery('.paymill-payment-error-number').val();
         PAYMILL_ERROR_TEXT_IVALID_HOLDER_ELV = pmQuery('.paymill-payment-error-holder').val();
-        PAYMILL_ERROR_TEXT_IVALID_BANKCODE = pmQuery('.paymill-payment-error-bankcode').val();
+        PAYMILL_ERROR_TEXT_IVALID_BANKCODE   = pmQuery('.paymill-payment-error-bankcode').val();;
     }
     
     pmQuery('.card-cvc').keyup(function(){

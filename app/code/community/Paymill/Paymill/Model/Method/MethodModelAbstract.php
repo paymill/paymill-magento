@@ -108,7 +108,6 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         
         //Save Data into session
         Mage::getSingleton('core/session')->setToken($token);
-        Mage::getSingleton('core/session')->setTokenAmount($tokenAmount);
         Mage::getSingleton('core/session')->setPaymentCode($this->getCode());
         
         //Finish as usual
@@ -141,13 +140,12 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     {
         //Gathering data from session
         $token = Mage::getSingleton('core/session')->getToken(); 
-        $tokenAmount = Mage::getSingleton('core/session')->getTokenAmount();
         $quote = Mage::getSingleton('checkout/session')->getQuote();
                 
         //Create Payment Processor
         $paymentHelper = Mage::helper("paymill/paymentHelper");
         $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
-        $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token, $tokenAmount);
+        $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token);
         
         //Loading Fast Checkout Data (if enabled and given)
         if($fcHelper->isFastCheckoutEnabled()){

@@ -45,4 +45,7 @@
 "paymill_backend_log_dev_info_additional","Weitere Entwickler Informationen"
 "paymill_checkout_generating_invoice","Rechnung wird generiert"
 "paymill_preAuth_active","Kreditkarten transaktionen im Checkout authorisieren, Buchung bei Rechnungsgenerierung durchführen."
+"paymill_token_tolerace","Token Toleranz Wert"
+"paymill_token_tolerace_tooltip","Wert der bei Generierung des Paymill Tokens aufgeschlagen wird, um 3DSecure Abweichungen zu vermeiden"
+"paymill_token_tolerace_comment", "Wert der bei Generierung des Paymill Tokens aufgeschlagen wird, um 3DSecure Abweichungen zu vermeiden"
 
