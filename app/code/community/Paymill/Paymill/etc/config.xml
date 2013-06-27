@@ -135,6 +135,17 @@
                 </paymill>
             </updates>
         </layout>
+        <events>
+            <sales_order_creditmemo_refund>
+                <observers>
+                    <paymill_paymill_model_observer>
+                        <type>model</type>
+                        <class>Paymill_Paymill_Model_Observer</class>
+                        <method>refundCreditmemo</method>
+                    </paymill_paymill_model_observer>
+                </observers>
+            </sales_order_creditmemo_refund>
+        </events>
     </adminhtml>
     
     <admin>

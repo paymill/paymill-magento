@@ -83,7 +83,7 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
         $order                      = $payment->getOrder();
         $orderId                    = $order->getIncrementId();
                 
-        if($paymentHelper->getPreAuthenticatedFlagState($orderId)){
+        if($paymentHelper->getPreAuthenticatedFlagState($orderId) === 1){
             //Capture preAuth
             $preAuthorization = $paymentHelper->getTransaction($orderId);
             $captureTransaction = $paymentHelper->createTransactionFromPreAuth($order, $preAuthorization, $amount);

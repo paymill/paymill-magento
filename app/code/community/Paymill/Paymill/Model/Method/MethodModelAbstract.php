@@ -24,6 +24,13 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     protected $_canRefund = true;
 
     /**
+     * Can use the Refund method to refund less than the full amount
+     * 
+     * @var boolean 
+     */
+    protected $_canRefundInvoicePartial  = false;
+
+    /**
      * Can use the Capture method
      * 
      * @var boolean 
@@ -124,8 +131,10 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     public function authorize(Varien_Object $payment, $amount)
     {
         if(Mage::helper('paymill/optionHelper')->isPreAuthorizing() && $this->_code === "paymill_creditcard"){
+            Mage::helper('paymill/loggingHelper')->log("Starting payment process as preAuth");
             $this->preAuth();
         } else{
+            Mage::helper('paymill/loggingHelper')->log("Starting payment process as debit");
             $this->debit();
         }
         
@@ -175,13 +184,5 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
                 $fcHelper->saveData($this->_code, $clientId, $paymentId);
             }
         }        
-    }
-    
-    /**
-     * Gets called when a creditmemo gets generated
-     */
-    public function refund(Varien_Object $payment, $amount)
-    {
-        Mage::throwException("Refund not implemented exception");
-    }    
+    } 
 }

@@ -5,16 +5,6 @@
 class Paymill_Paymill_Helper_RefundHelper extends Mage_Core_Helper_Abstract
 {
     /**
-     * Returns the TransactionId of the order with the ordernumber passed as an argument
-     * @param String $orderId
-     * @return String TransactionId
-     */
-    private function getTransactionId($orderId)
-    {
-        return Mage::getModel("paymill/transaction")->getTransactionId($orderId);
-    }
-    
-    /**
      * Validates the result of the refund
      * @param mixed $refund
      * @return boolean
@@ -32,7 +22,7 @@ class Paymill_Paymill_Helper_RefundHelper extends Mage_Core_Helper_Abstract
             Mage::helper('paymill/loggingHelper')->log("No Refund created.", var_export($refund, true));
             return false;
         } else { //Logs success feedback for debugging purposes
-            Mage::helper('paymill/loggingHelper')->log("Refund created.", $refund['id']);
+            Mage::helper('paymill/loggingHelper')->log("Refund created.", $refund['id'], var_export($refund, true));
         }
         
         return true;
@@ -40,20 +30,22 @@ class Paymill_Paymill_Helper_RefundHelper extends Mage_Core_Helper_Abstract
     
     /**
      * Creates a refund from the ordernumber passed as an argument
-     * @param String $orderId
+     * @param Mage_Sales_Model_Order $order
      * @return boolean Indicator of success
      */
-    public function createRefund($orderId, $amount)
+    public function createRefund($order, $amount)
     {
         require_once Mage::getBaseDir('lib') . '/Paymill/v2/lib/Services/Paymill/Refunds.php';
         
         //Gather Data
         try{
-        $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
-        $apiUrl                     = Mage::helper('paymill')->getApiUrl();
-        $refundsObject = new Services_Paymill_Refunds( $privateKey, $apiUrl );
+            $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
+            $apiUrl                     = Mage::helper('paymill')->getApiUrl();
+            $refundsObject              = new Services_Paymill_Refunds( $privateKey, $apiUrl );
+            $orderId                    = $order->getIncrementId();
+            $transactionId              = Mage::helper('paymill/paymentHelper')->getTransaction($orderId);
         } catch (Exception $ex){
-            Mage::helper('paymill/loggingHelper')->log("No Refund created.", $ex->getMessage());
+            Mage::helper('paymill/loggingHelper')->log("No Refund created due to illegal parameters.", $ex->getMessage());
             return false;
         }
         
@@ -61,12 +53,12 @@ class Paymill_Paymill_Helper_RefundHelper extends Mage_Core_Helper_Abstract
         try{
         $refund = $refundsObject->create(
                 array(
-                    'transactionId' => $this->getTransactionId($orderId),
+                    'transactionId' => $transactionId,
                     'params' => array( 'amount' => $amount )
                 )
         );
         } catch (Exception $ex){
-            Mage::helper('paymill/loggingHelper')->log("No Refund created.", $ex->getMessage(), $orderId);
+            Mage::helper('paymill/loggingHelper')->log("No Refund created.", $ex->getMessage(), var_export($order, true));
             return false;
         }
         //Validate Refund and return feedback
