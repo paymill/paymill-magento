@@ -9,9 +9,12 @@
         <label class="card-number-label">
             <?php echo $this->__("paymill_Number") ?>
         </label>
-    </li>            
+    </li> 
     <li>
-        <input class="card-number" type="text" size="20" value="4111111111111111"/>
+        <div class="card-icon"></div>
+    </li>
+    <li>
+        <input id ="card-number" class="card-number" type="text" size="20" value="4111111111111111"/>
     </li>            
     <li>
         <label class="card-cvc-label">
@@ -20,9 +23,6 @@
     </li>
     <li>
         <input class="card-cvc" type="text" size="4" value="111"/>
-    </li>
-    <li>
-        <div class="card-icon"></div>
     </li>
     <li>
         <label class="card-holdername-label">

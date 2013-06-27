@@ -42,7 +42,6 @@ function debug(message)
  */
 function paymillShowCardIcon()
 {
-    debug("Icon Handler triggered");
     switch(paymill.cardType(pmQuery('.card-number').val())){
         case 'Visa':
             pmQuery('.card-icon').html('<img src="'+ pmQuery('.paymill-info-image-path').val() +'icon_visa.png" >');
@@ -74,7 +73,6 @@ function paymillResponseHandler(error, result)
     } else {
         // Appending Token to form
         debug("Saving Token in Form: "+result.token);
-//        pmQuery("<li><input class='paymill-token' name='payment[paymill-token]' id='payment[paymill-token]' type='hidden' value='"+result.token+"'/></li>").appendTo("#payment_form_"+PAYMILL_PAYMENT_NAME);
         pmQuery('.paymill-payment-token').val(result.token);
         payment.save();
     }
@@ -172,7 +170,6 @@ function paymillSubmitForm()
 pmQuery(document).ready(function() 
 {
     //Gather Data
-    debug("Gathering data");
     PAYMILL_PUBLIC_KEY   = pmQuery('.paymill-info-public_key').val();
     PAYMILL_ERROR_STRING = "";
     pmQuery('.paymill-payment-errors').hide();
@@ -189,9 +186,7 @@ pmQuery(document).ready(function()
         PAYMILL_ERROR_TEXT_IVALID_BANKCODE   = pmQuery('.paymill-payment-error-bankcode').val();;
     }
     
-    pmQuery('.card-cvc').keyup(function(){
-        console.log("Test");
-    });
+    pmQuery('#card-number').live('input', paymillShowCardIcon);
     pmQuery('#payment-buttons-container button:first').prop("onclick", null);
     pmQuery('#payment-buttons-container button:first').unbind('click');
     pmQuery('#payment-buttons-container button:first').click(paymillSubmitForm);
