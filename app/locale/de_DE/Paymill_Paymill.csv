@@ -48,4 +48,5 @@
 "paymill_token_tolerace","Token Toleranz Wert"
 "paymill_token_tolerace_tooltip","Wert der bei Generierung des Paymill Tokens aufgeschlagen wird, um 3DSecure Abweichungen zu vermeiden"
 "paymill_token_tolerace_comment", "Wert der bei Generierung des Paymill Tokens aufgeschlagen wird, um 3DSecure Abweichungen zu vermeiden"
+"paymill_log_action_success", "Aktion erfolgreich"
 
