@@ -41,7 +41,6 @@ class Paymill_Paymill_Model_Fastcheckout extends Mage_Core_Model_Abstract
      * @param String $clientId Code returned from the PaymentProcessor used to recreate the current client object
      * @param String $paymentId Code returned from the PaymentProcessor used to recreate the current payment object
      * @return boolean Indicator of Success
-     * @todo add Translations
      */
     public function saveFcData($paymentMethodCode, $userId, $clientId, $paymentId)
     {
