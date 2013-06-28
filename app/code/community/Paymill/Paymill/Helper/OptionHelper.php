@@ -65,7 +65,6 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
      * @param   String $optionName  Name of the desired option as a string
      * @return  mixed               Value of the Backend Option             
      * @throws  Exception           "No Store Id has been set."
-     * @todo Translations for Exceptions
      */
     private function getBackendOption($choice, $optionName)
     {
