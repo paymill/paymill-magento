@@ -10,7 +10,6 @@ class Paymill_Paymill_Helper_LoggingHelper extends Mage_Core_Helper_Abstract
      * @param String $merchantInfo
      * @param String $devInfo
      * @param String $devInfoAdditional
-     * @todo Add Exception Handling to this method
      */
     public function log($merchantInfo, $devInfo, $devInfoAdditional = null)
     {
