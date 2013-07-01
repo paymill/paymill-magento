@@ -10,7 +10,7 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
      */
     public function getPublicKey()
     {
-        return trim($this->getGeneralOption("public_key"));
+        return trim($this->_getGeneralOption("public_key"));
     }
     
     /**
@@ -19,7 +19,7 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
      */
     public function getPrivateKey()
     {
-        return trim($this->getGeneralOption("private_key"));
+        return trim($this->_getGeneralOption("private_key"));
     }
     
     /**
@@ -28,7 +28,7 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
      */
     public function isLogging()
     {
-        return $this->getGeneralOption("logging_active");
+        return $this->_getGeneralOption("logging_active");
     }
     
     /**
@@ -37,7 +37,7 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
      */
     public function isFastCheckoutEnabled()
     {
-        return $this->getGeneralOption("fc_active");
+        return $this->_getGeneralOption("fc_active");
     }
     
     /**
@@ -46,7 +46,7 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
      */
     public function isInDebugMode()
     {
-        return $this->getGeneralOption("debugging_active");
+        return $this->_getGeneralOption("debugging_active");
     }
     
     /**
@@ -55,7 +55,7 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
      */
     public function isShowingLabels()
     {
-        return $this->getGeneralOption("show_label");
+        return $this->_getGeneralOption("show_label");
     }
     
     /**
@@ -66,7 +66,7 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
      * @return  mixed               Value of the Backend Option             
      * @throws  Exception           "No Store Id has been set."
      */
-    private function getBackendOption($choice, $optionName)
+    private function _getBackendOption($choice, $optionName)
     {
         try{
             $value = Mage::getStoreConfig('payment/'.$choice.'/'.$optionName, Mage::app()->getStore()->getStoreId());
@@ -83,9 +83,9 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
      * @param String $optionName
      * @return mixed Value
      */
-    private function getGeneralOption($optionName)
+    private function _getGeneralOption($optionName)
     {
-       return $this->getBackendOption("paymill", $optionName);
+       return $this->_getBackendOption("paymill", $optionName);
     }
     
     /**
@@ -94,7 +94,7 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
      */
     public function isPreAuthorizing()
     {
-        return $this->getGeneralOption("preAuth_active");
+        return $this->_getGeneralOption("preAuth_active");
     }
     
     /**
@@ -105,14 +105,14 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
     public function getTokenTolerance($paymentType)
     {
         if($paymentType === 'paymill_creditcard'){
-            $value = $this->getBackendOption("paymill_creditcard", 'tokenTolerance');
+            $value = $this->_getBackendOption("paymill_creditcard", 'tokenTolerance');
             $value = str_replace ( ',' , '.' , $value );
             $value = (int)($value*100);
             return $value;
         }
         
         if($paymentType === 'paymill_directdebit'){
-            $value = $this->getBackendOption("paymill_directdebit", 'tokenTolerance');
+            $value = $this->_getBackendOption("paymill_directdebit", 'tokenTolerance');
             $value = str_replace ( ',' , '.' , $value );
             $value = (int)($value*100);
             return $value;
