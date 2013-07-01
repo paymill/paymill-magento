@@ -3,7 +3,7 @@
  * The Logging Helper contains methods dealing with Log entries.
  * Examples for this might be f.Ex logging data or reading from the log.
  */
-class Paymill_Paymill_Helper_LoggingHelper extends Mage_Core_Helper_Abstract
+class Paymill_Paymill_Helper_LoggingHelper extends Mage_Core_Helper_Abstract implements Services_Paymill_LoggingInterface
 {
     /**
      * Inserts the arguments into the db log
@@ -11,7 +11,7 @@ class Paymill_Paymill_Helper_LoggingHelper extends Mage_Core_Helper_Abstract
      * @param String $devInfo
      * @param String $devInfoAdditional
      */
-    public function log($merchantInfo, $devInfo, $devInfoAdditional = null)
+    public function log($merchantInfo, $devInfo = null, $devInfoAdditional = null)
     {
         Mage::getModel('paymill/log')->log($merchantInfo, $devInfo, $devInfoAdditional);
     }
