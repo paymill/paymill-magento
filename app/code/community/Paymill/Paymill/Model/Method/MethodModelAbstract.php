@@ -1,39 +1,39 @@
 <?php
 abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Payment_Model_Method_Abstract
 {
-    
+
     /**
      * Is method a gateaway
      *
      * @var boolean
      */
     protected $_isGateway = false;
-    
+
     /**
      * Can use the Authorize method
-     * 
-     * @var boolean 
+     *
+     * @var boolean
      */
     protected $_canAuthorize = true;
 
     /**
      * Can use the Refund method
-     * 
-     * @var boolean 
+     *
+     * @var boolean
      */
     protected $_canRefund = true;
 
     /**
      * Can use the Refund method to refund less than the full amount
-     * 
-     * @var boolean 
+     *
+     * @var boolean
      */
     protected $_canRefundInvoicePartial  = false;
 
     /**
      * Can use the Capture method
-     * 
-     * @var boolean 
+     *
+     * @var boolean
      */
     protected $_canCapture = true;
 
@@ -50,7 +50,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      * @var boolean
      */
     protected $_canUseForMultishipping = false;
-    
+
     /**
      * Is a initalize needed
      *
@@ -100,7 +100,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
 
         return $this->_getHelper()->__($this->getConfigData('title', $storeId));
     }
-    
+
     /**
      * Assing data to information model object for fast checkout
      * Saves Session Variables.
@@ -111,16 +111,15 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         //Recieve Data
         $postData = Mage::app()->getRequest()->getPost();
         $token = $postData['payment']['paymill-payment-token'];
-        $tokenAmount = $postData['payment']['paymill-payment-amount'];
-        
+
         //Save Data into session
         Mage::getSingleton('core/session')->setToken($token);
         Mage::getSingleton('core/session')->setPaymentCode($this->getCode());
-        
+
         //Finish as usual
         return parent::assignData($data);
     }
-    
+
     /**
      * Gets Excecuted when the checkout button is pressed.
      * @param Varien_Object $payment
@@ -132,30 +131,30 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     {
         if(Mage::helper('paymill/optionHelper')->isPreAuthorizing() && $this->_code === "paymill_creditcard"){
             Mage::helper('paymill/loggingHelper')->log("Starting payment process as preAuth");
-            $this->preAuth();
+            $this->preAuth($payment, $amount);
         } else{
             Mage::helper('paymill/loggingHelper')->log("Starting payment process as debit");
-            $this->debit();
+            $this->debit($payment, $amount);
         }
-        
+
         //Finish as usual
         return parent::authorize($payment, $amount);
     }
-    
+
     /**
      * Deals with payment processing when debit mode is active
      */
-    public function debit()
+    public function debit(Varien_Object $payment, $amount)
     {
         //Gathering data from session
-        $token = Mage::getSingleton('core/session')->getToken(); 
+        $token = Mage::getSingleton('core/session')->getToken();
         $quote = Mage::getSingleton('checkout/session')->getQuote();
-                
+
         //Create Payment Processor
         $paymentHelper = Mage::helper("paymill/paymentHelper");
         $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
         $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token);
-        
+
         //Loading Fast Checkout Data (if enabled and given)
         if($fcHelper->isFastCheckoutEnabled()){
             $clientId = $fcHelper->getClientId();
@@ -165,17 +164,17 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
                 if(isset($paymentId)){
                     $paymentProcessor->setPaymentId($paymentId);
                 }
-            }  
+            }
         }
-                
+
         //Process Payment
         $paymentProcessor->processPayment();
-        
+
         //Save Transaction Data
-        $orderId = $paymentHelper->getOrderId($quote);
-        $transactionId = $paymentProcessor->getTransactionId();
-        Mage::getModel("paymill/transaction")->saveValueSet($orderId, $transactionId);
-        
+        $transactionHelper = Mage::helper("paymill/transactionHelper");
+        $transactionModel = $transactionHelper->createTransactionModel($paymentProcessor->getTransactionId(), false);
+        $transactionHelper->setAdditionalInformation($payment, $transactionModel);
+
         //Save Data for Fast Checkout (if enabled)
         if($fcHelper->isFastCheckoutEnabled()){ //Fast checkout enabled
             if(!$fcHelper->hasData($this->_code)){
@@ -183,6 +182,6 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
                 $paymentId = $paymentProcessor->getPaymentId();
                 $fcHelper->saveData($this->_code, $clientId, $paymentId);
             }
-        }        
-    } 
+        }
+    }
 }
