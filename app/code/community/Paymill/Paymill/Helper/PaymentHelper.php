@@ -20,7 +20,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         $amountTotal = $decimalTotal * 100;
         return $amountTotal;
     }
-    
+
     /**
      * Returns the currency compliant to ISO 4217 (3 char code)
      * @return string 3 Character long currency code
@@ -30,7 +30,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
          $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode();
          return $currency_code;
     }
-    
+
     /**
      * Returns the description you want to display in the Paymill Backend.
      * The current format is [OrderId] [Email adress of the customer]
@@ -42,10 +42,10 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         $orderId = $this->getOrderId($object);
         $customerEmail = Mage::helper("paymill/customerHelper")->getCustomerEmail($object);
         $description = $orderId. ", " . $customerEmail;
-        
+
         return $description;
     }
-    
+
     /**
      * Returns the short tag of the Payment
      * @param String $code
@@ -61,10 +61,10 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         if($code === "paymill_directdebit"){
             $type = "elv";
         }
-        
+
         return $type;
     }
-    
+
     /**
      * Returns the reserved order id
      * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
@@ -73,20 +73,20 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     public function getOrderId($object)
     {
         $orderId = null;
-        
+
         if($object instanceof Mage_Sales_Model_Order){
             $orderId = $object->getIncrementId();
         }
-        
+
         if($object instanceof Mage_Sales_Model_Quote){
             $orderId = $object->getReservedOrderId();
         }
-        
-        
+
+
         return $orderId;
     }
-    
-    
+
+
     /**
      * Returns an instance of the paymentProcessor class.
      * @param String $paymentCode name of the payment
@@ -96,38 +96,36 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function createPaymentProcessor($paymentCode, $token)
     {
-        require_once Mage::getBaseDir('lib') . '/Paymill/v2/lib/Services/Paymill/PaymentProcessor.php';
         $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
         $apiUrl                     = Mage::helper('paymill')->getApiUrl();
         $quote                      = Mage::getSingleton('checkout/session')->getQuote();
         $libBase                    = null;
-        
+
         $params                     = array();
         $params['token']            = $token;
         $params['amount']           = (int)$this->getAmount();
         $params['currency']         = $this->getCurrency();
-        $params['payment']          = $this->getPaymentType($paymentCode); // The chosen payment (cc | elv) 
+        $params['payment']          = $this->getPaymentType($paymentCode); // The chosen payment (cc | elv)
         $params['name']             = Mage::helper("paymill/customerHelper")->getCustomerName($quote);
         $params['email']            = Mage::helper("paymill/customerHelper")->getCustomerEmail($quote);
         $params['description']      = $this->getDescription($quote);
-        
+
         return new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
     }
-    
+
     /**
      * Creates a client object from the given data and returns the Id
      * @param String $email
-     * @param String $description 
+     * @param String $description
      * @return String ClientId
      * @throws Exception "Invalid Result Exception: Invalid ResponseCode for Client"
      */
     public function createClient($email, $description)
     {
-        require_once Mage::getBaseDir('lib') . '/Paymill/v2/lib/Services/Paymill/Clients.php';
         $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
         $apiUrl                     = Mage::helper('paymill')->getApiUrl();
         $clientsObject              = new Services_Paymill_Clients($privateKey, $apiUrl);
-        
+
         $client = $clientsObject->create(
                 array(
                     'email' => $email,
@@ -144,7 +142,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         Mage::helper('paymill/loggingHelper')->log("Client created.", $clientId);
         return $clientId;
     }
-    
+
     /**
      * Creates a payment object from the given data and returns the Id
      * @param String $token
@@ -154,23 +152,22 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function createPayment($token, $clientId)
     {
-        require_once Mage::getBaseDir('lib') . '/Paymill/v2/lib/Services/Paymill/Payments.php';
         $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
         $apiUrl                     = Mage::helper('paymill')->getApiUrl();
         $paymentsObject             = new Services_Paymill_Payments($privateKey, $apiUrl);
-        
+
         $payment = $paymentsObject->create(
                     array(
                         'token' => $token,
                         'client' => $clientId
                     )
             );
-        
+
         if (isset($payment['data']['response_code']) && $payment['data']['response_code'] !== 20000) {
             $this->_log("An Error occured: " . $payment['data']['response_code'], var_export($payment, true));
             throw new Exception("Invalid Result Exception: Invalid ResponseCode for Payment");
         }
-        
+
         $paymentId = $payment['id'];
         Mage::helper('paymill/loggingHelper')->log("Payment created.", $paymentId);
         return $paymentId;
@@ -184,24 +181,23 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function createPreAuthorization($paymentId)
     {
-        require_once Mage::getBaseDir('lib') . '/Paymill/v2/lib/Services/Paymill/Preauthorizations.php';
         $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
         $apiUrl                     = Mage::helper('paymill')->getApiUrl();
         $preAuthObject              = new Services_Paymill_Preauthorizations($privateKey, $apiUrl);
-        
+
         $amount                     = (int)$this->getAmount();
         $currency                   = $this->getCurrency();
-        
+
         $params                     = array( 'payment'  => $paymentId, 'amount'   => $amount, 'currency' => $currency );
         $preAuth                    = $preAuthObject->create($params);
-        
+
         Mage::helper('paymill/loggingHelper')->log("PreAuthorization created from Payment", $preAuth['preauthorization']['id'], print_r($params, true));
-        
+
         return $preAuth['preauthorization'];
-        
-        
+
+
     }
-    
+
     /**
      * Generates a transaction from the given arguments
      * @param Mage_Sales_Model_Order $order
@@ -211,7 +207,6 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function createTransactionFromPreAuth($order, $preAuthorizationId, $amount)
     {
-        require_once Mage::getBaseDir('lib') . '/Paymill/v2/lib/Services/Paymill/Transactions.php';
         $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
         $apiUrl                     = Mage::helper('paymill')->getApiUrl();
         $transactionsObject         = new Services_Paymill_Transactions($privateKey, $apiUrl);
@@ -221,37 +216,10 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
                                              'description' => $this->getDescription($order),
                                          'preauthorization'=> $preAuthorizationId
                                         );
-                
+
         $transaction                = $transactionsObject->create($params);
         Mage::helper('paymill/loggingHelper')->log("Creating Transaction from PreAuthorization", print_r($params, true), var_export($transaction,true));
-        
-        return $transaction; 
-    }
-    
-    /**
-     * Returns the state of the isPreAuthenticated Flag for the chosen order
-     * @param String $orderId Id of the chosen order
-     * @return boolean Flag state
-     */
-    public function getPreAuthenticatedFlagState($orderId)
-    {
-        $collection = Mage::getModel('paymill/transaction')->getCollection();
-        $collection->addFilter('order_id', $orderId);
-        $obj = $collection->getFirstItem();
-        $flag = $obj->getIsPreAuthenticated();
-        return $flag === 0 ? false : true;
-    }
-    
-    /**
-     * Returns the transactionId of the chosen order (by Id)
-     * @param String $orderId Id of the chosen order
-     * @return String Desired Transaction Id
-     */
-    public function getTransaction($orderId)
-    {
-        $collection = Mage::getModel('paymill/transaction')->getCollection();
-        $collection->addFilter('order_id', $orderId);
-        $obj = $collection->getFirstItem();
-        return $obj->getTransactionId();
+
+        return $transaction;
     }
 }
