@@ -25,9 +25,6 @@
                     <log>
                         <table>paymill_log</table>
                     </log>
-                    <transaction>
-                        <table>paymill_transaction</table>
-                    </transaction>
                     <fastcheckout>
                         <table>paymill_fastCheckout</table>
                     </fastcheckout>
