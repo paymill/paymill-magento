@@ -143,7 +143,6 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      * @param Varien_Object $payment
      * @param float $amount
      * @throws Exception
-     * @todo Define terms in which preAuth is chosen over debit
      */
     public function authorize(Varien_Object $payment, $amount)
     {
