@@ -11,30 +11,21 @@ class Paymill_Paymill_Helper_TransactionHelper extends Mage_Core_Helper_Abstract
      * @param Mage_Sales_Model_Order_Payment $object
      * @return Paymill_Paymill_Model_TransactionData Transaction Model
      */
-    public function getAdditionalInformation($object)
+    public function getAdditionalInformation(Mage_Sales_Model_Order_Payment $object)
     {
-        try
-        {
-            $transactionId = $object->getAdditionalInformation('paymillTransactionId');
-            $preAuthflag = $object->getAdditionalInformation('paymillPreAuthFlag');
-            $model = $this->createTransactionModel($transactionId, $preAuthflag);
-            Mage::helper('paymill/loggingHelper')->log("Read Model from object.", var_export($model, true));
-        } catch (Exception $ex)
-        {
-            Mage::helper('paymill/loggingHelper')->log("Transaction Helper encountered a problem.", "There was an error during unserialization of the Transaction Object.", $ex->getMessage());
-            Mage::throwException("There was an error during unserialization of the Transaction Object. " . $ex->getMessage());
-        }
-
+        $transactionId = $object->getAdditionalInformation('paymillTransactionId');
+        $preAuthflag = $object->getAdditionalInformation('paymillPreAuthFlag');
+        $model = $this->createTransactionModel($transactionId, $preAuthflag);
         return $model;
     }
 
     /**
-     * Sets the additional Data string of the argumented object to the serialized value of the argumented instance of the Paymill_Paymill_Model_Transaction
+     * Sets the additional Data string of the argumented object to the valueS of the argumented instance of the Paymill_Paymill_Model_Transaction
      * @param Mage_Sales_Model_Order_Payment $object
      * @param Paymill_Paymill_Model_Transaction $transactionModel Instance of the Transaction Model class
      * @return boolean Indicator of success
      */
-    public function setAdditionalInformation($object, Paymill_Paymill_Model_TransactionData $transactionModel)
+    public function setAdditionalInformation(Mage_Sales_Model_Order_Payment $object, Paymill_Paymill_Model_TransactionData $transactionModel)
     {
         $object->setAdditionalInformation('paymillTransactionId', $transactionModel->getTransactionId());
         $object->setAdditionalInformation('paymillPreAuthFlag', $transactionModel->getPreAuthorizationFlag());
@@ -53,6 +44,7 @@ class Paymill_Paymill_Helper_TransactionHelper extends Mage_Core_Helper_Abstract
     {
         $payment = $object->getPayment();
         $transactionObject = $this->getAdditionalInformation($payment);
+        Mage::helper('paymill/loggingHelper')->log("Read Model from object to return Flag.", var_export($transactionObject, true));
         return $transactionObject->getPreAuthorizationFlag();
     }
 
@@ -65,6 +57,7 @@ class Paymill_Paymill_Helper_TransactionHelper extends Mage_Core_Helper_Abstract
     {
         $payment = $object->getPayment();
         $transactionObject = $this->getAdditionalInformation($payment);
+        Mage::helper('paymill/loggingHelper')->log("Read Model from object to return Transaction Id.", var_export($transactionObject, true));
         return $transactionObject->getTransactionId();
     }
 
@@ -72,7 +65,7 @@ class Paymill_Paymill_Helper_TransactionHelper extends Mage_Core_Helper_Abstract
      * Creates a Transaction Model from the given Data
      * @param String $transactionId
      * @param Boolean $isPreAuthenticated
-     * @return boolean Indicator of success
+     * @return Paymill_Paymill_Model_TransactionData Model with the desired attributes
      */
     public function createTransactionModel($transactionId, $isPreAuthenticated = false)
     {
