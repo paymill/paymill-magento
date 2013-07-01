@@ -18,9 +18,11 @@ class Paymill_Paymill_Model_Observer{
                     return;
                 }
             }
-            
-            if( !Mage::getModel("paymill/transaction")->getPreAuthenticatedFlagState($orderId)){ // If the transaction is not flagged as a debit (not a preAuth) transaction
-                $order = Mage::getModel('sales/order')->load($orderId);
+             $order = Mage::getModel('sales/order')->load($orderId);
+             
+            if( Mage::helper('paymill/transactionHelper')->getPreAuthenticatedFlagState($order)){ // If the transaction is not flagged as a debit (not a preAuth) transaction
+                Mage::helper('paymill/loggingHelper')->log("Debug", "No Invoice generated, since the transaction is flagged as preauth");
+            } else {
                 if($order->canInvoice()) {
                     //Create the Invoice
                     Mage::helper('paymill/loggingHelper')->log(Mage::helper('paymill')->__($paymentCode), Mage::helper('paymill')->__('paymill_checkout_generating_invoice'), "Order Id: ".$orderId); 

@@ -34,31 +34,27 @@ class Paymill_Paymill_Helper_RefundHelper extends Mage_Core_Helper_Abstract
      * @return boolean Indicator of success
      */
     public function createRefund($order, $amount)
-    {
-        require_once Mage::getBaseDir('lib') . '/Paymill/v2/lib/Services/Paymill/Refunds.php';
-        
+    {        
         //Gather Data
         try{
             $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
             $apiUrl                     = Mage::helper('paymill')->getApiUrl();
             $refundsObject              = new Services_Paymill_Refunds( $privateKey, $apiUrl );
-            $orderId                    = $order->getIncrementId();
-            $transactionId              = Mage::helper('paymill/paymentHelper')->getTransaction($orderId);
+            $transactionId              = Mage::helper('paymill/transactionHelper')->getTransactionId($order);
         } catch (Exception $ex){
             Mage::helper('paymill/loggingHelper')->log("No Refund created due to illegal parameters.", $ex->getMessage());
             return false;
         }
         
         //Create Refund
-        try{
-        $refund = $refundsObject->create(
-                array(
+        $params = array(
                     'transactionId' => $transactionId,
                     'params' => array( 'amount' => $amount )
-                )
-        );
+                );
+        try{
+        $refund = $refundsObject->create($params);
         } catch (Exception $ex){
-            Mage::helper('paymill/loggingHelper')->log("No Refund created.", $ex->getMessage(), var_export($order, true));
+            Mage::helper('paymill/loggingHelper')->log("No Refund created.", $ex->getMessage(), var_export($params, true));
             return false;
         }
         //Validate Refund and return feedback
