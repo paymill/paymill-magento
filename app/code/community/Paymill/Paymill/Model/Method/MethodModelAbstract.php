@@ -46,7 +46,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      *
      * @var boolean
      */
-    protected $_canRefundInvoicePartial  = false;
+    protected $_canRefundInvoicePartial  = true;
 
     /**
      * Can use the Capture method
