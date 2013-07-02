@@ -67,6 +67,7 @@ class Paymill_Paymill_Helper_RefundHelper extends Mage_Core_Helper_Abstract
         //Create Refund
         $params = array(
                     'transactionId' => $transactionId,
+                    'source'        => Mage::helper('paymill')->getSourceString(),
                     'params' => array( 'amount' => $amount )
                 );
         try{

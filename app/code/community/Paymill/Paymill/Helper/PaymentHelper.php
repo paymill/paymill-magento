@@ -127,6 +127,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         $params['name']             = Mage::helper("paymill/customerHelper")->getCustomerName($quote);
         $params['email']            = Mage::helper("paymill/customerHelper")->getCustomerEmail($quote);
         $params['description']      = $this->getDescription($quote);
+        $params['source']           = Mage::helper('paymill')->getSourceString();
 
         return new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
     }
@@ -206,7 +207,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         $amount                     = (int)$this->getAmount();
         $currency                   = $this->getCurrency();
 
-        $params                     = array( 'payment'  => $paymentId, 'amount'   => $amount, 'currency' => $currency );
+        $params                     = array( 'payment' => $paymentId, 'source' => Mage::helper('paymill')->getSourceString(), 'amount' => $amount, 'currency' => $currency );
         $preAuth                    = $preAuthObject->create($params);
 
         Mage::helper('paymill/loggingHelper')->log("PreAuthorization created from Payment", $preAuth['preauthorization']['id'], print_r($params, true));
@@ -232,6 +233,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
                                                   'amount' => (int)($amount*100),
                                                 'currency' => $this->getCurrency(),
                                              'description' => $this->getDescription($order),
+                                                  'source' => Mage::helper('paymill')->getSourceString(),
                                          'preauthorization'=> $preAuthorizationId
                                         );
 

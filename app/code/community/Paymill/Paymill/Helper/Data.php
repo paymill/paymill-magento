@@ -85,4 +85,15 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
                 return "<div style='display:none;'>";
             }        
     }
+    
+    /**
+     * Returns the Source string passt to every transaction
+     * @return String Source
+     */
+    public function getSourceString()
+    {
+        $version = $this->getVersion();
+        $shopversion = Mage::getVersion();
+        return $version . "_Magento_" . $shopversion;
+    }
 }
