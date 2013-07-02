@@ -27,23 +27,23 @@ class Paymill_Paymill_Model_Observer{
      */
     public function generateInvoice(Varien_Event_Observer $observer)
     {
-        $paymentCode = Mage::getSingleton('core/session')->getPaymentCode();
-        if($paymentCode === 'paymill_creditcard' || $paymentCode === 'paymill_directdebit'){
-            $orderIds = $observer->getEvent()->getOrderIds();
-            if ($orderIds) {
-                $orderId = current($orderIds);
-                if (!$orderId) {
-                    return;
-                }
+        $orderIds = $observer->getEvent()->getOrderIds();
+        if ($orderIds) {
+            $orderId = current($orderIds);
+            if (!$orderId) {
+                return;
             }
-             $order = Mage::getModel('sales/order')->load($orderId);
+        }
+        $order = Mage::getModel('sales/order')->load($orderId);
+         
+         if($order->getPayment()->getMethod() === 'paymill_creditcard' || $order->getPayment()->getMethod() === 'paymill_directdebit'){
              
             if( Mage::helper('paymill/transactionHelper')->getPreAuthenticatedFlagState($order)){ // If the transaction is not flagged as a debit (not a preAuth) transaction
                 Mage::helper('paymill/loggingHelper')->log("Debug", "No Invoice generated, since the transaction is flagged as preauth");
             } else {
                 if($order->canInvoice()) {
                     //Create the Invoice
-                    Mage::helper('paymill/loggingHelper')->log(Mage::helper('paymill')->__($paymentCode), Mage::helper('paymill')->__('paymill_checkout_generating_invoice'), "Order Id: ".$orderId); 
+                    Mage::helper('paymill/loggingHelper')->log(Mage::helper('paymill')->__($paymentCode), Mage::helper('paymill')->__('paymill_checkout_generating_invoice'), "Order Id: ".$order->getIncrementId()); 
                     $invoiceId = Mage::getModel('sales/order_invoice_api')->create($order->getIncrementId(), array());
                     Mage::getModel('sales/order_invoice_api')->capture($invoiceId);
                 }
