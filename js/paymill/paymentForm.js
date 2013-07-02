@@ -85,7 +85,21 @@ function paymillResponseHandler(error, result)
 function paymillSubmitForm()
 {
     PAYMILL_PAYMENT_NAME = pmQuery("input[name='payment[method]']:checked").val();
-        
+    PAYMILL_ERROR_STRING = "";
+    pmQuery('.paymill-payment-errors').hide();
+    
+    if(PAYMILL_PAYMENT_NAME === "paymill_creditcard"){
+        PAYMILL_ERROR_TEXT_IVALID_NUMBER_CC = pmQuery('.paymill-payment-error-number').val();
+        PAYMILL_ERROR_TEXT_IVALID_HOLDER_CC = pmQuery('.paymill-payment-error-holder').val();
+        PAYMILL_ERROR_TEXT_IVALID_EXPDATE   = pmQuery('.paymill-payment-error-expdate').val();
+    }
+    
+    if(PAYMILL_PAYMENT_NAME === "paymill_directdebit"){
+        PAYMILL_ERROR_TEXT_IVALID_NUMBER_ELV = pmQuery('.paymill-payment-error-number-elv').val();
+        PAYMILL_ERROR_TEXT_IVALID_HOLDER_ELV = pmQuery('.paymill-payment-error-holder-elv').val();
+        PAYMILL_ERROR_TEXT_IVALID_BANKCODE   = pmQuery('.paymill-payment-error-bankcode').val();;
+    }
+    
     switch(PAYMILL_PAYMENT_NAME){
         case "paymill_creditcard":
             PAYMILL_NO_FAST_CHECKOUT = pmQuery('.paymill-info-fastCheckout-cc').val();
@@ -174,18 +188,6 @@ pmQuery(document).ready(function()
     PAYMILL_ERROR_STRING = "";
     pmQuery('.paymill-payment-errors').hide();
             
-    if(PAYMILL_PAYMENT_NAME === "paymill_creditcard"){
-        PAYMILL_ERROR_TEXT_IVALID_NUMBER_CC = pmQuery('.paymill-payment-error-number').val();
-        PAYMILL_ERROR_TEXT_IVALID_HOLDER_CC = pmQuery('.paymill-payment-error-holder').val();
-        PAYMILL_ERROR_TEXT_IVALID_EXPDATE   = pmQuery('.paymill-payment-error-expdate').val();
-    }
-    
-    if(PAYMILL_PAYMENT_NAME === "paymill_directdebit"){
-        PAYMILL_ERROR_TEXT_IVALID_NUMBER_ELV = pmQuery('.paymill-payment-error-number').val();
-        PAYMILL_ERROR_TEXT_IVALID_HOLDER_ELV = pmQuery('.paymill-payment-error-holder').val();
-        PAYMILL_ERROR_TEXT_IVALID_BANKCODE   = pmQuery('.paymill-payment-error-bankcode').val();;
-    }
-    
     pmQuery('#card-number').live('input', paymillShowCardIcon);
     pmQuery('#payment-buttons-container button:first').prop("onclick", null);
     pmQuery('#payment-buttons-container button:first').unbind('click');

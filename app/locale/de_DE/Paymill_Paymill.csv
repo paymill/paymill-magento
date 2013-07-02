@@ -16,7 +16,7 @@
 "paymill_opt_Sort","Anzeigeposition"
 "paymill_Number","Nummer"
 "paymill_Cvc","CVC"
-"paymill_Holder","Inhaber"
+"paymill_Holder","Inhabername"
 "paymill_Date","Gültig bis"
 "paymill_Amount","Betrag"
 "paymill_Currency","Währung"

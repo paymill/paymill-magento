@@ -16,7 +16,7 @@
 "paymill_opt_Sort","Display position"
 "paymill_Number","Number"
 "paymill_Cvc","CVC"
-"paymill_Holder","Holder"
+"paymill_Holder","Holdername"
 "paymill_Date","Valid until (MM/YYYY)"
 "paymill_Amount","Amount"
 "paymill_Currency","Currency"
