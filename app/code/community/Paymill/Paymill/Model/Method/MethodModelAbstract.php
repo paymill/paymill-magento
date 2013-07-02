@@ -164,20 +164,27 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      */
     public function authorize(Varien_Object $payment, $amount)
     {
+        $success = false;
         if(Mage::helper('paymill/optionHelper')->isPreAuthorizing() && $this->_code === "paymill_creditcard"){
             Mage::helper('paymill/loggingHelper')->log("Starting payment process as preAuth");
-            $this->preAuth($payment, $amount);
+            $success = $this->preAuth($payment, $amount);
         } else{
             Mage::helper('paymill/loggingHelper')->log("Starting payment process as debit");
-            $this->debit($payment, $amount);
+            $success = $this->debit($payment, $amount);
         }
 
+        if(!$success){
+            Mage::helper('paymill/loggingHelper')->log("There was an error processing the payment.");
+            Mage::getSingleton('checkout/session')->setGotoSection('payment');
+            Mage::throwException("There was an error processing your payment.");
+        }
         //Finish as usual
         return parent::authorize($payment, $amount);
     }
 
     /**
      * Deals with payment processing when debit mode is active
+     * @return booelan Indicator of success
      */
     public function debit(Varien_Object $payment, $amount)
     {
@@ -203,20 +210,28 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         }
 
         //Process Payment
-        $paymentProcessor->processPayment();
+        $success = $paymentProcessor->processPayment();
+        
+        
+        If($success){
+            //Save Transaction Data
+            $transactionHelper = Mage::helper("paymill/transactionHelper");
+            $transactionModel = $transactionHelper->createTransactionModel($paymentProcessor->getTransactionId(), false);
+            $transactionHelper->setAdditionalInformation($payment, $transactionModel);
 
-        //Save Transaction Data
-        $transactionHelper = Mage::helper("paymill/transactionHelper");
-        $transactionModel = $transactionHelper->createTransactionModel($paymentProcessor->getTransactionId(), false);
-        $transactionHelper->setAdditionalInformation($payment, $transactionModel);
-
-        //Save Data for Fast Checkout (if enabled)
-        if($fcHelper->isFastCheckoutEnabled()){ //Fast checkout enabled
-            if(!$fcHelper->hasData($this->_code)){
-                $clientId = $paymentProcessor->getClientId();
-                $paymentId = $paymentProcessor->getPaymentId();
-                $fcHelper->saveData($this->_code, $clientId, $paymentId);
+            //Save Data for Fast Checkout (if enabled)
+            if($fcHelper->isFastCheckoutEnabled()){ //Fast checkout enabled
+                if(!$fcHelper->hasData($this->_code)){
+                    $clientId = $paymentProcessor->getClientId();
+                    $paymentId = $paymentProcessor->getPaymentId();
+                    $fcHelper->saveData($this->_code, $clientId, $paymentId);
+                }
             }
+            
+            return true;
         }
+        
+        return false;
+        
     }
 }

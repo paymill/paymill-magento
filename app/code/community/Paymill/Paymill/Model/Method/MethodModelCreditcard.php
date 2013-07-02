@@ -73,15 +73,31 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
         }
 
         if(!$paymill_flag_client_set){
-            $clientId = $paymentHelper->createClient($email, $description);
+            try{
+                $clientId = $paymentHelper->createClient($email, $description);
+            } catch (Exception $ex){
+                Mage::helper('paymill/loggingHelper')->log("There was an error creating the client.", $ex->getMessage());
+                return false;
+            }
+            
         }
 
         if(!$paymill_flag_payment_set){
-            $paymentId = $paymentHelper->createPayment($token, $clientId);
+            try{
+                $paymentId = $paymentHelper->createPayment($token, $clientId);
+            } catch (Exception $ex){
+                Mage::helper('paymill/loggingHelper')->log("There was an error creating the payment.", $ex->getMessage());
+                return false;
+            }
         }
 
         //Authorize payment
-        $transaction = $paymentHelper->createPreAuthorization($paymentId);
+        try{
+            $transaction = $paymentHelper->createPreAuthorization($paymentId);
+        } catch (Exception $ex){
+                Mage::helper('paymill/loggingHelper')->log("There was an error creating the Pre-Authorization.", $ex->getMessage());
+                return false;
+            }
 
         //Save Transaction Data
         $transactionHelper = Mage::helper("paymill/transactionHelper");
@@ -96,6 +112,8 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
                 $fcHelper->saveData($this->_code, $clientId, $paymentId);
             }
         }
+        
+        return true;
     }
 
     /**

@@ -143,6 +143,12 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     {
         $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
         $apiUrl                     = Mage::helper('paymill')->getApiUrl();
+        
+        if(empty($privateKey)){
+            Mage::helper('paymill/loggingHelper')->log("No private Key was set.");
+            Mage::throwException("No private Key was set.");
+        }
+        
         $clientsObject              = new Services_Paymill_Clients($privateKey, $apiUrl);
 
         $client = $clientsObject->create(
@@ -173,8 +179,14 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     {
         $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
         $apiUrl                     = Mage::helper('paymill')->getApiUrl();
+                
+        if(empty($privateKey)){
+            Mage::helper('paymill/loggingHelper')->log("No private Key was set.");
+            Mage::throwException("No private Key was set.");
+        }
+        
         $paymentsObject             = new Services_Paymill_Payments($privateKey, $apiUrl);
-
+        
         $payment = $paymentsObject->create(
                     array(
                         'token' => $token,
@@ -202,6 +214,12 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     {
         $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
         $apiUrl                     = Mage::helper('paymill')->getApiUrl();
+        
+        if(empty($privateKey)){
+            Mage::helper('paymill/loggingHelper')->log("No private Key was set.");
+            Mage::throwException("No private Key was set.");
+        }
+        
         $preAuthObject              = new Services_Paymill_Preauthorizations($privateKey, $apiUrl);
 
         $amount                     = (int)$this->getAmount();
@@ -228,6 +246,11 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     {
         $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
         $apiUrl                     = Mage::helper('paymill')->getApiUrl();
+        if(empty($privateKey)){
+            Mage::helper('paymill/loggingHelper')->log("No private Key was set.");
+            Mage::throwException("No private Key was set.");
+        }
+        
         $transactionsObject         = new Services_Paymill_Transactions($privateKey, $apiUrl);
         $params                     = array(
                                                   'amount' => (int)($amount*100),
