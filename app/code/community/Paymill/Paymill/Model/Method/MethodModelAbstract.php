@@ -91,6 +91,24 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     protected $_code = 'paymill_abstract';
 
     /**
+     * Check if currency is avaible for this payment
+     *
+     * @param string $currencyCode
+     * @return boolean
+     */
+    public function canUseForCurrency($currencyCode)
+    {
+        $quote = Mage::getSingleton('checkout/session')->getQuote();
+        $storeId = $quote ? $quote->getStoreId() : null;
+
+        $availableCurrencies = explode(',', $this->getConfigData('currency', $storeId));
+        if (!in_array($currencyCode, $availableCurrencies)) {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
      * Return Quote or Order Object depending on the type of the payment info
      *
      * @return Mage_Sales_Model_Order

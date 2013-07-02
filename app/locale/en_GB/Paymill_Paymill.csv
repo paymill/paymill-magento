@@ -49,4 +49,5 @@
 "paymill_token_tolerace_tooltip","Sum of all additional charges used to avoid 3D secure variations"
 "paymill_token_tolerace_comment", "Sum of all additional charges used to avoid 3D secure variations"
 "paymill_log_action_success", "Action successful"
+"paymill_accepted_currency", "Accepted Currencies"
 
