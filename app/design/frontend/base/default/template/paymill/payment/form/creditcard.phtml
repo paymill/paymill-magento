@@ -14,7 +14,7 @@
         <div class="card-icon"></div>
     </li>
     <li>
-        <input id ="card-number" class="card-number" type="text" size="20" value="4111111111111111"/>
+        <input id ="card-number" class="card-number" type="text" size="20"/>
     </li>            
     <li>
         <label class="card-cvc-label">
@@ -22,7 +22,7 @@
         </label>
     </li>
     <li>
-        <input class="card-cvc" type="text" size="4" value="111"/>
+        <input class="card-cvc" type="text" size="4"/>
     </li>
     <li>
         <label class="card-holdername-label">
@@ -30,7 +30,7 @@
         </label>
     </li>
     <li>
-        <input class="card-holdername" type="text" size="20" value="lala"/>
+        <input class="card-holdername" type="text" size="20"/>
     </li>
     <li>
         <label class="card-expiry-label">
@@ -39,9 +39,9 @@
     </li>
     <li> 
         <div>
-            <input class="card-expiry-month" type="text" size="2" value="12"/>
+            <input class="card-expiry-month" type="text" size="2"/>
             <span> / </span>
-            <input class="card-expiry-year" type="text" size="4" value="2015"/>
+            <input class="card-expiry-year" type="text" size="4"/>
         </div>
     </li>
     <?php if(Mage::helper('paymill/optionHelper')->isShowingLabels()){ echo "<li><div class='paymill_powered'><div class='paymill_credits'>Sichere Kreditkartenzahlung powered by <a href='http://www.paymill.de' target='_blank'>Paymill</a></div></div></li>";} ?>
