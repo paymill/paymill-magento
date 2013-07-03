@@ -61,7 +61,7 @@ class Paymill_Paymill_Model_Observer{
         $creditmemo = $observer->getEvent()->getCreditmemo();
         $order = $creditmemo->getOrder();
         if($order->getPayment()->getMethod() === 'paymill_creditcard' || $order->getPayment()->getMethod() === 'paymill_directdebit'){
-            $amount = (int)($creditmemo->getGrandTotal()*100);
+            $amount = (int)((string)($creditmemo->getGrandTotal()*100));
             Mage::helper('paymill/loggingHelper')->log("Trying to Refund.", var_export($order->getIncrementId(), true), $amount);
             Mage::helper('paymill/refundHelper')->createRefund($order, $amount);
         }
