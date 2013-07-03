@@ -91,6 +91,7 @@ function paymillSubmitForm()
     if(PAYMILL_PAYMENT_NAME === "paymill_creditcard"){
         PAYMILL_ERROR_TEXT_IVALID_NUMBER_CC = pmQuery('.paymill-payment-error-number').val();
         PAYMILL_ERROR_TEXT_IVALID_HOLDER_CC = pmQuery('.paymill-payment-error-holder').val();
+        PAYMILL_ERROR_TEXT_IVALID_CVC       = pmQuery('.paymill-payment-error-cvc').val();
         PAYMILL_ERROR_TEXT_IVALID_EXPDATE   = pmQuery('.paymill-payment-error-expdate').val();
     }
     
@@ -117,6 +118,11 @@ function paymillSubmitForm()
                 if (pmQuery('.card-holdername').val() == '') {
                     PAYMILL_ERROR_STRING += PAYMILL_ERROR_TEXT_IVALID_HOLDER_CC;
                     debug(PAYMILL_ERROR_TEXT_IVALID_HOLDER_CC);
+                }
+                
+                if (false == paymill.validateCvc(pmQuery('.card-cvc').val())) {
+                    PAYMILL_ERROR_STRING += PAYMILL_ERROR_TEXT_IVALID_CVC;
+                    debug(PAYMILL_ERROR_TEXT_IVALID_CVC);
                 }
 
                 var params = {

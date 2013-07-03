@@ -51,3 +51,4 @@
 "paymill_log_action_success", "Aktion erfolgreich"
 "paymill_accepted_currency", "Aktzeptierte Währungen"
 "paymill_slogan","Sichere Kreditkartenzahlung powered by "
+"paymill_error_text_invalid_cvc", "Ungültige CVC"

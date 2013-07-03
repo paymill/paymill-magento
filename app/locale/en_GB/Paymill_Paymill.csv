@@ -51,3 +51,4 @@
 "paymill_log_action_success", "Action successful"
 "paymill_accepted_currency", "Accepted Currencies"
 "paymill_slogan","Secure Payments powered by "
+"paymill_error_text_invalid_cvc", "Invalid cvc"
