@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <!-- declare CompanyName_NewModule module -->
+        <Paymill_Paymill>
+            <!-- this is an active module -->
+            <active>true</active>
+            <!-- this module will be located in app/code/local code pool -->
+            <codePool>community</codePool>
+            <!-- specify dependencies for correct module loading order -->
+            <depends>
+                <Mage_Payment />
+            </depends>
+        </Paymill_Paymill>
+    </modules>
+</config>

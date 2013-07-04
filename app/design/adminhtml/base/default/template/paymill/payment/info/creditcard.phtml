@@ -1,0 +1,14 @@
+<?php if ($_specificInfo = $this->getSpecificInformation()): ?>
+        <table
+        <tr>
+            <td><img src="<?php echo $_specificInfo['imgUrl'] ?>" /></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->htmlEscape($this->getMethod()->getTitle()) ?></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->escapeHtml("Transaction Id: " . $_specificInfo['paymillTransactionId']); ?></td>
+        </tr>
+        </table>
+<?php endif; ?>
+<?php echo $this->getChildHtml() ?>

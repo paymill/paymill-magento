@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.1.0">
+    <paymill_adminhtml_log_index>
+        <reference name="content">
+            <block type="paymill/adminhtml_log" name="adminhtml_log.grid.container" />
+        </reference>
+    </paymill_adminhtml_log_index>
+    <paymill_adminhtml_log_grid>
+        <update handle="formkey"/>
+        <block type="paymill/adminhtml_log_grid" name="adminhtml_log.grid" output="toHtml" />
+    </paymill_adminhtml_log_grid> 
+</layout>
