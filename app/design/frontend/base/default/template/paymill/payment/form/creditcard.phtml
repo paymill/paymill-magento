@@ -3,45 +3,42 @@
 <?php echo Mage::helper('paymill')->getFormTypeForDisplay($_code)?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
     <li>
-        <p class="paymill-payment-errors alert-error" style="display:none;"></p>
+        <label for="<?php echo $_code ?>_holdername" class="required"><em>*</em><?php echo $this->__("paymill_Holder") ?></label>
+        <div class="input-box">
+            <input value="" type="text" name="payment[<?php echo $_code ?>_holdername]" id="<?php echo $_code ?>_holdername" class="input-text paymill-validate-cc-holder required-entry"/>
+        </div>
     </li>
     <li>
-        <label class="card-number-label">
-            <?php echo $this->__("paymill_Number") ?>
-        </label>
-    </li> 
-    <li>
-        <div class="card-icon"></div>
+        <label for="<?php echo $_code ?>_number" class="required"><em>*</em><?php echo $this->__("paymill_Number") ?></label>
+        <div class="input-box">
+            <input value="" type="text" name="payment[<?php echo $_code ?>_number]" id="<?php echo $_code ?>_number" class="input-text paymill-validate-cc-number required-entry"/>
+            <div id="<?php echo $_code ?>_card_icon"></div>
+        </div>
+        
     </li>
     <li>
-        <input id ="card-number" class="card-number" type="text" size="20"/>
-    </li>            
-    <li>
-        <label class="card-cvc-label">
-            <?php echo $this->__("paymill_Cvc") ?>
-        </label>
+        <label for="<?php echo $_code ?>_cvc" class="required"><em>*</em><?php echo $this->__("paymill_Cvc") ?></label>
+        <div class="input-box">
+            <input value="" type="text" name="payment[<?php echo $_code ?>_cvc]" id="<?php echo $_code ?>_cvc" class="input-text paymill-validate-cc-cvc required-entry"/>
+        </div>
     </li>
     <li>
-        <input class="card-cvc" type="text" size="4"/>
-    </li>
-    <li>
-        <label class="card-holdername-label">
-            <?php echo $this->__("paymill_Holder") ?>
-        </label>
-    </li>
-    <li>
-        <input class="card-holdername" type="text" size="20"/>
-    </li>
-    <li>
-        <label class="card-expiry-label">
-                <?php echo $this->__("paymill_Date") ?>
-        </label>
-    </li>
-    <li> 
-        <div>
-            <input class="card-expiry-month" type="text" size="2"/>
-            <span> / </span>
-            <input class="card-expiry-year" type="text" size="4"/>
+        <label for="<?php echo $_code ?>_expiry_month" class="required"><em>*</em><?php echo $this->__("paymill_Date") ?></label>
+        <div class="input-box">
+            <div class="v-fix">
+                <select id="<?php echo $_code ?>_expiry_month" name="payment[<?php echo $_code ?>_expiry_month]" class="month paymill-validate-cc-expdate">
+                <?php foreach ($this->getPaymillCcMonths() as $k=>$v): ?>
+                    <option value="<?php echo $k?$k:'' ?>"<?php if($k==$this->getInfoData($_code . '_expiry_month')): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
+                <?php endforeach ?>
+                </select>
+            </div>
+            <div class="v-fix">
+                <select id="<?php echo $_code ?>_expiry_year" name="payment[<?php echo $_code ?>_expiry_year]" class="year">
+                <?php foreach ($this->getPaymillCcYears() as $k=>$v): ?>
+                    <option value="<?php echo $k?$k:'' ?>"<?php if($k==$this->getInfoData($_code . '_expiry_year')): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
+                <?php endforeach ?>
+                </select>
+            </div>
         </div>
     </li>
     <?php if(Mage::helper('paymill/optionHelper')->isShowingLabels()){ echo "<li><div class='paymill_powered'><div class='paymill_credits'>".$this->__("paymill_slogan")."<a href='http://www.paymill.de' target='_blank'>Paymill</a></div></div></li>";} ?>
