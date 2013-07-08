@@ -29,4 +29,13 @@ class Paymill_Paymill_Block_Adminhtml_Log extends Mage_Adminhtml_Block_Widget_Gr
         $this->_headerText = Mage::helper('paymill')->__('paymill_log');
         parent::__construct();
     }
+    
+    /**
+     * @see Mage_Adminhtml_Block_Widget_Grid_Container::_prepareLayout()
+     */
+    protected function _prepareLayout()
+    {
+        $this->_removeButton('add');
+        return parent::_prepareLayout();
+    }
 }
