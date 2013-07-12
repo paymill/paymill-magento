@@ -45,75 +45,48 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
      */
     public function preAuth(Varien_Object $payment, $amount)
     {
-        //Initalizing variables and helpers
-        $paymill_flag_client_set    = false;
-        $paymill_flag_payment_set   = false;
-        $quote                      = $quote = Mage::getSingleton('checkout/session')->getQuote();
-        $paymentHelper              = Mage::helper("paymill/paymentHelper");
-        $customerHelper             = Mage::helper("paymill/customerHelper");
-        $fcHelper                   = Mage::helper("paymill/fastCheckoutHelper");
+        //Gathering data from session
+        $token = Mage::getSingleton('core/session')->getToken();
 
-        //Gathering data
-        $token                      = Mage::getSingleton('core/session')->getToken();
-        $email                      = $customerHelper->getCustomerEmail($quote);
-        $description                = $paymentHelper->getDescription($quote);
+        //Create Payment Processor
+        $paymentHelper = Mage::helper("paymill/paymentHelper");
+        $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
+        $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token);
 
         //Loading Fast Checkout Data (if enabled and given)
         if($fcHelper->isFastCheckoutEnabled()){
             $clientId = $fcHelper->getClientId();
-            Mage::helper('paymill/loggingHelper')->log("preAuthorization found an existing Client.", $clientId);
             if(isset($clientId)){
-                $paymill_flag_client_set = true;
+                $paymentProcessor->setClientId($clientId);
                 $paymentId = $fcHelper->getPaymentId($this->_code);
-                Mage::helper('paymill/loggingHelper')->log("preAuthorization found an existing Payment.", $paymentId);
                 if(isset($paymentId)){
-                    $paymill_flag_payment_set = true;
+                    $paymentProcessor->setPaymentId($paymentId);
                 }
             }
         }
 
-        if(!$paymill_flag_client_set){
-            try{
-                $clientId = $paymentHelper->createClient($email, $description);
-            } catch (Exception $ex){
-                Mage::helper('paymill/loggingHelper')->log("There was an error creating the client.", $ex->getMessage());
-                return false;
+        //Process Payment
+        $success = $paymentProcessor->processPayment(false);
+        
+        If($success){
+            //Save Transaction Data
+            $transactionHelper = Mage::helper("paymill/transactionHelper");
+            $transactionModel = $transactionHelper->createTransactionModel($paymentProcessor->getPreauthId(), true);
+            $transactionHelper->setAdditionalInformation($payment, $transactionModel);
+
+            //Save Data for Fast Checkout (if enabled)
+            if($fcHelper->isFastCheckoutEnabled()){ //Fast checkout enabled
+                if(!$fcHelper->hasData($this->_code)){
+                    $clientId = $paymentProcessor->getClientId();
+                    $paymentId = $paymentProcessor->getPaymentId();
+                    $fcHelper->saveData($this->_code, $clientId, $paymentId);
+                }
             }
             
-        }
-
-        if(!$paymill_flag_payment_set){
-            try{
-                $paymentId = $paymentHelper->createPayment($token, $clientId);
-            } catch (Exception $ex){
-                Mage::helper('paymill/loggingHelper')->log("There was an error creating the payment.", $ex->getMessage());
-                return false;
-            }
-        }
-
-        //Authorize payment
-        try{
-            $transaction = $paymentHelper->createPreAuthorization($paymentId);
-        } catch (Exception $ex){
-                Mage::helper('paymill/loggingHelper')->log("There was an error creating the Pre-Authorization.", $ex->getMessage());
-                return false;
-            }
-
-        //Save Transaction Data
-        $transactionHelper = Mage::helper("paymill/transactionHelper");
-        $transactionModel = $transactionHelper->createTransactionModel($transaction['id'], true);
-        $transactionHelper->setAdditionalInformation($payment, $transactionModel);
-        
-        //Save Data for Fast Checkout (if enabled)
-        if($fcHelper->isFastCheckoutEnabled()){ //Fast checkout enabled
-            if(!$fcHelper->hasData($this->_code)){
-                $clientId = $clientId;
-                $paymentId = $paymentId;
-                $fcHelper->saveData($this->_code, $clientId, $paymentId);
-            }
+            return true;
         }
         
-        return true;
+        return false;
     }
 
     /**
@@ -122,25 +95,33 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
     public function capture(Varien_Object $payment, $amount)
     {
         //Initalizing variables and helpers
-        $paymentHelper              = Mage::helper("paymill/paymentHelper");
         $transactionHelper          = Mage::helper("paymill/transactionHelper");
         $order                      = $payment->getOrder();
 
         if($transactionHelper->getPreAuthenticatedFlagState($order)){
             //Capture preAuth
-            $preAuthorization = $transactionHelper->getTransactionId($order);
-            $captureTransaction = $paymentHelper->createTransactionFromPreAuth($order, $preAuthorization, $amount);
+            $preAuthorization           = $transactionHelper->getTransactionId($order);
+            $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
+            $apiUrl                     = Mage::helper('paymill')->getApiUrl();
+            $libBase                    = null;
 
-            if (isset($captureTransaction['data']['response_code']) && $captureTransaction['data']['response_code'] !== 20000) {
-                $this->_log("An Error occured: " . $captureTransaction['data']['response_code'], var_export($captureTransaction, true));
-                throw new Exception("Invalid Result Exception: Invalid ResponseCode");
-            }
-            Mage::helper('paymill/loggingHelper')->log("Capture created", var_export($captureTransaction, true));
+            $params                     = array();
+            $params['amount']           = (int)(string)($amount*100);
+            $params['currency']         = Mage::app()->getStore()->getCurrentCurrencyCode();
+            $params['description']      = Mage::helper('paymill/paymentHelper')->getDescription($order);
+            $params['source']           = Mage::helper('paymill')->getSourceString();
+
+            $paymentProcessor = new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
+            $paymentProcessor->setDifferentAmount((int)(string)Mage::helper('paymill/optionHelper')->getTokenTolerance());
+            $paymentProcessor->setPreauthId($preAuthorization);
+            $paymentProcessor->capture();
+            
+            Mage::helper('paymill/loggingHelper')->log("Capture created", var_export($paymentProcessor->getLastResponse(), true));
 
             //Save Transaction Data
-            $transactionId = $captureTransaction['id'];
+            $transactionId = $paymentProcessor->getTransactionId();
             $transactionModel = $transactionHelper->createTransactionModel($transactionId, true);
             $transactionHelper->setAdditionalInformation($payment, $transactionModel);
         }
-    }
+     }
 }
