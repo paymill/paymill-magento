@@ -51,4 +51,5 @@
 "paymill_log_action_success", "Aktion erfolgreich"
 "paymill_accepted_currency", "Akzeptierte Währungen"
 "paymill_slogan","Sichere Kreditkartenzahlung powered by "
+"paymill_slogan_elv","Elektronisches Lastschriftverfahren powered by "
 "paymill_error_text_invalid_cvc", "Ungültige CVC"

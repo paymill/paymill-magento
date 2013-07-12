@@ -23,7 +23,7 @@
             <input value="" type="text" name="payment[<?php echo $_code ?>_bankcode]" id="<?php echo $_code ?>_bankcode" class="input-text paymill-validate-dd-bankcode required-entry"/>
         </div>
     </li>
-    <?php if(Mage::helper('paymill/optionHelper')->isShowingLabels()){ echo "<li><div class='paymill_powered'><div class='paymill_credits'>".$this->__("paymill_slogan")."<a href='http://www.paymill.de' target='_blank'>Paymill</a></div></div></li>";} ?>
+    <?php if(Mage::helper('paymill/optionHelper')->isShowingLabels()){ echo "<li><div class='paymill_powered'><div class='paymill_credits'>".$this->__("paymill_slogan_elv")."<a href='http://www.paymill.de' target='_blank'>PAYMILL</a></div></div></li>";} ?>
     <li>
         <input class="paymill-payment-token"                name="payment[paymill-payment-token]"               id="payment[paymill-payment-token]"             type="hidden" value=""                                                                              />
         <input class="paymill-payment-amount"               name="payment[paymill-payment-amount]"              id="payment[paymill-payment-amount]"            type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getAmount() ?>"              />
