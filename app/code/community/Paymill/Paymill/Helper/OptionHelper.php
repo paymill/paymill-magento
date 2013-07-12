@@ -125,14 +125,14 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
         if($paymentType === 'paymill_creditcard'){
             $value = $this->_getBackendOption("paymill_creditcard", 'tokenTolerance');
             $value = str_replace ( ',' , '.' , $value );
-            $value = (int)($value*100);
+            $value = (int)(string)($value*100);
             return $value;
         }
         
         if($paymentType === 'paymill_directdebit'){
             $value = $this->_getBackendOption("paymill_directdebit", 'tokenTolerance');
             $value = str_replace ( ',' , '.' , $value );
-            $value = (int)($value*100);
+            $value = (int)(string)($value*100);
             return $value;
         }
         

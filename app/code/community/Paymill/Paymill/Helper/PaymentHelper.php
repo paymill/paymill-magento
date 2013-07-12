@@ -129,7 +129,9 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         $params['description']      = $this->getDescription($quote);
         $params['source']           = Mage::helper('paymill')->getSourceString();
 
-        return new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
+        $paymentProcessor = new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
+        $paymentProcessor->setDifferentAmount(Mage::helper('paymill/optionHelper')->getTokenTolerance());
+        return $paymentProcessor;
     }
 
     /**
