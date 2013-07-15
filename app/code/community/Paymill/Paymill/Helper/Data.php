@@ -57,7 +57,7 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getVersion()
     {
-        return "v3.0.0";
+        return "v3.0.4";
     }
     
     /**
