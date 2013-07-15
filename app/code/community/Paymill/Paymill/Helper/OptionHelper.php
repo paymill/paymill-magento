@@ -122,20 +122,10 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
      */
     public function getTokenTolerance($paymentType)
     {
-        if($paymentType === 'paymill_creditcard'){
-            $value = $this->_getBackendOption("paymill_creditcard", 'tokenTolerance');
-            $value = str_replace ( ',' , '.' , $value );
-            $value = (int)(string)($value*100);
-            return $value;
-        }
+        $optionValue = $this->_getBackendOption($paymentType, 'tokenTolerance');
+        $formattedValue = str_replace ( ',' , '.' , $optionValue );
+        $value = (string)(number_format((float)$formattedValue, 2)*100);
         
-        if($paymentType === 'paymill_directdebit'){
-            $value = $this->_getBackendOption("paymill_directdebit", 'tokenTolerance');
-            $value = str_replace ( ',' , '.' , $value );
-            $value = (int)(string)($value*100);
-            return $value;
-        }
-        
-        return 0;
+        return $value;
     }
 }
