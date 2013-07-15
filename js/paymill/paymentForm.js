@@ -122,7 +122,6 @@ function paymillSubmitForm()
     switch(PAYMILL_PAYMENT_NAME){
         case "paymill_creditcard":
             PAYMILL_NO_FAST_CHECKOUT = pmQuery('.paymill-info-fastCheckout-cc').val();
-            PAYMILL_TOKEN_TOLERANCE = pmQuery('.paymill-option-tokenTolerance-cc').val();
             if(PAYMILL_NO_FAST_CHECKOUT){
                 var paymillValidator = new Validation('co-payment-form');
                 var nv = {};
@@ -162,7 +161,7 @@ function paymillSubmitForm()
                 }
                 
                 var params = {
-                    amount_int:     (parseInt(pmQuery('.paymill-payment-amount').val()) + parseInt(PAYMILL_TOKEN_TOLERANCE)),  // E.g. "15" for 0.15 Eur
+                    amount_int:     parseInt(pmQuery('.paymill-payment-amount').val()),  // E.g. "15" for 0.15 Eur
                     currency:       pmQuery('.paymill-payment-currency').val(),    // ISO 4217 e.g. "EUR"
                     number:         pmQuery('#paymill_creditcard_number').val(),
                     exp_month:      pmQuery('#paymill_creditcard_expiry_month').val(),
@@ -175,7 +174,6 @@ function paymillSubmitForm()
 
         case "paymill_directdebit":
             PAYMILL_NO_FAST_CHECKOUT = pmQuery('.paymill-info-fastCheckout-elv').val();
-            PAYMILL_TOKEN_TOLERANCE = pmQuery('.paymill-option-tokenTolerance-elv').val();
             if(PAYMILL_NO_FAST_CHECKOUT){
                 var paymillValidator = new Validation('co-payment-form');
                 var nv = {};
@@ -208,7 +206,7 @@ function paymillSubmitForm()
                 }
   
                  var params = {
-                     amount_int:     pmQuery('.paymill-payment-amount').val() + PAYMILL_TOKEN_TOLERANCE,  // E.g. "15" for 0.15 Eur
+                     amount_int:     pmQuery('.paymill-payment-amount').val(),  // E.g. "15" for 0.15 Eur
                      currency:       pmQuery('.paymill-payment-currency').val(),    // ISO 4217 e.g. "EUR"
                      number:         pmQuery('#paymill_directdebit_account').val(),
                      bank:           pmQuery('#paymill_directdebit_bankcode').val(),
