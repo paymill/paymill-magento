@@ -196,6 +196,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         $paymentHelper = Mage::helper("paymill/paymentHelper");
         $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
         $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token);
+        $paymentProcessor->setPreAuthAmount(Mage::getSingleton('core/session')->getPreAuthAmount());
 
         //Loading Fast Checkout Data (if enabled and given)
         if($fcHelper->isFastCheckoutEnabled()){

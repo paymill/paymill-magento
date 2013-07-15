@@ -52,6 +52,7 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
         $paymentHelper = Mage::helper("paymill/paymentHelper");
         $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
         $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token);
+        $paymentProcessor->setPreAuthAmount(Mage::getSingleton('core/session')->getPreAuthAmount());
 
         //Loading Fast Checkout Data (if enabled and given)
         if($fcHelper->isFastCheckoutEnabled()){
@@ -112,7 +113,6 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
             $params['source']           = Mage::helper('paymill')->getSourceString();
 
             $paymentProcessor = new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
-            $paymentProcessor->setDifferentAmount((int)(string)Mage::helper('paymill/optionHelper')->getTokenTolerance());
             $paymentProcessor->setPreauthId($preAuthorization);
             $paymentProcessor->capture();
             

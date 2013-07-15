@@ -38,6 +38,17 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         $amountTotal = $decimalTotal * 100;
         return $amountTotal;
     }
+    
+    /**
+     * Returns the PreAuthAmount and sets a session var for later use
+     * @param String $_code
+     */
+    public function getPreAuthAmount($_code)
+    {
+        $amount = $this->getAmount() + Mage::helper('paymill/optionHelper')->getTokenTolerance($_code);
+        Mage::getSingleton('core/session')->setPreAuthAmount($amount);
+        return $amount;
+    }
 
     /**
      * Returns the currency compliant to ISO 4217 (3 char code)
@@ -130,7 +141,6 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         $params['source']           = Mage::helper('paymill')->getSourceString();
 
         $paymentProcessor = new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
-        $paymentProcessor->setDifferentAmount(Mage::helper('paymill/optionHelper')->getTokenTolerance());
         return $paymentProcessor;
     }
 
