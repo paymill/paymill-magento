@@ -34,7 +34,6 @@ class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
     {
         $custFirstName = $object->getBillingAddress()->getFirstname();
         $custLastName = $object->getBillingAddress()->getLastname();
-        ;
         $custFullName = $custFirstName . " " . $custLastName;
         return $custFullName;
     }
