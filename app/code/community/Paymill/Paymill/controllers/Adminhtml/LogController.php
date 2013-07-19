@@ -1,5 +1,6 @@
-<?php 
-/**  
+<?php
+
+/**
  * Magento  
  * 
  * NOTICE OF LICENSE  
@@ -18,7 +19,7 @@
  */
 class Paymill_Paymill_Adminhtml_LogController extends Mage_Adminhtml_Controller_Action
 {
-    
+
     /**
      * Initialize logs view
      * 
@@ -29,17 +30,17 @@ class Paymill_Paymill_Adminhtml_LogController extends Mage_Adminhtml_Controller_
         $this->loadLayout()->_setActiveMenu('log/paymill_log');
         return $this;
     }
-    
+
     /**
      * Action initially called
      */
     public function indexAction()
-    {  
+    {
         // Let's call our initAction method which will set some basic params for each action
         $this->_initAction()
-            ->renderLayout();
-    }   
-    
+                ->renderLayout();
+    }
+
     /**
      * Normal Magento delete mass action for selected entries
      */
@@ -54,7 +55,7 @@ class Paymill_Paymill_Adminhtml_LogController extends Mage_Adminhtml_Controller_
                 foreach ($logIds as $logId) {
                     Mage::getModel('paymill/log')->load($logId)->delete();
                 }
-                
+
                 Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('paymill')->__("paymill_log_action_success"));
             } catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
@@ -62,4 +63,5 @@ class Paymill_Paymill_Adminhtml_LogController extends Mage_Adminhtml_Controller_
         }
         $this->_redirect('*/*/index');
     }
+
 }

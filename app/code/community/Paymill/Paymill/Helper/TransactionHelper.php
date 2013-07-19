@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -17,6 +18,7 @@
  * @copyright Copyright (c) 2013 PAYMILL GmbH (https://paymill.com/en-gb/)  
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)  
  */
+
 /**
  * The Transaction Helper contains methods dealing saving and loading additional transaction data into and from order objects.
  */

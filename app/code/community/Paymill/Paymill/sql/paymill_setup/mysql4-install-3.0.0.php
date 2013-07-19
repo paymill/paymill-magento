@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -17,10 +18,9 @@
  * @copyright Copyright (c) 2013 PAYMILL GmbH (https://paymill.com/en-gb/)  
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)  
  */
-
 $installer = $this;
 $installer->startSetup();
- 
+
 $installer->run("
     CREATE TABLE IF NOT EXISTS `{$this->getTable('paymill_log')}` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -42,5 +42,5 @@ $installer->run("
         UNIQUE KEY `userId` (`user_id`)
     ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 ");
- 
+
 $installer->endSetup();

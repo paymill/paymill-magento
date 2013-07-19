@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -17,8 +18,9 @@
  * @copyright Copyright (c) 2013 PAYMILL GmbH (https://paymill.com/en-gb/)  
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)  
  */
-class Paymill_Paymill_Model_Observer{
-   
+class Paymill_Paymill_Model_Observer
+{
+
     /**
      * Registered for the checkout_onepage_controller_success_action event
      * Generates the invoice for the current order
@@ -35,22 +37,22 @@ class Paymill_Paymill_Model_Observer{
             }
         }
         $order = Mage::getModel('sales/order')->load($orderId);
-         
-         if($order->getPayment()->getMethod() === 'paymill_creditcard' || $order->getPayment()->getMethod() === 'paymill_directdebit'){
-             
-            if( Mage::helper('paymill/transactionHelper')->getPreAuthenticatedFlagState($order)){ // If the transaction is not flagged as a debit (not a preAuth) transaction
+
+        if ($order->getPayment()->getMethod() === 'paymill_creditcard' || $order->getPayment()->getMethod() === 'paymill_directdebit') {
+
+            if (Mage::helper('paymill/transactionHelper')->getPreAuthenticatedFlagState($order)) { // If the transaction is not flagged as a debit (not a preAuth) transaction
                 Mage::helper('paymill/loggingHelper')->log("Debug", "No Invoice generated, since the transaction is flagged as preauth");
             } else {
-                if($order->canInvoice()) {
+                if ($order->canInvoice()) {
                     //Create the Invoice
-                    Mage::helper('paymill/loggingHelper')->log(Mage::helper('paymill')->__($paymentCode), Mage::helper('paymill')->__('paymill_checkout_generating_invoice'), "Order Id: ".$order->getIncrementId()); 
+                    Mage::helper('paymill/loggingHelper')->log(Mage::helper('paymill')->__($paymentCode), Mage::helper('paymill')->__('paymill_checkout_generating_invoice'), "Order Id: " . $order->getIncrementId());
                     $invoiceId = Mage::getModel('sales/order_invoice_api')->create($order->getIncrementId(), array());
                     Mage::getModel('sales/order_invoice_api')->capture($invoiceId);
                 }
             }
         }
     }
-    
+
     /**
      * Registered for the sales_order_creditmemo_refund event
      * Creates a refund based on the created creditmemo
@@ -60,11 +62,12 @@ class Paymill_Paymill_Model_Observer{
     {
         $creditmemo = $observer->getEvent()->getCreditmemo();
         $order = $creditmemo->getOrder();
-        if($order->getPayment()->getMethod() === 'paymill_creditcard' || $order->getPayment()->getMethod() === 'paymill_directdebit'){
-            $amount = (int)((string)($creditmemo->getGrandTotal()*100));
+        if ($order->getPayment()->getMethod() === 'paymill_creditcard' || $order->getPayment()->getMethod() === 'paymill_directdebit') {
+            $amount = (int) ((string) ($creditmemo->getGrandTotal() * 100));
             Mage::helper('paymill/loggingHelper')->log("Trying to Refund.", var_export($order->getIncrementId(), true), $amount);
             Mage::helper('paymill/refundHelper')->createRefund($order, $amount);
         }
     }
+
 }
 

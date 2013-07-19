@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -19,12 +20,13 @@
  */
 class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill_Model_Method_MethodModelAbstract
 {
+
     /**
      * Magento method code
      *
      * @var string
      */
-    protected $_code          = "paymill_creditcard";
+    protected $_code = "paymill_creditcard";
 
     /**
      * Form block identifier
@@ -55,12 +57,12 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
         $paymentProcessor->setPreAuthAmount(Mage::getSingleton('core/session')->getPreAuthAmount());
 
         //Loading Fast Checkout Data (if enabled and given)
-        if($fcHelper->isFastCheckoutEnabled()){
+        if ($fcHelper->isFastCheckoutEnabled()) {
             $clientId = $fcHelper->getClientId();
-            if(isset($clientId)){
+            if (isset($clientId)) {
                 $paymentProcessor->setClientId($clientId);
                 $paymentId = $fcHelper->getPaymentId($this->_code);
-                if(isset($paymentId)){
+                if (isset($paymentId)) {
                     $paymentProcessor->setPaymentId($paymentId);
                 }
             }
@@ -68,25 +70,25 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
 
         //Process Payment
         $success = $paymentProcessor->processPayment(false);
-        
-        If($success){
+
+        If ($success) {
             //Save Transaction Data
             $transactionHelper = Mage::helper("paymill/transactionHelper");
             $transactionModel = $transactionHelper->createTransactionModel($paymentProcessor->getPreauthId(), true);
             $transactionHelper->setAdditionalInformation($payment, $transactionModel);
 
             //Save Data for Fast Checkout (if enabled)
-            if($fcHelper->isFastCheckoutEnabled()){ //Fast checkout enabled
-                if(!$fcHelper->hasData($this->_code)){
+            if ($fcHelper->isFastCheckoutEnabled()) { //Fast checkout enabled
+                if (!$fcHelper->hasData($this->_code)) {
                     $clientId = $paymentProcessor->getClientId();
                     $paymentId = $paymentProcessor->getPaymentId();
                     $fcHelper->saveData($this->_code, $clientId, $paymentId);
                 }
             }
-            
+
             return true;
         }
-        
+
         return false;
     }
 
@@ -96,26 +98,26 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
     public function capture(Varien_Object $payment, $amount)
     {
         //Initalizing variables and helpers
-        $transactionHelper          = Mage::helper("paymill/transactionHelper");
-        $order                      = $payment->getOrder();
+        $transactionHelper = Mage::helper("paymill/transactionHelper");
+        $order = $payment->getOrder();
 
-        if($transactionHelper->getPreAuthenticatedFlagState($order)){
+        if ($transactionHelper->getPreAuthenticatedFlagState($order)) {
             //Capture preAuth
-            $preAuthorization           = $transactionHelper->getTransactionId($order);
-            $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
-            $apiUrl                     = Mage::helper('paymill')->getApiUrl();
-            $libBase                    = null;
+            $preAuthorization = $transactionHelper->getTransactionId($order);
+            $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();
+            $apiUrl = Mage::helper('paymill')->getApiUrl();
+            $libBase = null;
 
-            $params                     = array();
-            $params['amount']           = (int)(string)($amount*100);
-            $params['currency']         = Mage::app()->getStore()->getCurrentCurrencyCode();
-            $params['description']      = Mage::helper('paymill/paymentHelper')->getDescription($order);
-            $params['source']           = Mage::helper('paymill')->getSourceString();
+            $params = array();
+            $params['amount'] = (int) (string) ($amount * 100);
+            $params['currency'] = Mage::app()->getStore()->getCurrentCurrencyCode();
+            $params['description'] = Mage::helper('paymill/paymentHelper')->getDescription($order);
+            $params['source'] = Mage::helper('paymill')->getSourceString();
 
             $paymentProcessor = new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
             $paymentProcessor->setPreauthId($preAuthorization);
             $paymentProcessor->capture();
-            
+
             Mage::helper('paymill/loggingHelper')->log("Capture created", var_export($paymentProcessor->getLastResponse(), true));
 
             //Save Transaction Data
@@ -123,5 +125,6 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
             $transactionModel = $transactionHelper->createTransactionModel($transactionId, true);
             $transactionHelper->setAdditionalInformation($payment, $transactionModel);
         }
-     }
+    }
+
 }

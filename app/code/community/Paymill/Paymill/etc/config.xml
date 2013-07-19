@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-       <Paymill_Paymill>
-          <version>3.0.5</version>
-       </Paymill_Paymill>
+        <Paymill_Paymill>
+            <version>3.0.5</version>
+        </Paymill_Paymill>
     </modules>
     
    
@@ -55,17 +55,17 @@
             </paymill_write>
             
             <paymill_read>
-               <connection>
-                   <use>core_read</use>
-              </connection>
+                <connection>
+                    <use>core_read</use>
+                </connection>
             </paymill_read>
         </resources>
     </global>
  
  
-<!-- declare default configuration values for this module -->
+    <!-- declare default configuration values for this module -->
     <default>
-<!-- 'payment' configuration section (tab) -->
+        <!-- 'payment' configuration section (tab) -->
         <payment>
             <paymill_creditcard>
                 <active>0</active>
@@ -84,7 +84,7 @@
                 <title>paymill_direct_debit</title>
                 <payment_action>authorize</payment_action>
             </paymill_directdebit>
-         </payment>
+        </payment>
     </default>
     
     <frontend>
