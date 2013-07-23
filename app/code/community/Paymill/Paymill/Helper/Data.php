@@ -59,7 +59,7 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getVersion()
     {
-        return (string) Mage::getConfig()->getNode()->modules->PayIntelligent_Ratepay->version;
+        return (string) Mage::getConfig()->getNode()->modules->Paymill_Paymill->version;
     }
 
     /**
