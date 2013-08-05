@@ -37,8 +37,8 @@ class Paymill_Paymill_Model_Observer
             }
         }
         $order = Mage::getModel('sales/order')->load($orderId);
-
-        if ($order->getPayment()->getMethod() === 'paymill_creditcard' || $order->getPayment()->getMethod() === 'paymill_directdebit') {
+        $paymentCode = $order->getPayment()->getMethod();
+        if ($paymentCode === 'paymill_creditcard' || $paymentCode === 'paymill_directdebit') {
 
             if (Mage::helper('paymill/transactionHelper')->getPreAuthenticatedFlagState($order)) { // If the transaction is not flagged as a debit (not a preAuth) transaction
                 Mage::helper('paymill/loggingHelper')->log("Debug", "No Invoice generated, since the transaction is flagged as preauth");
