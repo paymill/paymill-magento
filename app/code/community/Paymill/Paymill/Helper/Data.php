@@ -98,4 +98,22 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
         return $this->getVersion() . "_Magento_" . Mage::getVersion();
     }
 
+    /**
+     * Validates the private key value by comparing it to an empty string
+     * @return boolean
+     */
+    public function isPrivateKeySet()
+    {
+       return Mage::helper('paymill/OptionHelper')->getPrivateKey() !== "";
+    }
+    
+    /**
+     * Validates the public key value by comparing it to an empty string
+     * @return boolean
+     */
+    public function isPublicKeySet()
+    {
+        return Mage::helper('paymill/OptionHelper')->getPublicKey() !== "";
+    }
+    
 }

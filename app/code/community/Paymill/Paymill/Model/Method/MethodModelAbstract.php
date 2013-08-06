@@ -110,6 +110,17 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     }
 
     /**
+     * Defines if the payment method is available for checkout
+     * @param Mage_Sales_Model_Quote $quote
+     * @return boolean
+     */
+    public function isAvailable($quote = null)
+    {
+        $keysAreSet = Mage::helper("paymill")->isPublicKeySet() && Mage::helper("paymill")->isPrivateKeySet();
+        return parent::isAvailable($quote) && $keysAreSet;
+    }
+
+    /**
      * Return Quote or Order Object depending on the type of the payment info
      *
      * @return Mage_Sales_Model_Order
