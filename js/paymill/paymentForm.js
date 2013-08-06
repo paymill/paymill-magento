@@ -4,7 +4,7 @@ var PAYMILL_PUBLIC_KEY                      = null;
 //State Descriptors
 var PAYMILL_PAYMENT_NAME                    = "Preparing Payment";
 var PAYMILL_IMAGE_PATH                      = null;
-var PAYMILL_NO_FAST_CHECKOUT                   = false;
+var PAYMILL_NO_FAST_CHECKOUT                = false;
 
 //Errortexts
 var PAYMILL_ERROR_STRING                    = "";
@@ -122,7 +122,6 @@ function paymillSubmitForm()
     switch(PAYMILL_PAYMENT_NAME){
         case "paymill_creditcard":
             PAYMILL_NO_FAST_CHECKOUT = pmQuery('.paymill-info-fastCheckout-cc').val();
-            PAYMILL_TOKEN_TOLERANCE = pmQuery('.paymill-option-tokenTolerance-cc').val();
             if(PAYMILL_NO_FAST_CHECKOUT){
                 var paymillValidator = new Validation('co-payment-form');
                 var nv = {};
@@ -162,7 +161,7 @@ function paymillSubmitForm()
                 }
                 
                 var params = {
-                    amount_int:     (parseInt(pmQuery('.paymill-payment-amount').val()) + parseInt(PAYMILL_TOKEN_TOLERANCE)),  // E.g. "15" for 0.15 Eur
+                    amount_int:     parseInt(pmQuery('.paymill-payment-amount').val()),  // E.g. "15" for 0.15 Eur
                     currency:       pmQuery('.paymill-payment-currency').val(),    // ISO 4217 e.g. "EUR"
                     number:         pmQuery('#paymill_creditcard_number').val(),
                     exp_month:      pmQuery('#paymill_creditcard_expiry_month').val(),
@@ -175,7 +174,6 @@ function paymillSubmitForm()
 
         case "paymill_directdebit":
             PAYMILL_NO_FAST_CHECKOUT = pmQuery('.paymill-info-fastCheckout-elv').val();
-            PAYMILL_TOKEN_TOLERANCE = pmQuery('.paymill-option-tokenTolerance-elv').val();
             if(PAYMILL_NO_FAST_CHECKOUT){
                 var paymillValidator = new Validation('co-payment-form');
                 var nv = {};
@@ -183,7 +181,7 @@ function paymillSubmitForm()
                     if (false == pmQuery('#paymill_directdebit_holdername').val()) {
                         debug(PAYMILL_ERROR_TEXT_IVALID_HOLDER_ELV);
                         return false;
-                   }
+                    }
                     return true;
                 }, '');
                 nv['paymill-validate-dd-account'] = new Validator('paymill-validate-dd-account', PAYMILL_ERROR_TEXT_IVALID_NUMBER_ELV, function(v) {
@@ -207,12 +205,12 @@ function paymillSubmitForm()
                     return false;
                 }
   
-                 var params = {
-                     amount_int:     pmQuery('.paymill-payment-amount').val() + PAYMILL_TOKEN_TOLERANCE,  // E.g. "15" for 0.15 Eur
-                     currency:       pmQuery('.paymill-payment-currency').val(),    // ISO 4217 e.g. "EUR"
-                     number:         pmQuery('#paymill_directdebit_account').val(),
-                     bank:           pmQuery('#paymill_directdebit_bankcode').val(),
-                     accountholder:  pmQuery('#paymill_directdebit_holdername').val()
+                var params = {
+                    amount_int:     pmQuery('.paymill-payment-amount').val(),  // E.g. "15" for 0.15 Eur
+                    currency:       pmQuery('.paymill-payment-currency').val(),    // ISO 4217 e.g. "EUR"
+                    number:         pmQuery('#paymill_directdebit_account').val(),
+                    bank:           pmQuery('#paymill_directdebit_bankcode').val(),
+                    accountholder:  pmQuery('#paymill_directdebit_holdername').val()
                 };
             }
             break;

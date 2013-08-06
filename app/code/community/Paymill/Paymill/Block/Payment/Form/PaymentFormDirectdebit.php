@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -19,6 +20,7 @@
  */
 class Paymill_Paymill_Block_Payment_Form_PaymentFormDirectdebit extends Mage_Payment_Block_Form
 {
+
     /**
      * Construct
      */
@@ -26,6 +28,6 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormDirectdebit extends Mage_Pay
     {
         parent::_construct();
         $this->setTemplate('paymill/payment/form/directdebit.phtml');
-        
     }
+
 }

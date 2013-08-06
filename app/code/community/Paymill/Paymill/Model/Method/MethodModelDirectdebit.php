@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -19,6 +20,7 @@
  */
 class Paymill_Paymill_Model_Method_MethodModelDirectdebit extends Paymill_Paymill_Model_Method_MethodModelAbstract
 {
+
     /**
      * Magento method code
      *

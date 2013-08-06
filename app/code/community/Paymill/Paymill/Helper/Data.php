@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -17,30 +18,32 @@
  * @copyright Copyright (c) 2013 PAYMILL GmbH (https://paymill.com/en-gb/)  
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)  
  */
+
 /**
  * The Data Helper contains methods dealing with shopiformation.
  * Examples for this might be f.Ex backend option states or pathes.
  */
 class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
 {
+
     /**
      * Returns the path to the image directory as a string
      * @return string Path
      */
     public function getImagePath()
     {
-        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'skin/frontend/base/default/images/paymill/';
+        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) . 'skin/frontend/base/default/images/paymill/';
     }
-    
+
     /**
      * Returns the path to the js directory as a string
      * @return string Path
      */
     public function getJscriptPath()
     {
-        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'js/paymill/';
+        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) . 'js/paymill/';
     }
-    
+
     /**
      * Returns the API Url
      * @return string
@@ -49,29 +52,29 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return "https://api.paymill.com/v2/";
     }
-    
-    
+
     /**
      * Returns the version of the plugin as a string
      * @return String Version
      */
     public function getVersion()
     {
-        return "v3.0.0";
+        return (string) Mage::getConfig()->getNode()->modules->Paymill_Paymill->version;
     }
-    
+
     /**
      * Returns a boolean deciding if the template is going to be displayed of not
      * @param String $code payment code
      * @return boolean
      */
-    public function showTemplateForm($code){
+    public function showTemplateForm($code)
+    {
         $optionHelper = Mage::helper('paymill/optionHelper');
         $fcHelper = Mage::helper('paymill/fastCheckoutHelper');
-        
+
         return !($optionHelper->isFastCheckoutEnabled() && $fcHelper->hasData($code));
     }
-    
+
     /**
      * Returns the div tag opening defining the visibility of the payment form 
      * @param String $code
@@ -79,21 +82,38 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getFormTypeForDisplay($code)
     {
-        if($this->showTemplateForm($code)){
-                return "<div>";
-            } else {
-                return "<div style='display:none;'>";
-            }        
+        if ($this->showTemplateForm($code)) {
+            return "<div>";
+        } else {
+            return "<div style='display:none;'>";
+        }
     }
-    
+
     /**
      * Returns the Source string passt to every transaction
      * @return String Source
      */
     public function getSourceString()
     {
-        $version = $this->getVersion();
-        $shopversion = Mage::getVersion();
-        return $version . "_Magento_" . $shopversion;
+        return $this->getVersion() . "_Magento_" . Mage::getVersion();
     }
+
+    /**
+     * Validates the private key value by comparing it to an empty string
+     * @return boolean
+     */
+    public function isPrivateKeySet()
+    {
+       return Mage::helper('paymill/OptionHelper')->getPrivateKey() !== "";
+    }
+    
+    /**
+     * Validates the public key value by comparing it to an empty string
+     * @return boolean
+     */
+    public function isPublicKeySet()
+    {
+        return Mage::helper('paymill/OptionHelper')->getPublicKey() !== "";
+    }
+    
 }

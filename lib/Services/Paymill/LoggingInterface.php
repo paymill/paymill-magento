@@ -9,6 +9,6 @@ interface Services_Paymill_LoggingInterface
      * @param type $message
      * @param type $debugInfo
      */
-    public function log($message, $debugInfo);
+    public function log($message, $debugInfo = null, $additionalInformation = null);
 
 }

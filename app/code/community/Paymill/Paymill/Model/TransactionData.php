@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -19,10 +20,10 @@
  */
 class Paymill_Paymill_Model_TransactionData
 {
-    
+
     private $_preAuthorizationFlag = null;
     private $_transactionId = null;
-    
+
     /**
      * Returns the state of the PreAuthorizationFlag
      * @return Boolean
@@ -31,7 +32,7 @@ class Paymill_Paymill_Model_TransactionData
     {
         return $this->_preAuthorizationFlag;
     }
-    
+
     /**
      * Returns the TransactionId as a string
      * @return String
@@ -40,7 +41,7 @@ class Paymill_Paymill_Model_TransactionData
     {
         return $this->_transactionId;
     }
-    
+
     /**
      * Sets the PreAuthorizationFlag
      * @param Boolean $flag
@@ -49,7 +50,7 @@ class Paymill_Paymill_Model_TransactionData
     {
         $this->_preAuthorizationFlag = $flag;
     }
-    
+
     /**
      * Sets the transaction id
      * @param String $id

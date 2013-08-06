@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -19,7 +20,7 @@
  */
 class Paymill_Paymill_Model_Fastcheckout extends Mage_Core_Model_Abstract
 {
-    
+
     /**
      * Construct
      */
@@ -28,8 +29,7 @@ class Paymill_Paymill_Model_Fastcheckout extends Mage_Core_Model_Abstract
         parent::_construct();
         $this->_init('paymill/fastcheckout');
     }
-    
-    
+
     /**
      * Returns the paymentId matched with the userId passed as an argument.
      * If no match is found, the return value will be null.
@@ -42,16 +42,15 @@ class Paymill_Paymill_Model_Fastcheckout extends Mage_Core_Model_Abstract
         $collection = Mage::getModel('paymill/fastcheckout')->getCollection();
         $collection->addFilter('user_id', $userId);
         $obj = $collection->getFirstItem();
-        if($code === "paymill_creditcard"){
+        if ($code === "paymill_creditcard") {
             return $obj->getCcPaymentId();
         }
-        
-        if($code === "paymill_directdebit"){
+
+        if ($code === "paymill_directdebit") {
             return $obj->getElvPaymentId();
         }
-        
     }
-    
+
     /**
      * Saves a set of arguments (paymentMethodCode, clientId and paymentId) as a match to the Id of the current user.
      * The paymentMethodCode is used to bind the Data to the correct payment type.
@@ -66,71 +65,73 @@ class Paymill_Paymill_Model_Fastcheckout extends Mage_Core_Model_Abstract
         $collection = Mage::getModel('paymill/fastcheckout')->getCollection();
         $collection->addFilter('user_id', $userId);
         $customerExists = $collection->count();
-        
-        if($customerExists == 1){
+
+        if ($customerExists == 1) {
             $obj = $collection->getFirstItem();
-            
-            if($paymentMethodCode === 'paymill_creditcard'){
-            $logger->log("Saving Fast Checkout Data", "Customer data already exists. Saving CC only Data.");
-            $obj->setCcPaymentId($paymentId)
-                ->save();
+
+            if ($paymentMethodCode === 'paymill_creditcard') {
+                $logger->log("Saving Fast Checkout Data", "Customer data already exists. Saving CC only Data.");
+                $obj->setCcPaymentId($paymentId)
+                        ->save();
             }
-            
-            if($paymentMethodCode === 'paymill_directdebit'){
-            $logger->log("Saving Fast Checkout Data", "Customer data already exists. Saving ELV only Data.");
-            $obj->setElvPaymentId($paymentId)
-                ->save();
+
+            if ($paymentMethodCode === 'paymill_directdebit') {
+                $logger->log("Saving Fast Checkout Data", "Customer data already exists. Saving ELV only Data.");
+                $obj->setElvPaymentId($paymentId)
+                        ->save();
             }
             return true;
         }
 
         //Insert into db
-        if($paymentMethodCode === 'paymill_creditcard'){
-        $logger->log("Saving Fast Checkout Data", "Customer data saved with CC data");
-        $this->setId(null)
-            ->setUserId($userId)
-            ->setClientId($clientId)
-            ->setCcPaymentId($paymentId)
-            ->save();
-        return true;
+        if ($paymentMethodCode === 'paymill_creditcard') {
+            $logger->log("Saving Fast Checkout Data", "Customer data saved with CC data");
+            $this->setId(null)
+                    ->setUserId($userId)
+                    ->setClientId($clientId)
+                    ->setCcPaymentId($paymentId)
+                    ->save();
+            return true;
         }
-        
-        if($paymentMethodCode === 'paymill_directdebit'){
-        $logger->log("Saving Fast Checkout Data", "Customer data saved with ELV data");
-        $this->setId(null)
-            ->setUserId($userId)
-            ->setClientId($clientId)
-            ->setElvPaymentId($paymentId)
-            ->save();
-        return true;
+
+        if ($paymentMethodCode === 'paymill_directdebit') {
+            $logger->log("Saving Fast Checkout Data", "Customer data saved with ELV data");
+            $this->setId(null)
+                    ->setUserId($userId)
+                    ->setClientId($clientId)
+                    ->setElvPaymentId($paymentId)
+                    ->save();
+            return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Returns a boolean describing if there is FC Data registered for the given userId
      * @param String $userId
      * @param String $code PaymentMethodCode
      * @return boolean
      */
-    public function hasFcData($userId, $code){
+    public function hasFcData($userId, $code)
+    {
         $collection = Mage::getModel('paymill/fastcheckout')->getCollection();
         $collection->addFilter('user_id', $userId);
-        
-        if($code === "paymill_creditcard"){
+
+        if ($code === "paymill_creditcard") {
             $obj = $collection->getFirstItem();
-            if($obj->getCcPaymentId() != null){
+            if ($obj->getCcPaymentId() != null) {
                 return true;
             }
         }
-        
-        if($code === "paymill_directdebit"){
+
+        if ($code === "paymill_directdebit") {
             $obj = $collection->getFirstItem();
-            if($obj->getElvPaymentId() != null){
+            if ($obj->getElvPaymentId() != null) {
                 return true;
             }
         }
         return false;
     }
+
 }

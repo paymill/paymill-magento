@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -17,11 +18,13 @@
  * @copyright Copyright (c) 2013 PAYMILL GmbH (https://paymill.com/en-gb/)  
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)  
  */
+
 /**
  * The Customer Helper contains methods dealing customer information.
  */
 class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
 {
+
     /**
      * Returns the current customers full name
      * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
@@ -29,12 +32,12 @@ class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
      */
     public function getCustomerName($object)
     {
-        $custFirstName      = $object->getBillingAddress()->getFirstname();
-        $custLastName       = $object->getBillingAddress()->getLastname();;
-        $custFullName       = $custFirstName . " " . $custLastName;
+        $custFirstName = $object->getBillingAddress()->getFirstname();
+        $custLastName = $object->getBillingAddress()->getLastname();
+        $custFullName = $custFirstName . " " . $custLastName;
         return $custFullName;
     }
-    
+
     /**
      * Returns the current customers email adress.
      * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
@@ -44,7 +47,7 @@ class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
     {
         return $object->getCustomerEmail();
     }
-    
+
     /**
      * Returns the Id of the user currently  logged in.
      * Returns null if there is no logged in user.
@@ -53,11 +56,11 @@ class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
     public function getUserId()
     {
         $result = null;
-        if(Mage::getSingleton('customer/session')->isLoggedIn()){
+        if (Mage::getSingleton('customer/session')->isLoggedIn()) {
             $result = Mage::getSingleton('customer/session')->getId();
-        }else {
-            
         }
+        
         return $result;
     }
+
 }

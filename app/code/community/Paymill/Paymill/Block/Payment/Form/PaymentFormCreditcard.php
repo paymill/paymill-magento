@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -19,6 +20,7 @@
  */
 class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Mage_Payment_Block_Form
 {
+
     /**
      * Construct
      */
@@ -35,7 +37,7 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Mage_Paym
      */
     public function getPaymillCcMonths()
     {
-        $months[0] =  $this->__('Month');
+        $months[0] = $this->__('Month');
         $months = array_merge($months, Mage::getSingleton('payment/config')->getMonths());
 
         return $months;
@@ -49,7 +51,7 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Mage_Paym
     public function getPaymillCcYears()
     {
         $years = Mage::getSingleton('payment/config')->getYears();
-        $years = array(0=>$this->__('Year'))+$years;
+        $years = array(0 => $this->__('Year')) + $years;
 
         return $years;
     }

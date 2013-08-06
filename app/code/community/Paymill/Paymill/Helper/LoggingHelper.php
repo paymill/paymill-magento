@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -17,12 +18,14 @@
  * @copyright Copyright (c) 2013 PAYMILL GmbH (https://paymill.com/en-gb/)  
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)  
  */
+
 /**
  * The Logging Helper contains methods dealing with Log entries.
  * Examples for this might be f.Ex logging data or reading from the log.
  */
 class Paymill_Paymill_Helper_LoggingHelper extends Mage_Core_Helper_Abstract implements Services_Paymill_LoggingInterface
 {
+
     /**
      * Inserts the arguments into the db log
      * @param String $merchantInfo
@@ -33,13 +36,15 @@ class Paymill_Paymill_Helper_LoggingHelper extends Mage_Core_Helper_Abstract imp
     {
         Mage::getModel('paymill/log')->log($merchantInfo, $devInfo, $devInfoAdditional);
     }
-    
+
     /**
      * Returns a collection of all log-entries
      * @return Collection Description
      */
-    public function getEntries(){
+    public function getEntries()
+    {
         $collection = Mage::getModel('paymill/log')->getCollection();
         return $collection;
     }
+
 }

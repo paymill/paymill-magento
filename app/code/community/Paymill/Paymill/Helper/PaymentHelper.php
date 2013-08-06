@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -17,12 +18,14 @@
  * @copyright Copyright (c) 2013 PAYMILL GmbH (https://paymill.com/en-gb/)  
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)  
  */
+
 /**
  * The Payment Helper contains methods dealing with payment relevant information.
  * Examples for this might be f.Ex customer data, formating of basket amounts or similar.
  */
 class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
 {
+
     /**
      * Returns the order amount in the smallest possible unit (f.Ex. cent for the EUR currency)
      * <p align = "center" color = "red">At the moment, only currencies with a 1:100 conversion are supported. Special cases need to be added if necessary</p>
@@ -31,7 +34,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function getAmount($object = null)
     {
-        if($object == null){
+        if ($object == null) {
             $object = Mage::getSingleton('checkout/session')->getQuote();
         }
         $decimalTotal = $object->getGrandTotal();
@@ -40,13 +43,24 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Returns the PreAuthAmount and sets a session var for later use
+     * @param String $_code
+     */
+    public function getPreAuthAmount($_code)
+    {
+        $amount = $this->getAmount() + Mage::helper('paymill/optionHelper')->getTokenTolerance($_code);
+        Mage::getSingleton('core/session')->setPreAuthAmount($amount);
+        return $amount;
+    }
+
+    /**
      * Returns the currency compliant to ISO 4217 (3 char code)
      * @return string 3 Character long currency code
      */
     public function getCurrency()
     {
-         $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode();
-         return $currency_code;
+        $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode();
+        return $currency_code;
     }
 
     /**
@@ -59,7 +73,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     {
         $orderId = $this->getOrderId($object);
         $customerEmail = Mage::helper("paymill/customerHelper")->getCustomerEmail($object);
-        $description = $orderId. ", " . $customerEmail;
+        $description = $orderId . ", " . $customerEmail;
 
         return $description;
     }
@@ -72,11 +86,11 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     public function getPaymentType($code)
     {
         //Creditcard
-        if($code === "paymill_creditcard"){
+        if ($code === "paymill_creditcard") {
             $type = "cc";
         }
         //Directdebit
-        if($code === "paymill_directdebit"){
+        if ($code === "paymill_directdebit") {
             $type = "elv";
         }
 
@@ -92,18 +106,17 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     {
         $orderId = null;
 
-        if($object instanceof Mage_Sales_Model_Order){
+        if ($object instanceof Mage_Sales_Model_Order) {
             $orderId = $object->getIncrementId();
         }
 
-        if($object instanceof Mage_Sales_Model_Quote){
+        if ($object instanceof Mage_Sales_Model_Quote) {
             $orderId = $object->getReservedOrderId();
         }
 
 
         return $orderId;
     }
-
 
     /**
      * Returns an instance of the paymentProcessor class.
@@ -114,23 +127,22 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function createPaymentProcessor($paymentCode, $token)
     {
-        $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
-        $apiUrl                     = Mage::helper('paymill')->getApiUrl();
-        $quote                      = Mage::getSingleton('checkout/session')->getQuote();
-        $libBase                    = null;
+        $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();
+        $apiUrl = Mage::helper('paymill')->getApiUrl();
+        $quote = Mage::getSingleton('checkout/session')->getQuote();
+        $libBase = null;
 
-        $params                     = array();
-        $params['token']            = $token;
-        $params['amount']           = (int)$this->getAmount();
-        $params['currency']         = $this->getCurrency();
-        $params['payment']          = $this->getPaymentType($paymentCode); // The chosen payment (cc | elv)
-        $params['name']             = Mage::helper("paymill/customerHelper")->getCustomerName($quote);
-        $params['email']            = Mage::helper("paymill/customerHelper")->getCustomerEmail($quote);
-        $params['description']      = $this->getDescription($quote);
-        $params['source']           = Mage::helper('paymill')->getSourceString();
+        $params = array();
+        $params['token'] = $token;
+        $params['amount'] = (int) $this->getAmount();
+        $params['currency'] = $this->getCurrency();
+        $params['payment'] = $this->getPaymentType($paymentCode); // The chosen payment (cc | elv)
+        $params['name'] = Mage::helper("paymill/customerHelper")->getCustomerName($quote);
+        $params['email'] = Mage::helper("paymill/customerHelper")->getCustomerEmail($quote);
+        $params['description'] = $this->getDescription($quote);
+        $params['source'] = Mage::helper('paymill')->getSourceString();
 
         $paymentProcessor = new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
-        $paymentProcessor->setDifferentAmount(Mage::helper('paymill/optionHelper')->getTokenTolerance());
         return $paymentProcessor;
     }
 
@@ -143,15 +155,15 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function createClient($email, $description)
     {
-        $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
-        $apiUrl                     = Mage::helper('paymill')->getApiUrl();
-        
-        if(empty($privateKey)){
+        $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();
+        $apiUrl = Mage::helper('paymill')->getApiUrl();
+
+        if (empty($privateKey)) {
             Mage::helper('paymill/loggingHelper')->log("No private Key was set.");
             Mage::throwException("No private Key was set.");
         }
-        
-        $clientsObject              = new Services_Paymill_Clients($privateKey, $apiUrl);
+
+        $clientsObject = new Services_Paymill_Clients($privateKey, $apiUrl);
 
         $client = $clientsObject->create(
                 array(
@@ -179,22 +191,22 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function createPayment($token, $clientId)
     {
-        $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
-        $apiUrl                     = Mage::helper('paymill')->getApiUrl();
-                
-        if(empty($privateKey)){
+        $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();
+        $apiUrl = Mage::helper('paymill')->getApiUrl();
+
+        if (empty($privateKey)) {
             Mage::helper('paymill/loggingHelper')->log("No private Key was set.");
             Mage::throwException("No private Key was set.");
         }
-        
-        $paymentsObject             = new Services_Paymill_Payments($privateKey, $apiUrl);
-        
+
+        $paymentsObject = new Services_Paymill_Payments($privateKey, $apiUrl);
+
         $payment = $paymentsObject->create(
-                    array(
-                        'token' => $token,
-                        'client' => $clientId
-                    )
-            );
+                array(
+                    'token' => $token,
+                    'client' => $clientId
+                )
+        );
 
         if (isset($payment['data']['response_code']) && $payment['data']['response_code'] !== 20000) {
             $this->_log("An Error occured: " . $payment['data']['response_code'], var_export($payment, true));
@@ -214,27 +226,25 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function createPreAuthorization($paymentId)
     {
-        $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
-        $apiUrl                     = Mage::helper('paymill')->getApiUrl();
-        
-        if(empty($privateKey)){
+        $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();
+        $apiUrl = Mage::helper('paymill')->getApiUrl();
+
+        if (empty($privateKey)) {
             Mage::helper('paymill/loggingHelper')->log("No private Key was set.");
             Mage::throwException("No private Key was set.");
         }
-        
-        $preAuthObject              = new Services_Paymill_Preauthorizations($privateKey, $apiUrl);
 
-        $amount                     = (int)$this->getAmount();
-        $currency                   = $this->getCurrency();
+        $preAuthObject = new Services_Paymill_Preauthorizations($privateKey, $apiUrl);
 
-        $params                     = array( 'payment' => $paymentId, 'source' => Mage::helper('paymill')->getSourceString(), 'amount' => $amount, 'currency' => $currency );
-        $preAuth                    = $preAuthObject->create($params);
+        $amount = (int) $this->getAmount();
+        $currency = $this->getCurrency();
+
+        $params = array('payment' => $paymentId, 'source' => Mage::helper('paymill')->getSourceString(), 'amount' => $amount, 'currency' => $currency);
+        $preAuth = $preAuthObject->create($params);
 
         Mage::helper('paymill/loggingHelper')->log("PreAuthorization created from Payment", $preAuth['preauthorization']['id'], print_r($params, true));
 
         return $preAuth['preauthorization'];
-
-
     }
 
     /**
@@ -246,25 +256,26 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function createTransactionFromPreAuth($order, $preAuthorizationId, $amount)
     {
-        $privateKey                 = Mage::helper('paymill/optionHelper')->getPrivateKey();
-        $apiUrl                     = Mage::helper('paymill')->getApiUrl();
-        if(empty($privateKey)){
+        $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();
+        $apiUrl = Mage::helper('paymill')->getApiUrl();
+        if (empty($privateKey)) {
             Mage::helper('paymill/loggingHelper')->log("No private Key was set.");
             Mage::throwException("No private Key was set.");
         }
-        
-        $transactionsObject         = new Services_Paymill_Transactions($privateKey, $apiUrl);
-        $params                     = array(
-                                                  'amount' => (int)($amount*100),
-                                                'currency' => $this->getCurrency(),
-                                             'description' => $this->getDescription($order),
-                                                  'source' => Mage::helper('paymill')->getSourceString(),
-                                         'preauthorization'=> $preAuthorizationId
-                                        );
 
-        $transaction                = $transactionsObject->create($params);
-        Mage::helper('paymill/loggingHelper')->log("Creating Transaction from PreAuthorization", print_r($params, true), var_export($transaction,true));
+        $transactionsObject = new Services_Paymill_Transactions($privateKey, $apiUrl);
+        $params = array(
+            'amount' => (int) ($amount * 100),
+            'currency' => $this->getCurrency(),
+            'description' => $this->getDescription($order),
+            'source' => Mage::helper('paymill')->getSourceString(),
+            'preauthorization' => $preAuthorizationId
+        );
+
+        $transaction = $transactionsObject->create($params);
+        Mage::helper('paymill/loggingHelper')->log("Creating Transaction from PreAuthorization", print_r($params, true), var_export($transaction, true));
 
         return $transaction;
     }
+
 }

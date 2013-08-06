@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -19,6 +20,7 @@
  */
 class Paymill_Paymill_Block_Payment_Info_PaymentFormCreditcard extends Mage_Payment_Block_Info
 {
+
     /**
      * Construct
      */

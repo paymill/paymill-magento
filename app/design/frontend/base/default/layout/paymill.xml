@@ -6,12 +6,13 @@ and open the template in the editor.
 <layout version="0.1.0">
     <checkout_onepage_index>
         <reference name="head">  
-             <action method="addCss">
-                 <stylesheet>css/paymill/logo.css</stylesheet>
-             </action>
+            <action method="addCss">
+                <stylesheet>css/paymill/logo.css</stylesheet>
+            </action>
             <block type="core/text" name="google.cdn.jquery">
-		<action method="setText">
-                    <text><![CDATA[<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script><script type="text/javascript" src="https://bridge.paymill.com/"></script></script><script type="text/javascript">pmQuery = jQuery.noConflict();</script>]]></text>
+                <action method="setText">
+                    <text><![CDATA[<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script><script type="text/javascript" src="https://bridge.paymill.com/"></script></script><script type="text/javascript">pmQuery = jQuery.noConflict();</script>]]>
+                    </text>
                 </action>
             </block>
         </reference>

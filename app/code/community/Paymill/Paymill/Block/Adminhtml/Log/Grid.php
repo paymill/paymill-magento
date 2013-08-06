@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Magento
  *
@@ -19,6 +20,7 @@
  */
 class Paymill_Paymill_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
+
     /**
      * Is filter allowed
      * 

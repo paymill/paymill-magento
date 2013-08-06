@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Magento
  * 
@@ -46,7 +47,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      *
      * @var boolean
      */
-    protected $_canRefundInvoicePartial  = true;
+    protected $_canRefundInvoicePartial = true;
 
     /**
      * Can use the Capture method
@@ -107,7 +108,18 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         }
         return true;
     }
-    
+
+    /**
+     * Defines if the payment method is available for checkout
+     * @param Mage_Sales_Model_Quote $quote
+     * @return boolean
+     */
+    public function isAvailable($quote = null)
+    {
+        $keysAreSet = Mage::helper("paymill")->isPublicKeySet() && Mage::helper("paymill")->isPrivateKeySet();
+        return parent::isAvailable($quote) && $keysAreSet;
+    }
+
     /**
      * Return Quote or Order Object depending on the type of the payment info
      *
@@ -165,15 +177,15 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     public function authorize(Varien_Object $payment, $amount)
     {
         $success = false;
-        if(Mage::helper('paymill/optionHelper')->isPreAuthorizing() && $this->_code === "paymill_creditcard"){
+        if (Mage::helper('paymill/optionHelper')->isPreAuthorizing() && $this->_code === "paymill_creditcard") {
             Mage::helper('paymill/loggingHelper')->log("Starting payment process as preAuth");
             $success = $this->preAuth($payment, $amount);
-        } else{
+        } else {
             Mage::helper('paymill/loggingHelper')->log("Starting payment process as debit");
             $success = $this->debit($payment, $amount);
         }
 
-        if(!$success){
+        if (!$success) {
             Mage::helper('paymill/loggingHelper')->log("There was an error processing the payment.");
             Mage::getSingleton('checkout/session')->setGotoSection('payment');
             Mage::throwException("There was an error processing your payment.");
@@ -196,14 +208,15 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         $paymentHelper = Mage::helper("paymill/paymentHelper");
         $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
         $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token);
+        $paymentProcessor->setPreAuthAmount(Mage::getSingleton('core/session')->getPreAuthAmount());
 
         //Loading Fast Checkout Data (if enabled and given)
-        if($fcHelper->isFastCheckoutEnabled()){
+        if ($fcHelper->isFastCheckoutEnabled()) {
             $clientId = $fcHelper->getClientId();
-            if(isset($clientId)){
+            if (isset($clientId)) {
                 $paymentProcessor->setClientId($clientId);
                 $paymentId = $fcHelper->getPaymentId($this->_code);
-                if(isset($paymentId)){
+                if (isset($paymentId)) {
                     $paymentProcessor->setPaymentId($paymentId);
                 }
             }
@@ -211,27 +224,27 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
 
         //Process Payment
         $success = $paymentProcessor->processPayment();
-        
-        
-        If($success){
+
+
+        If ($success) {
             //Save Transaction Data
             $transactionHelper = Mage::helper("paymill/transactionHelper");
             $transactionModel = $transactionHelper->createTransactionModel($paymentProcessor->getTransactionId(), false);
             $transactionHelper->setAdditionalInformation($payment, $transactionModel);
 
             //Save Data for Fast Checkout (if enabled)
-            if($fcHelper->isFastCheckoutEnabled()){ //Fast checkout enabled
-                if(!$fcHelper->hasData($this->_code)){
+            if ($fcHelper->isFastCheckoutEnabled()) { //Fast checkout enabled
+                if (!$fcHelper->hasData($this->_code)) {
                     $clientId = $paymentProcessor->getClientId();
                     $paymentId = $paymentProcessor->getPaymentId();
                     $fcHelper->saveData($this->_code, $clientId, $paymentId);
                 }
             }
-            
+
             return true;
         }
-        
+
         return false;
-        
     }
+
 }
