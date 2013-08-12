@@ -56,7 +56,7 @@ class Services_Paymill_PaymentProcessor
         $this->setPrivateKey($privateKey);
         $this->setApiUrl($apiUrl);
         $this->setLibBase($libBase);
-        $this->_preAuthAmount = $params['preauthamount'];
+        $this->_preAuthAmount = isset($params['preauthamount']) ? $params['preauthamount'] : 0;
         $this->_token = $params['token'];
         $this->_amount = $params['amount'];
         $this->_currency = $params['currency'];
