@@ -53,3 +53,4 @@
 "paymill_slogan","Secure credit card payments powered by "
 "paymill_slogan_elv","Direct debit payments powered by "
 "paymill_error_text_invalid_cvc", "Invalid cvc"
+"paymill_3ds_cancel", "cancel"

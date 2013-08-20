@@ -107,6 +107,7 @@ function paymillSubmitForm()
     PAYMILL_PAYMENT_NAME = pmQuery("input[name='payment[method]']:checked").val();
     
     if(PAYMILL_PAYMENT_NAME === "paymill_creditcard"){
+        paymill.config('3ds_cancel_label', pmQuery('.paymill_3ds_cancel').val()); 
         PAYMILL_ERROR_TEXT_IVALID_NUMBER_CC = pmQuery('.paymill-payment-error-number').val();
         PAYMILL_ERROR_TEXT_IVALID_HOLDER_CC = pmQuery('.paymill-payment-error-holder').val();
         PAYMILL_ERROR_TEXT_IVALID_CVC       = pmQuery('.paymill-payment-error-cvc').val();
@@ -237,7 +238,6 @@ pmQuery(document).ready(function()
 {
     //Gather Data
     PAYMILL_PUBLIC_KEY   = pmQuery('.paymill-info-public_key').val();
-            
     pmQuery('#paymill_creditcard_number').live('input', paymillShowCardIcon);
     pmQuery('#payment-buttons-container button:first').prop("onclick", null);
     pmQuery('#payment-buttons-container button:first').unbind('click');
