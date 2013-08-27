@@ -94,6 +94,8 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
 
     /**
      * Gets called when a capture gets triggered (default on invoice generation)
+     * 
+     * @throws Exception
      */
     public function capture(Varien_Object $payment, $amount)
     {
@@ -116,7 +118,10 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
 
             $paymentProcessor = new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
             $paymentProcessor->setPreauthId($preAuthorization);
-            $paymentProcessor->capture();
+            
+            if (!$paymentProcessor->capture()) {
+                Mage::throwException("There was an error processing your capture.");
+            }
 
             Mage::helper('paymill/loggingHelper')->log("Capture created", var_export($paymentProcessor->getLastResponse(), true));
 
