@@ -11,7 +11,7 @@
                     <sort_order>700</sort_order>
                     <fields>
                         <version>
-                            <label>v3.0.7</label>
+                            <label>v3.1.0</label>
                             <sort_order>1</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <frontend_type>label</frontend_type>
@@ -95,7 +95,7 @@
                     <sort_order>800</sort_order>
                     <fields>
                         <version>
-                            <label>v3.0.7</label>
+                            <label>v3.1.0</label>
                             <sort_order>100</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <frontend_type>label</frontend_type>
@@ -171,7 +171,7 @@
                     <sort_order>800</sort_order>
                     <fields>
                         <version>
-                            <label>v3.0.7</label>
+                            <label>v3.1.0</label>
                             <sort_order>100</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <frontend_type>label</frontend_type>
