@@ -156,9 +156,12 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      */
     public function assignData($data)
     {
-        //Recieve Data
-        $postData = Mage::app()->getRequest()->getPost();
-        $token = $postData['payment']['paymill-payment-token'];
+        if (!array_key_exists('paymill-payment-token', $data['payment']) 
+                || empty($data['payment']['paymill-payment-token'])) {
+            Mage::throwException("There was an error processing your payment.");
+        }
+
+        $token = $data['payment']['paymill-payment-token'];
 
         //Save Data into session
         Mage::getSingleton('core/session')->setToken($token);
