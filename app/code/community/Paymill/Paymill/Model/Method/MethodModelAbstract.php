@@ -158,6 +158,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     {
         if (!array_key_exists('paymill-payment-token', $data['payment']) 
                 || empty($data['payment']['paymill-payment-token'])) {
+            Mage::helper('paymill/loggingHelper')->log("No token found.");
             Mage::throwException("There was an error processing your payment.");
         }
 
