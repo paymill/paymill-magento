@@ -47,7 +47,7 @@ function paymillShowCardIcon()
             pmQuery('#paymill_creditcard_card_icon').html('<img src="'+ pmQuery('.paymill-info-image-path').val() +'icon_32x20_visa.png" >');
             pmQuery('#paymill_creditcard_card_icon').show();
             break;
-        case 'Mastercard':
+        case 'MasterCard':
             pmQuery('#paymill_creditcard_card_icon').html('<img src="'+ pmQuery('.paymill-info-image-path').val() +'icon_32x20_mastercard.png" >');
             pmQuery('#paymill_creditcard_card_icon').show();
             break;
