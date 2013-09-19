@@ -42,40 +42,40 @@ function debug(message)
  */
 function paymillShowCardIcon()
 {
-	switch (paymill.cardType(pmQuery('#paymill_creditcard_number').val())) {
-		case 'Visa':
-			pmQuery('#paymill_creditcard_card_icon').html('<img src="' + pmQuery('.paymill-info-image-path').val() + 'icon_32x20_visa.png" >');
-			pmQuery('#paymill_creditcard_card_icon').show();
-			break;
-		case 'Mastercard':
-			pmQuery('#paymill_creditcard_card_icon').html('<img src="' + pmQuery('.paymill-info-image-path').val() + 'icon_32x20_mastercard.png" >');
-			pmQuery('#paymill_creditcard_card_icon').show();
-			break;
-		case 'American Express':
-			pmQuery('#paymill_creditcard_card_icon').html('<img src="' + pmQuery('.paymill-info-image-path').val() + 'icon_32x20_amex.png" >');
-			pmQuery('#paymill_creditcard_card_icon').show();
-			break;
-		case 'JCB':
-			pmQuery('#paymill_creditcard_card_icon').html('<img src="' + pmQuery('.paymill-info-image-path').val() + 'icon_32x20_jcb.png" >');
-			pmQuery('#paymill_creditcard_card_icon').show();
-			break;
-		case 'Maestro':
-			pmQuery('#paymill_creditcard_card_icon').html('<img src="' + pmQuery('.paymill-info-image-path').val() + 'icon_32x20_maestro.png" >');
-			pmQuery('#paymill_creditcard_card_icon').show();
-			break;
-		case 'Diners Club':
-			pmQuery('#paymill_creditcard_card_icon').html('<img src="' + pmQuery('.paymill-info-image-path').val() + 'icon_32x20_dinersclub.png" >');
-			pmQuery('#paymill_creditcard_card_icon').show();
-			break;
-		case 'Discover':
-			pmQuery('#paymill_creditcard_card_icon').html('<img src="' + pmQuery('.paymill-info-image-path').val() + 'icon_32x20_discover.png" >');
-			pmQuery('#paymill_creditcard_card_icon').show();
-			break;
-		default:
-			pmQuery('#paymill_creditcard_card_icon').hide();
-			debug("Creditcard number not according to any known pattern: " + paymill.cardType(pmQuery('#paymill_creditcard_number').val()));
-			break;
-	}
+    switch(paymill.cardType(pmQuery('#paymill_creditcard_number').val())){
+        case 'Visa':
+            pmQuery('#paymill_creditcard_card_icon').html('<img src="'+ pmQuery('.paymill-info-image-path').val() +'icon_32x20_visa.png" >');
+            pmQuery('#paymill_creditcard_card_icon').show();
+            break;
+        case 'MasterCard':
+            pmQuery('#paymill_creditcard_card_icon').html('<img src="'+ pmQuery('.paymill-info-image-path').val() +'icon_32x20_mastercard.png" >');
+            pmQuery('#paymill_creditcard_card_icon').show();
+            break;
+        case 'American Express':
+            pmQuery('#paymill_creditcard_card_icon').html('<img src="'+ pmQuery('.paymill-info-image-path').val() +'icon_32x20_amex.png" >');
+            pmQuery('#paymill_creditcard_card_icon').show();
+            break;
+        case 'JCB':
+            pmQuery('#paymill_creditcard_card_icon').html('<img src="'+ pmQuery('.paymill-info-image-path').val() +'icon_32x20_jcb.png" >');
+            pmQuery('#paymill_creditcard_card_icon').show();
+            break;
+        case 'Maestro':
+            pmQuery('#paymill_creditcard_card_icon').html('<img src="'+ pmQuery('.paymill-info-image-path').val() +'icon_32x20_maestro.png" >');
+            pmQuery('#paymill_creditcard_card_icon').show();
+            break;
+        case 'Diners Club':
+            pmQuery('#paymill_creditcard_card_icon').html('<img src="'+ pmQuery('.paymill-info-image-path').val() +'icon_32x20_dinersclub.png" >');
+            pmQuery('#paymill_creditcard_card_icon').show();
+            break;
+        case 'Discover':
+            pmQuery('#paymill_creditcard_card_icon').html('<img src="'+ pmQuery('.paymill-info-image-path').val() +'icon_32x20_discover.png" >');
+            pmQuery('#paymill_creditcard_card_icon').show();
+            break;
+        default:
+            pmQuery('#paymill_creditcard_card_icon').hide();
+            debug("Creditcard number not according to any known pattern: "+paymill.cardType(pmQuery('#paymill_creditcard_number').val()));
+            break;
+    }
 }
 
 /**
