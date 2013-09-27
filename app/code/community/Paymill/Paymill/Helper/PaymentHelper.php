@@ -39,7 +39,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         }
         $decimalTotal = $object->getGrandTotal();
         $amountTotal = $decimalTotal * 100;
-        return $amountTotal;
+        return round($amountTotal);
     }
 
     /**
@@ -144,138 +144,6 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
 
         $paymentProcessor = new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
         return $paymentProcessor;
-    }
-
-    /**
-     * Creates a client object from the given data and returns the Id
-     * @param String $email
-     * @param String $description
-     * @return String ClientId
-     * @throws Exception "Invalid Result Exception: Invalid ResponseCode for Client"
-     */
-    public function createClient($email, $description)
-    {
-        $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();
-        $apiUrl = Mage::helper('paymill')->getApiUrl();
-
-        if (empty($privateKey)) {
-            Mage::helper('paymill/loggingHelper')->log("No private Key was set.");
-            Mage::throwException("No private Key was set.");
-        }
-
-        $clientsObject = new Services_Paymill_Clients($privateKey, $apiUrl);
-
-        $client = $clientsObject->create(
-                array(
-                    'email' => $email,
-                    'description' => $description
-                )
-        );
-
-        if (isset($client['data']['response_code']) && $client['data']['response_code'] !== 20000) {
-            $this->_log("An Error occured: " . $client['data']['response_code'], var_export($client, true));
-            throw new Exception("Invalid Result Exception: Invalid ResponseCode for Client");
-        }
-
-        $clientId = $client['id'];
-        Mage::helper('paymill/loggingHelper')->log("Client created.", $clientId);
-        return $clientId;
-    }
-
-    /**
-     * Creates a payment object from the given data and returns the Id
-     * @param String $token
-     * @param String $clientId
-     * @return String PaymentId
-     * @throws Exception "Invalid Result Exception: Invalid ResponseCode for Payment"
-     */
-    public function createPayment($token, $clientId)
-    {
-        $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();
-        $apiUrl = Mage::helper('paymill')->getApiUrl();
-
-        if (empty($privateKey)) {
-            Mage::helper('paymill/loggingHelper')->log("No private Key was set.");
-            Mage::throwException("No private Key was set.");
-        }
-
-        $paymentsObject = new Services_Paymill_Payments($privateKey, $apiUrl);
-
-        $payment = $paymentsObject->create(
-                array(
-                    'token' => $token,
-                    'client' => $clientId
-                )
-        );
-
-        if (isset($payment['data']['response_code']) && $payment['data']['response_code'] !== 20000) {
-            $this->_log("An Error occured: " . $payment['data']['response_code'], var_export($payment, true));
-            throw new Exception("Invalid Result Exception: Invalid ResponseCode for Payment");
-        }
-
-        $paymentId = $payment['id'];
-        Mage::helper('paymill/loggingHelper')->log("Payment created.", $paymentId);
-        return $paymentId;
-    }
-
-    /**
-     * Creates a preAuthorization with the given arguments
-     * @param String $token
-     * @param String $paymentId if given, this replaces the token to use fast checkout
-     * @return mixed Response
-     */
-    public function createPreAuthorization($paymentId)
-    {
-        $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();
-        $apiUrl = Mage::helper('paymill')->getApiUrl();
-
-        if (empty($privateKey)) {
-            Mage::helper('paymill/loggingHelper')->log("No private Key was set.");
-            Mage::throwException("No private Key was set.");
-        }
-
-        $preAuthObject = new Services_Paymill_Preauthorizations($privateKey, $apiUrl);
-
-        $amount = (int) $this->getAmount();
-        $currency = $this->getCurrency();
-
-        $params = array('payment' => $paymentId, 'source' => Mage::helper('paymill')->getSourceString(), 'amount' => $amount, 'currency' => $currency);
-        $preAuth = $preAuthObject->create($params);
-
-        Mage::helper('paymill/loggingHelper')->log("PreAuthorization created from Payment", $preAuth['preauthorization']['id'], print_r($params, true));
-
-        return $preAuth['preauthorization'];
-    }
-
-    /**
-     * Generates a transaction from the given arguments
-     * @param Mage_Sales_Model_Order $order
-     * @param String $preAuthorizationId
-     * @param float|double $amount
-     * @return Boolean Indicator of success
-     */
-    public function createTransactionFromPreAuth($order, $preAuthorizationId, $amount)
-    {
-        $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();
-        $apiUrl = Mage::helper('paymill')->getApiUrl();
-        if (empty($privateKey)) {
-            Mage::helper('paymill/loggingHelper')->log("No private Key was set.");
-            Mage::throwException("No private Key was set.");
-        }
-
-        $transactionsObject = new Services_Paymill_Transactions($privateKey, $apiUrl);
-        $params = array(
-            'amount' => (int) ($amount * 100),
-            'currency' => $this->getCurrency(),
-            'description' => $this->getDescription($order),
-            'source' => Mage::helper('paymill')->getSourceString(),
-            'preauthorization' => $preAuthorizationId
-        );
-
-        $transaction = $transactionsObject->create($params);
-        Mage::helper('paymill/loggingHelper')->log("Creating Transaction from PreAuthorization", print_r($params, true), var_export($transaction, true));
-
-        return $transaction;
     }
 
 }

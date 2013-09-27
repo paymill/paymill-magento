@@ -157,6 +157,10 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     public function assignData($data)
     {
         $post = $data->getData();
+        
+        print_r($post);
+        exit;
+        
         if (!array_key_exists('paymill-payment-token', $post) 
                 || empty($post['paymill-payment-token'])) {
             Mage::helper('paymill/loggingHelper')->log("No token found.");
@@ -205,8 +209,13 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     {
         //Gathering data from session
         $token = Mage::getSingleton('core/session')->getToken();
-        $quote = Mage::getSingleton('checkout/session')->getQuote();
 
+        $postData = Mage::app()->getRequest()->getPost();
+        
+        if (empty($token)) {
+            $token = $postData['payment']['paymill-payment-token'];
+        }
+        
         //Create Payment Processor
         $paymentHelper = Mage::helper("paymill/paymentHelper");
         $fcHelper = Mage::helper("paymill/fastCheckoutHelper");

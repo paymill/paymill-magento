@@ -89,11 +89,7 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
      */
     private function _getBackendOption($choice, $optionName)
     {
-        try {
-            $value = Mage::getStoreConfig('payment/' . $choice . '/' . $optionName, Mage::app()->getStore()->getStoreId());
-        } catch (Exception $ex) {
-            $value = "An Error has occoured getting the config element";
-        }
+        $value = Mage::getStoreConfig('payment/' . $choice . '/' . $optionName, Mage::app()->getStore()->getStoreId());
 
         return $value;
     }
