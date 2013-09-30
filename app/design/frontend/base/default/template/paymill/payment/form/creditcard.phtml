@@ -3,6 +3,7 @@
 <script type="text/javascript" src="https://bridge.paymill.com/"></script></script>
 <script type="text/javascript">pmQuery = jQuery.noConflict();</script>
 <script type="text/javascript" src="<?php echo Mage::helper('paymill')->getJscriptPath() . "paymentForm.js" ?>"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('css/paymill/logo.css'); ?>" media="all">
 <?php echo Mage::helper('paymill')->getFormTypeForDisplay($_code) ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
     <li>
@@ -14,12 +15,7 @@
     <li>
         <label for="<?php echo $_code ?>_number" class="required"><em>*</em><?php echo $this->__("paymill_Number") ?></label>
         <div class="input-box">
-            <table>
-                <tr>
-                    <td><input value="" type="text" id="<?php echo $_code ?>_number" class="input-text paymill-validate-cc-number required-entry"/></td>
-                    <td><div id="<?php echo $_code ?>_card_icon"></div></td>
-                </tr>
-            </table>
+            <input value="" type="text" id="<?php echo $_code ?>_number" class="input-text paymill-validate-cc-number required-entry"/>
         </div>
     </li>
     <li>
@@ -32,14 +28,14 @@
         <label for="<?php echo $_code ?>_expiry_month" class="required"><em>*</em><?php echo $this->__("paymill_Date") ?></label>
         <div class="input-box">
             <div class="v-fix">
-                <select id="<?php echo $_code ?>_expiry_month" class="month paymill-validate-cc-expdate">
+                <select id="<?php echo $_code ?>_expiry_month" class="month paymill-validate-cc-expdate-month required-entry">
                     <?php foreach ($this->getPaymillCcMonths() as $k => $v): ?>
                         <option value="<?php echo $k ? $k : '' ?>"<?php if ($k == $this->getInfoData($_code . '_expiry_month')): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
                     <?php endforeach ?>
                 </select>
             </div>
             <div class="v-fix">
-                <select id="<?php echo $_code ?>_expiry_year" class="year">
+                <select id="<?php echo $_code ?>_expiry_year" class="year paymill-validate-cc-expdate-year required-entry">
                     <?php foreach ($this->getPaymillCcYears() as $k => $v): ?>
                         <option value="<?php echo $k ? $k : '' ?>"<?php if ($k == $this->getInfoData($_code . '_expiry_year')): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
                     <?php endforeach ?>
