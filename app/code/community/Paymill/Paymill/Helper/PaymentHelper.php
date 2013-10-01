@@ -141,9 +141,8 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         $params['email'] = Mage::helper("paymill/customerHelper")->getCustomerEmail($quote);
         $params['description'] = $this->getDescription($quote);
         $params['source'] = Mage::helper('paymill')->getSourceString();
-
-        $paymentProcessor = new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
-        return $paymentProcessor;
+        
+        return new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
     }
 
 }

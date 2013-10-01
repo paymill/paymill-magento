@@ -161,11 +161,11 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
                 || empty($post['paymill-payment-token'])) {
             Mage::helper('paymill/loggingHelper')->log("No token found.");
             Mage::throwException("There was an error processing your payment.");
+        } else {
+            //Save Data into session
+            Mage::getSingleton('core/session')->setToken($post['paymill-payment-token']);
+            Mage::getSingleton('core/session')->setPaymentCode($this->getCode());
         }
-
-        //Save Data into session
-        Mage::getSingleton('core/session')->setToken($post['paymill-payment-token']);
-        Mage::getSingleton('core/session')->setPaymentCode($this->getCode());
 
         //Finish as usual
         return parent::assignData($data);
@@ -210,7 +210,10 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         $paymentHelper = Mage::helper("paymill/paymentHelper");
         $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
         $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token);
-        $paymentProcessor->setPreAuthAmount(Mage::getSingleton('core/session')->getPreAuthAmount());
+        
+        if ($this->getCode() === 'paymill_creditcard') {
+            $paymentProcessor->setPreAuthAmount(Mage::getSingleton('core/session')->getPreAuthAmount());
+        }
 
         //Loading Fast Checkout Data (if enabled and given)
         if ($fcHelper->isFastCheckoutEnabled()) {

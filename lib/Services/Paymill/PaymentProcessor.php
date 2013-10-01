@@ -56,7 +56,6 @@ class Services_Paymill_PaymentProcessor
         $this->setPrivateKey($privateKey);
         $this->setApiUrl($apiUrl);
         $this->setLibBase($libBase);
-        $this->_preAuthAmount = $params['preauthamount'];
         $this->_token = $params['token'];
         $this->_amount = $params['amount'];
         $this->_currency = $params['currency'];
@@ -108,7 +107,7 @@ class Services_Paymill_PaymentProcessor
                         'client' => $this->_clientId
                     )
             );
-            
+
             $this->_validateResult($payment, 'Payment');
 
             $this->_paymentId = $payment['id'];
@@ -131,7 +130,7 @@ class Services_Paymill_PaymentProcessor
             'preauthorization' => $this->_preauthId,
             'source' => $this->_source
         );
-        $this->_preauthId != null ? $parameter['preauthorization'] = $this->_preauthId : $parameter['payment'] = $this->_paymentId ;
+        $this->_preauthId != null ? $parameter['preauthorization'] = $this->_preauthId : $parameter['payment'] = $this->_paymentId;
         $transaction = $this->_transactionsObject->create($parameter);
         $this->_validateResult($transaction, 'Transaction');
 
@@ -313,11 +312,11 @@ class Services_Paymill_PaymentProcessor
         if (!$this->_validateParameter()) {
             return false;
         }
-        
+
         $this->_log('Process payment with following data', print_r($this->toArray(), true));
 
         try {
-            
+
             $this->_createClient();
             $this->_log('Client API Response', print_r($this->_clientsObject->getResponse(), true));
             $this->_createPayment();
@@ -331,7 +330,7 @@ class Services_Paymill_PaymentProcessor
                 $this->_processPreAuthCapture($captureNow);
                 $this->_log('Pre-Auth API Response', print_r($this->getLastResponse(), true));
             }
-            
+
             return true;
         } catch (Exception $ex) {
             // paymill wrapper threw an exception

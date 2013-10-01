@@ -240,13 +240,7 @@ function paymillSubmitForm()
 					accountholder: pmQuery('#paymill_directdebit_holdername').val()
 				};
 			}
-			break;
-
-		default:
-			if (typeof payment.save === 'function') {
-				payment.save();
-			}
-			return false;
+			
 			break;
 	}
 
@@ -255,9 +249,6 @@ function paymillSubmitForm()
 		paymill.createToken(params, paymillResponseHandler);
 	} else {
 		debug("FastCheckout Data found. Skipping Token generation.");
-		if (typeof payment.save === 'function') {
-			payment.save();
-		}
 	}
 
 	return false;

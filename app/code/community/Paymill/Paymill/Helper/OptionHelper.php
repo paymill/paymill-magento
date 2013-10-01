@@ -111,7 +111,7 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
      */
     public function isPreAuthorizing()
     {
-        return $this->_getGeneralOption("preAuth_active");
+        return $this->_getBackendOption("paymill_creditcard", "preAuth_active");
     }
 
     /**
