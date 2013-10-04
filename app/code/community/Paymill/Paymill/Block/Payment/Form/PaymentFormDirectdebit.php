@@ -18,7 +18,7 @@
  * @copyright Copyright (c) 2013 PAYMILL GmbH (https://paymill.com/en-gb/)  
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)  
  */
-class Paymill_Paymill_Block_Payment_Form_PaymentFormDirectdebit extends Mage_Payment_Block_Form
+class Paymill_Paymill_Block_Payment_Form_PaymentFormDirectdebit extends Paymill_Paymill_Block_Payment_Form_PaymentFormAbstract
 {
 
     /**
@@ -29,5 +29,18 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormDirectdebit extends Mage_Pay
         parent::_construct();
         $this->setTemplate('paymill/payment/form/directdebit.phtml');
     }
-
+    
+    public function getPaymentData($code)
+    {
+        $payment = parent::getPaymentData($code);
+        
+        $data = array();
+        if (!is_null($payment)) {
+            $data['code'] = $payment['code'];
+            $data['holder'] = $payment['holder'];
+            $data['account'] = $payment['account'];
+        }
+        
+        return $data;
+    }
 }

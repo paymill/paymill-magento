@@ -18,7 +18,7 @@
  * @copyright Copyright (c) 2013 PAYMILL GmbH (https://paymill.com/en-gb/)  
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)  
  */
-class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Mage_Payment_Block_Form
+class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Paymill_Paymill_Block_Payment_Form_PaymentFormAbstract
 {
 
     /**
@@ -55,5 +55,24 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Mage_Paym
 
         return $years;
     }
+    
+    public function getPaymentData($code)
+    {
+        $payment = parent::getPaymentData($code);
+        
+        $data = array();
+        if (!is_null($payment)) {
+            $data['cc_number'] = '************' . $payment['last4'];
+            $data['expire_year'] = $payment['expire_year'];
+            $data['expire_month'] = $payment['expire_month'];
+            $data['cvc'] = '***';
+            $data['card_holder'] = $payment['card_holder'];
+            $data['card_type'] = $payment['card_type'];
+        }
+        
+        return $data;
+    }
+    
+    
 
 }

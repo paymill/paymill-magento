@@ -71,7 +71,21 @@ class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstrac
         if (Mage::getModel("paymill/fastcheckout")->hasFcData($userId, $code)) {
             return true;
         }
+        
         return false;
+    }
+    
+    public function getPaymentData($code)
+    {
+        $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();
+        $apiUrl = Mage::helper('paymill')->getApiUrl();
+        $payment = null;
+        if ($this->hasData($code)) {
+            $payments = new Services_Paymill_Payments($privateKey, $apiUrl);
+            $payment = $payments->getOne($this->getPaymentId($code));
+        }
+        
+        return $payment;
     }
 
     /**
@@ -80,7 +94,7 @@ class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstrac
      * @param String $clientId Description
      * @param String $name Description
      */
-    public function saveData($code, $clientId, $paymentId)
+    public function saveData($code, $clientId, $paymentId = null)
     {
         $userId = Mage::helper("paymill/customerHelper")->getUserId();
         if (isset($userId)) {

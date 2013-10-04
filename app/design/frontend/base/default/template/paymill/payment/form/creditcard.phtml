@@ -4,24 +4,23 @@
 <script type="text/javascript">pmQuery = jQuery.noConflict();</script>
 <script type="text/javascript" src="<?php echo Mage::helper('paymill')->getJscriptPath() . "paymentForm.js" ?>"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('css/paymill/logo.css'); ?>" media="all">
-<?php echo Mage::helper('paymill')->getFormTypeForDisplay($_code) ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
     <li>
         <label for="<?php echo $_code ?>_holdername" class="required"><em>*</em><?php echo $this->__("paymill_Holder") ?></label>
         <div class="input-box">
-            <input value="" type="text" id="<?php echo $_code ?>_holdername" class="input-text paymill-validate-cc-holder required-entry"/>
+            <input value="<?php echo $this->getPaymentEntry($_code, 'card_holder'); ?>" type="text" id="<?php echo $_code ?>_holdername" class="input-text paymill-validate-cc-holder required-entry"/>
         </div>
     </li>
     <li>
         <label for="<?php echo $_code ?>_number" class="required"><em>*</em><?php echo $this->__("paymill_Number") ?></label>
         <div class="input-box">
-            <input value="" type="text" id="<?php echo $_code ?>_number" class="input-text paymill-validate-cc-number required-entry"/>
+            <input value="<?php echo $this->getPaymentEntry($_code, 'cc_number'); ?>" type="text" id="<?php echo $_code ?>_number" class="input-text paymill-validate-cc-number required-entry"/>
         </div>
     </li>
     <li>
         <label for="<?php echo $_code ?>_cvc" class="required"><em>*</em><?php echo $this->__("paymill_Cvc") ?></label>
         <div class="input-box">
-            <input value="" type="text" id="<?php echo $_code ?>_cvc" class="input-text paymill-validate-cc-cvc required-entry"/>
+            <input value="<?php echo $this->getPaymentEntry($_code, 'cvc'); ?>" type="text" id="<?php echo $_code ?>_cvc" class="input-text paymill-validate-cc-cvc required-entry"/>
         </div>
     </li>
     <li>
@@ -30,14 +29,14 @@
             <div class="v-fix">
                 <select id="<?php echo $_code ?>_expiry_month" class="month paymill-validate-cc-expdate-month required-entry">
                     <?php foreach ($this->getPaymillCcMonths() as $k => $v): ?>
-                        <option value="<?php echo $k ? $k : '' ?>"<?php if ($k == $this->getInfoData($_code . '_expiry_month')): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
+                        <option value="<?php echo $k ? $k : '' ?>"<?php if($this->isPaymentDataAvailable($_code) && $this->getPaymentEntry($_code, 'expire_month') == $k): ?> selected="selected"<?php else: ?><?php if ($k == $this->getInfoData($_code . '_expiry_month')): ?> selected="selected"<?php endif ?><?php endif ?>><?php echo $v ?></option>
                     <?php endforeach ?>
                 </select>
             </div>
             <div class="v-fix">
                 <select id="<?php echo $_code ?>_expiry_year" class="year paymill-validate-cc-expdate-year required-entry">
                     <?php foreach ($this->getPaymillCcYears() as $k => $v): ?>
-                        <option value="<?php echo $k ? $k : '' ?>"<?php if ($k == $this->getInfoData($_code . '_expiry_year')): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
+                        <option value="<?php echo $k ? $k : '' ?>"<?php if($this->isPaymentDataAvailable($_code) && $this->getPaymentEntry($_code, 'expire_year') == $k): ?> selected="selected"<?php if ($k == $this->getInfoData($_code . '_expiry_year')): ?> selected="selected"<?php endif ?><?php endif ?>><?php echo $v ?></option>
                     <?php endforeach ?>
                 </select>
             </div>
@@ -54,11 +53,10 @@
         <input class="paymill-option-debug" name="payment[paymill-option-debug]" id="payment[paymill-option-debug]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode() ?>"/>
         <input class="paymill-info-image-path" name="payment[paymill-info-image-path]" id="payment[paymill-info-image-path]" type="hidden" value="<?php echo Mage::helper('paymill')->getImagePath() ?>"/>
         <input class="paymill-info-public_key" name="payment[paymill-info-public_key]" id="payment[paymill-info-public_key]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey() ?>"/>
-        <input class="paymill-info-fastCheckout-cc" name="payment[paymill-info-fastCheckout-cc]" id="payment[paymill-info-fastCheckout-cc]" type="hidden" value="<?php echo Mage::helper('paymill')->showTemplateForm($_code) ?>"/>
+        <input class="paymill-info-fastCheckout-cc" name="payment[paymill-info-fastCheckout-cc]" id="payment[paymill-info-fastCheckout-cc]" type="hidden" value="<?php echo $this->isNormalCheckout($_code) ?>"/>
         <input class="paymill-payment-error-number" name="payment[paymill-payment-error-number]" id="payment[paymill-payment-error-number]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_cc") . "<br/>\n" ?>"/>
         <input class="paymill-payment-error-holder" name="payment[paymill-payment-error-holder]" id="payment[paymill-payment-error-holder]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_cc") . "<br/>\n" ?>"/>
         <input class="paymill-payment-error-expdate" name="payment[paymill-payment-error-expdate]" id="payment[paymill-payment-error-expdate]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_expdate") . "<br/>\n" ?>"/>
         <input class="paymill-payment-error-cvc" name="payment[paymill-payment-error-cvc]" id="payment[paymill-payment-error--cvc]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_cvc") . "<br/>\n" ?>"/>
     </li>
 </ul>
-</div>

@@ -3,7 +3,6 @@
 <script type="text/javascript" src="https://bridge.paymill.com/"></script></script>
 <script type="text/javascript">pmQuery = jQuery.noConflict();</script>
 <script type="text/javascript" src="<?php echo Mage::helper('paymill')->getJscriptPath() . "paymentForm.js" ?>"></script>
-<?php echo Mage::helper('paymill')->getFormTypeForDisplay($_code) ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
     <li>
         <p class="paymill-payment-errors alert-error" style="display:none;"></p>
@@ -11,19 +10,19 @@
     <li>
         <label for="<?php echo $_code ?>_holdername" class="required"><em>*</em><?php echo $this->__("paymill_Holder") ?></label>
         <div class="input-box">
-            <input value="" type="text" id="<?php echo $_code ?>_holdername" class="input-text paymill-validate-dd-holdername required-entry"/>
+            <input value="<?php echo $this->getPaymentEntry($_code, 'holder'); ?>" type="text" id="<?php echo $_code ?>_holdername" class="input-text paymill-validate-dd-holdername required-entry"/>
         </div>
     </li>
     <li>
         <label for="<?php echo $_code ?>_account" class="required"><em>*</em><?php echo $this->__("paymill_account") ?></label>
         <div class="input-box">
-            <input value="" type="text" id="<?php echo $_code ?>_account" class="input-text paymill-validate-dd-account required-entry"/>
+            <input value="<?php echo $this->getPaymentEntry($_code, 'account'); ?>" type="text" id="<?php echo $_code ?>_account" class="input-text paymill-validate-dd-account required-entry"/>
         </div>
     </li>
     <li>
         <label for="<?php echo $_code ?>_bankcode" class="required"><em>*</em><?php echo $this->__("paymill_bankcode") ?></label>
         <div class="input-box">
-            <input value="" type="text" id="<?php echo $_code ?>_bankcode" class="input-text paymill-validate-dd-bankcode required-entry"/>
+            <input value="<?php echo $this->getPaymentEntry($_code, 'code'); ?>" type="text" id="<?php echo $_code ?>_bankcode" class="input-text paymill-validate-dd-bankcode required-entry"/>
         </div>
     </li>
     <?php if (Mage::helper('paymill/optionHelper')->isShowingLabels()) : ?>
@@ -36,10 +35,9 @@
         <input class="paymill-option-debug" name="payment[paymill-option-debug]" id="payment[paymill-option-debug]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode() ?>" />
         <input class="paymill-info-image-path" name="payment[paymill-info-image-path]" id="payment[paymill-info-image-path]" type="hidden" value="<?php echo Mage::helper('paymill')->getImagePath() ?>" />
         <input class="paymill-info-public_key" name="payment[paymill-info-public_key]" id="payment[paymill-info-public_key]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey() ?>" />
-        <input class="paymill-info-fastCheckout-elv"  name="payment[paymill-info-fastCheckout-elv]" id="payment[paymill-info-fastCheckout-elv]" type="hidden" value="<?php echo Mage::helper('paymill')->showTemplateForm($_code) ?>" />
+        <input class="paymill-info-fastCheckout-elv"  name="payment[paymill-info-fastCheckout-elv]" id="payment[paymill-info-fastCheckout-elv]" type="hidden" value="<?php echo $this->isNormalCheckout($_code) ?>" />
         <input class="paymill-payment-error-number-elv" name="payment[paymill-payment-error-number-elv]" id="payment[paymill-payment-error-number-elv]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_elv") . "<br/>\n" ?>" />
         <input class="paymill-payment-error-holder-elv" name="payment[paymill-payment-error-holder-elv]" id="payment[paymill-payment-error-holder-elv]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_elv") . "<br/>\n" ?>" />
         <input class="paymill-payment-error-bankcode" name="payment[paymill-payment-error-bankcode]" id="payment[paymill-payment-error-bankcode]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_bankcode") . "<br/>\n" ?>" />
     </li>
 </ul>
-</div>

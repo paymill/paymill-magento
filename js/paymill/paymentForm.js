@@ -6,7 +6,6 @@ var PAYMILL_PUBLIC_KEY = null;
 //State Descriptors
 var PAYMILL_PAYMENT_NAME = "Preparing Payment";
 var PAYMILL_IMAGE_PATH = null;
-var PAYMILL_NO_FAST_CHECKOUT = false;
 
 //Errortexts
 var PAYMILL_ERROR_STRING = "";
@@ -97,10 +96,6 @@ function paymillResponseHandler(error, result)
 		// Appending Token to form
 		debug("Saving Token in Form: " + result.token);
 		pmQuery('.paymill-payment-token').val(result.token);
-		if (typeof payment.save === 'function') {
-			payment.save();
-		}
-
 	}
 }
 /**
@@ -132,8 +127,7 @@ function paymillSubmitForm()
 	
 	switch (PAYMILL_PAYMENT_NAME) {
 		case "paymill_creditcard":
-			PAYMILL_NO_FAST_CHECKOUT = pmQuery('.paymill-info-fastCheckout-cc').val();
-			if (PAYMILL_NO_FAST_CHECKOUT) {
+			if (pmQuery('.paymill-info-fastCheckout-cc').val() === 'false') {
 				var paymillValidator = new Validation(form);
 				var nv = {
 					'paymill-validate-cc-number': new Validator(
@@ -184,20 +178,20 @@ function paymillSubmitForm()
 					return false;
 				}
 
-				var params = {
+				debug("Generating Token");
+				paymill.createToken({
 					amount_int: parseInt(pmQuery('.paymill-payment-amount').val()), // E.g. "15" for 0.15 Eur
 					currency: pmQuery('.paymill-payment-currency').val(), // ISO 4217 e.g. "EUR"
 					number: pmQuery('#paymill_creditcard_number').val(),
 					exp_month: pmQuery('#paymill_creditcard_expiry_month').val(),
 					exp_year: pmQuery('#paymill_creditcard_expiry_year').val(),
 					cvc: pmQuery('#paymill_creditcard_cvc').val(),
-					cardholdername: pmQuery('#paymill_creditcard_holdername').val()
-				};
+					cardholder: pmQuery('#paymill_creditcard_holdername').val()
+				}, paymillResponseHandler);
 			}
 			break;
 		case "paymill_directdebit":
-			PAYMILL_NO_FAST_CHECKOUT = pmQuery('.paymill-info-fastCheckout-elv').val();
-			if (PAYMILL_NO_FAST_CHECKOUT) {
+			if (pmQuery('.paymill-info-fastCheckout-elv').val() === 'false') {
 				var paymillValidator = new Validation(form);
 				var nv = {
 					'paymill-validate-dd-holdername': new Validator(
@@ -232,23 +226,16 @@ function paymillSubmitForm()
 					return false;
 				}
 
-				var params = {
+				debug("Generating Token");
+				paymill.createToken({
 					amount_int: pmQuery('.paymill-payment-amount').val(), // E.g. "15" for 0.15 Eur
 					currency: pmQuery('.paymill-payment-currency').val(), // ISO 4217 e.g. "EUR"
 					number: pmQuery('#paymill_directdebit_account').val(),
 					bank: pmQuery('#paymill_directdebit_bankcode').val(),
-					accountholder: pmQuery('#paymill_directdebit_holdername').val()
-				};
+					cardholder: pmQuery('#paymill_directdebit_holdername').val()
+				}, paymillResponseHandler);
 			}
-			
 			break;
-	}
-
-	if (PAYMILL_NO_FAST_CHECKOUT) {
-		debug("Generating Token");
-		paymill.createToken(params, paymillResponseHandler);
-	} else {
-		debug("FastCheckout Data found. Skipping Token generation.");
 	}
 
 	return false;
@@ -256,6 +243,45 @@ function paymillSubmitForm()
 
 function addPaymillEvents()
 {
+	    
+    pmQuery('#paymill_directdebit_holdername').live('focus', function() {
+		pmQuery('.paymill-info-fastCheckout-elv').val('false');
+        pmQuery('#paymill_directdebit_holdername').val('');
+    });
+    
+    pmQuery('#paymill_directdebit_account').live('focus', function() {
+        pmQuery('.paymill-info-fastCheckout-elv').val('false');
+        pmQuery('#paymill_directdebit_account').val('');
+    });
+    
+    
+    pmQuery('#paymill_directdebit_bankcode').live('focus', function() {
+        pmQuery('.paymill-info-fastCheckout-elv').val('false');
+        pmQuery('#paymill_directdebit_bankcode').val('');
+    });
+	    
+    pmQuery('#paymill_creditcard_holdername').live('focus', function() {
+        pmQuery('.paymill-info-fastCheckout-cc').val('false');
+        pmQuery('#paymill_creditcard_holdername').val('');
+    });
+    
+    pmQuery('#paymill_creditcard_cvc').live('focus', function() {
+        pmQuery('.paymill-info-fastCheckout-cc').val('false');
+        pmQuery('#paymill_creditcard_cvc').val('');
+    });
+    
+    pmQuery('#paymill_creditcard_number').live('focus', function() {
+        pmQuery('.paymill-info-fastCheckout-cc').val('false');
+    });
+	
+    pmQuery('#paymill_creditcard_expiry_month').live('change', function() {
+        pmQuery('.paymill-info-fastCheckout-cc').val('false');
+    });
+    
+    pmQuery('#paymill_creditcard_expiry_year').live('change', function() {
+        pmQuery('.paymill-info-fastCheckout-cc').val('false');
+    });
+	
 	//Gather Data
 	PAYMILL_PUBLIC_KEY = pmQuery('.paymill-info-public_key').val();
 	pmQuery('#paymill_creditcard_number').live('input', paymillShowCardIcon);

@@ -56,15 +56,17 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
         $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token);
         $paymentProcessor->setPreAuthAmount(Mage::getSingleton('core/session')->getPreAuthAmount());
 
+        //Always load client if email doesn't change
+        $clientId = $fcHelper->getClientId();
+        if (isset($clientId)) {
+            $paymentProcessor->setClientId($clientId);
+        }
+        
         //Loading Fast Checkout Data (if enabled and given)
-        if ($fcHelper->isFastCheckoutEnabled()) {
-            $clientId = $fcHelper->getClientId();
-            if (isset($clientId)) {
-                $paymentProcessor->setClientId($clientId);
-                $paymentId = $fcHelper->getPaymentId($this->_code);
-                if (isset($paymentId)) {
-                    $paymentProcessor->setPaymentId($paymentId);
-                }
+        if ($fcHelper->hasData() && $token === 'dummyToken') {
+            $paymentId = $fcHelper->getPaymentId($this->_code);
+            if (isset($paymentId)) {
+                $paymentProcessor->setPaymentId($paymentId);
             }
         }
 
@@ -77,13 +79,15 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
             $transactionModel = $transactionHelper->createTransactionModel($paymentProcessor->getPreauthId(), true);
             $transactionHelper->setAdditionalInformation($payment, $transactionModel);
 
-            //Save Data for Fast Checkout (if enabled)
+            
+            //Allways update the client
+            $clientId = $paymentProcessor->getClientId();
+            $fcHelper->saveData($this->_code, $clientId);
+            
+            //Save payment data for FastCheckout (if enabled)
             if ($fcHelper->isFastCheckoutEnabled()) { //Fast checkout enabled
-                if (!$fcHelper->hasData($this->_code)) {
-                    $clientId = $paymentProcessor->getClientId();
-                    $paymentId = $paymentProcessor->getPaymentId();
-                    $fcHelper->saveData($this->_code, $clientId, $paymentId);
-                }
+                $paymentId = $paymentProcessor->getPaymentId();
+                $fcHelper->saveData($this->_code, $clientId, $paymentId);
             }
 
             return true;

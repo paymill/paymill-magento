@@ -99,10 +99,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      */
     public function canUseForCurrency($currencyCode)
     {
-        $quote = Mage::getSingleton('checkout/session')->getQuote();
-        $storeId = $quote ? $quote->getStoreId() : null;
-
-        $availableCurrencies = explode(',', $this->getConfigData('currency', $storeId));
+        $availableCurrencies = explode(',', $this->getConfigData('currency', Mage::app()->getStore()->getId()));
         if (!in_array($currencyCode, $availableCurrencies)) {
             return false;
         }
@@ -123,7 +120,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     /**
      * Return Quote or Order Object depending on the type of the payment info
      *
-     * @return Mage_Sales_Model_Order
+     * @return Mage_Sales_Model_Order | Mage_Sales_Model_Order_Quote
      */
     public function getOrder()
     {
@@ -157,14 +154,18 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     public function assignData($data)
     {
         $post = $data->getData();
-        if (!array_key_exists('paymill-payment-token', $post) 
-                || empty($post['paymill-payment-token'])) {
-            Mage::helper('paymill/loggingHelper')->log("No token found.");
-            Mage::throwException("There was an error processing your payment.");
-        } else {
+        if (array_key_exists('paymill-payment-token', $post) 
+                && !empty($post['paymill-payment-token'])) {
             //Save Data into session
             Mage::getSingleton('core/session')->setToken($post['paymill-payment-token']);
             Mage::getSingleton('core/session')->setPaymentCode($this->getCode());
+        } else {
+            if (Mage::helper('paymill/fastCheckoutHelper')->hasData($this->_code)) {
+                Mage::getSingleton('core/session')->setToken('dummyToken');
+            } else {
+                Mage::helper('paymill/loggingHelper')->log("No token found.");
+                Mage::throwException("There was an error processing your payment.");
+            }
         }
 
         //Finish as usual
@@ -215,15 +216,17 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
             $paymentProcessor->setPreAuthAmount(Mage::getSingleton('core/session')->getPreAuthAmount());
         }
 
+        //Always load client if email doesn't change
+        $clientId = $fcHelper->getClientId();
+        if (isset($clientId)) {
+            $paymentProcessor->setClientId($clientId);
+        }
+        
         //Loading Fast Checkout Data (if enabled and given)
-        if ($fcHelper->isFastCheckoutEnabled()) {
-            $clientId = $fcHelper->getClientId();
-            if (isset($clientId)) {
-                $paymentProcessor->setClientId($clientId);
-                $paymentId = $fcHelper->getPaymentId($this->_code);
-                if (isset($paymentId)) {
-                    $paymentProcessor->setPaymentId($paymentId);
-                }
+        if ($fcHelper->hasData() && $token === 'dummyToken') {
+            $paymentId = $fcHelper->getPaymentId($this->_code);
+            if (isset($paymentId)) {
+                $paymentProcessor->setPaymentId($paymentId);
             }
         }
         
@@ -235,13 +238,14 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
             $transactionModel = $transactionHelper->createTransactionModel($paymentProcessor->getTransactionId(), false);
             $transactionHelper->setAdditionalInformation($payment, $transactionModel);
             
-            //Save Data for Fast Checkout (if enabled)
+            //Allways update the client
+            $clientId = $paymentProcessor->getClientId();
+            $fcHelper->saveData($this->_code, $clientId);
+            
+            //Save payment data for FastCheckout (if enabled)
             if ($fcHelper->isFastCheckoutEnabled()) { //Fast checkout enabled
-                if (!$fcHelper->hasData($this->_code)) {
-                    $clientId = $paymentProcessor->getClientId();
-                    $paymentId = $paymentProcessor->getPaymentId();
-                    $fcHelper->saveData($this->_code, $clientId, $paymentId);
-                }
+                $paymentId = $paymentProcessor->getPaymentId();
+                $fcHelper->saveData($this->_code, $clientId, $paymentId);
             }
 
             return true;

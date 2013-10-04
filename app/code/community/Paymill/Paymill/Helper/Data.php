@@ -63,33 +63,6 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns a boolean deciding if the template is going to be displayed of not
-     * @param String $code payment code
-     * @return boolean
-     */
-    public function showTemplateForm($code)
-    {
-        $optionHelper = Mage::helper('paymill/optionHelper');
-        $fcHelper = Mage::helper('paymill/fastCheckoutHelper');
-
-        return !($optionHelper->isFastCheckoutEnabled() && $fcHelper->hasData($code));
-    }
-
-    /**
-     * Returns the div tag opening defining the visibility of the payment form 
-     * @param String $code
-     * @return string
-     */
-    public function getFormTypeForDisplay($code)
-    {
-        if ($this->showTemplateForm($code)) {
-            return "<div>";
-        } else {
-            return "<div style='display:none;'>";
-        }
-    }
-
-    /**
      * Returns the Source string passt to every transaction
      * @return String Source
      */
