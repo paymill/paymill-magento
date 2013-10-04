@@ -84,7 +84,17 @@ class Paymill_Paymill_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Widg
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
-
+    
+    /**
+     * Gets Row Url
+     *
+     * @return string
+     */
+    public function getRowUrl($row)
+    {
+        return $this->getUrl('*/*/view', array('id' => $row->getId()));
+    }
+    
     /**
      * Prepare Columns
      *
@@ -103,14 +113,6 @@ class Paymill_Paymill_Block_Adminhtml_Log_Grid extends Mage_Adminhtml_Block_Widg
         $this->addColumn('merchant_info', array(
             'header' => Mage::helper('paymill')->__('paymill_backend_log_merchant_info'),
             'index' => 'merchant_info',
-        ));
-        $this->addColumn('dev_info', array(
-            'header' => Mage::helper('paymill')->__('paymill_backend_log_dev_info'),
-            'index' => 'dev_info',
-        ));
-        $this->addColumn('dev_info_additional', array(
-            'header' => Mage::helper('paymill')->__('paymill_backend_log_dev_info_additional'),
-            'index' => 'dev_info_additional',
         ));
 
         return parent::_prepareColumns();

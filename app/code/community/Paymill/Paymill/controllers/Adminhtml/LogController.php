@@ -13,7 +13,8 @@
  * obtain it through the world-wide-web, please send an email  
  * to license@magentocommerce.com so we can send you a copy immediately.  
  * 
- * @category Paymill  * @package Paymill_Paymill  
+ * @category Paymill  
+ * @package Paymill_Paymill  
  * @copyright Copyright (c) 2013 PAYMILL GmbH (https://paymill.com/en-gb/) 
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)  
  */
@@ -40,7 +41,25 @@ class Paymill_Paymill_Adminhtml_LogController extends Mage_Adminhtml_Controller_
         $this->_initAction()
                 ->renderLayout();
     }
-
+    
+    /**
+     * View single xml request or response
+     */
+    public function viewAction()
+    {
+        $id = $this->getRequest()->getParam('id');
+        $model = Mage::getModel('paymill/log')->load($id);
+        if ($model->getId()) {
+            Mage::register('paymill_log_entry', $model);
+            $this->_initAction();
+            $this->_addContent($this->getLayout()->createBlock('paymill/adminhtml_log_view'));
+            $this->renderLayout();
+        } else {
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('ratepay')->__('Item does not exist'));
+            $this->_redirect('*/*/');
+        }
+    }
+    
     /**
      * Normal Magento delete mass action for selected entries
      */
