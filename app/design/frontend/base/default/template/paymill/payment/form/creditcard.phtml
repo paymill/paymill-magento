@@ -18,12 +18,6 @@
         </div>
     </li>
     <li>
-        <label for="<?php echo $_code ?>_cvc" class="required"><em>*</em><?php echo $this->__("paymill_Cvc") ?></label>
-        <div class="input-box">
-            <input value="<?php echo $this->getPaymentEntry($_code, 'cvc'); ?>" type="text" id="<?php echo $_code ?>_cvc" class="input-text paymill-validate-cc-cvc required-entry"/>
-        </div>
-    </li>
-    <li>
         <label for="<?php echo $_code ?>_expiry_month" class="required"><em>*</em><?php echo $this->__("paymill_Date") ?></label>
         <div class="input-box">
             <div class="v-fix">
@@ -40,6 +34,12 @@
                     <?php endforeach ?>
                 </select>
             </div>
+        </div>
+    </li>
+    <li>
+        <label for="<?php echo $_code ?>_cvc" class="required"><em>*</em><?php echo $this->__("paymill_Cvc") ?></label>
+        <div class="input-box">
+            <input value="<?php echo $this->getPaymentEntry($_code, 'cvc'); ?>" type="text" id="<?php echo $_code ?>_cvc" class="input-text paymill-validate-cc-cvc required-entry"/>
         </div>
     </li>
     <?php if (Mage::helper('paymill/optionHelper')->isShowingLabels()) : ?>

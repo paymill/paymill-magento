@@ -267,7 +267,6 @@ function addPaymillEvents()
     
     pmQuery('#paymill_creditcard_cvc').live('focus', function() {
         pmQuery('.paymill-info-fastCheckout-cc').val('false');
-        pmQuery('#paymill_creditcard_cvc').val('');
     });
     
     pmQuery('#paymill_creditcard_number').live('focus', function() {

@@ -63,7 +63,7 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
         }
         
         //Loading Fast Checkout Data (if enabled and given)
-        if ($fcHelper->hasData() && $token === 'dummyToken') {
+        if ($fcHelper->hasData($this->_code) && $token === 'dummyToken') {
             $paymentId = $fcHelper->getPaymentId($this->_code);
             if (isset($paymentId)) {
                 $paymentProcessor->setPaymentId($paymentId);
