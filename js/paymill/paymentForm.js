@@ -166,6 +166,10 @@ function paymillSubmitForm()
 						'paymill-validate-cc-cvc',
 						PAYMILL_ERROR_TEXT_IVALID_CVC,
 						function(v) {
+							if (paymill.cardType(pmQuery('#paymill_creditcard_number').val()).toLowerCase() === 'maestro') {
+								return true;
+							}
+							
 							return paymill.validateCvc(v);
 						},
 						''
