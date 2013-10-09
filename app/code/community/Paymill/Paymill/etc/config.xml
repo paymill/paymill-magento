@@ -145,6 +145,13 @@
                 </observers>
             </sales_order_creditmemo_refund>
         </events>
+        
+        <global_search>
+            <paymill_search>
+                <class>paymill/log_search</class>
+                <acl>paymill</acl>
+            </paymill_search>
+        </global_search>
     </adminhtml>
     
     <admin>
