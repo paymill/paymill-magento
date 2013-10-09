@@ -181,6 +181,12 @@ function paymillSubmitForm()
 				if (!paymillValidator.validate()) {
 					return false;
 				}
+				
+				var cvc = 000;
+				
+				if (!paymill.cardType(pmQuery('#paymill_creditcard_number').val()).toLowerCase() === 'maestro') {
+					cvc = pmQuery('#paymill_creditcard_cvc').val();
+				}
 
 				debug("Generating Token");
 				paymill.createToken({
@@ -189,7 +195,7 @@ function paymillSubmitForm()
 					number: pmQuery('#paymill_creditcard_number').val(),
 					exp_month: pmQuery('#paymill_creditcard_expiry_month').val(),
 					exp_year: pmQuery('#paymill_creditcard_expiry_year').val(),
-					cvc: pmQuery('#paymill_creditcard_cvc').val(),
+					cvc: cvc,
 					cardholder: pmQuery('#paymill_creditcard_holdername').val()
 				}, paymillResponseHandler);
 			}
