@@ -1,13 +1,13 @@
 Paymill-Magento Extension for credit card and direct debit payments
 ====================
 
-Paymill extension for Magento compatible with: 1.5, 1.6, 1.6.1, 1.6.2.0, 1.7(tested for 1.7.2). This extension installs two payment methods: Credit card and direct debit.
+Paymill extension for Magento compatible with: 1.5, 1.6, 1.6.1, 1.6.2.0, 1.7 (tested for 1.7.2). This extension installs two payment methods: Credit card and direct debit.
 
-##### Note: This is an all new version of the Paymill Magento Extension. 
+##### Note: This is an all new version of the PAYMILL Magento Extension. 
 
 ## Your Advantages
 * PCI DSS compatibility
-* Payment means: Credit Card, Direct Debit
+* Payment means: Credit Card (Visa, Visa Electron, Mastercard, Maestro, Diners, Discover, JCB, AMEX, China Union Pay), Direct Debit (ELV)
 * Invoice generation on successful direct transactions with the payment means described above
 * Refunds get created automatically on usage of the Magento creditmemo routine in you shop backend
 * Optional configuration for authorization and manual capture with credit card payments
