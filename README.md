@@ -26,11 +26,11 @@ To install the extension merge the contents of this cloned repository with your 
 
 ## Configuration
 
-Afterwards go to System > Configuration > Payment Methods and configure the PAYMILL payment methods you intend to use by inserting your Paymill test or live keys in the Paymill Basic Settings.
+Afterwards go to System > Configuration > Payment Methods and configure the PAYMILL payment methods you intend to use by inserting your PAYMILL test or live keys in the PAYMILL Basic Settings.
 
 ## In case of errors
 
-In case of any errors turn on the debug mode and logging in the PAYMILL Basic Settings. Open the javascript console in your browser and check what's being logged during the checkout process. To access the logged information not printed in the console please refer to the Paymill Log in the admin backend.
+In case of any errors turn on the debug mode and logging in the PAYMILL Basic Settings. Open the javascript console in your browser and check what's being logged during the checkout process. To access the logged information not printed in the console please refer to the PAYMILL Log in the admin backend.
 
 ## Notes about the payment process
 
