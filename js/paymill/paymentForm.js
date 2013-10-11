@@ -182,9 +182,9 @@ function paymillSubmitForm()
 					return false;
 				}
 				
-				var cvc = 000;
+				var cvc = '000';
 				
-				if (!paymill.cardType(pmQuery('#paymill_creditcard_number').val()).toLowerCase() === 'maestro') {
+				if (pmQuery('#paymill_creditcard_cvc').val() !== '') {
 					cvc = pmQuery('#paymill_creditcard_cvc').val();
 				}
 
@@ -242,7 +242,7 @@ function paymillSubmitForm()
 					currency: pmQuery('.paymill-payment-currency').val(), // ISO 4217 e.g. "EUR"
 					number: pmQuery('#paymill_directdebit_account').val(),
 					bank: pmQuery('#paymill_directdebit_bankcode').val(),
-					cardholder: pmQuery('#paymill_directdebit_holdername').val()
+					accountholder: pmQuery('#paymill_directdebit_holdername').val()
 				}, paymillResponseHandler);
 			}
 			break;

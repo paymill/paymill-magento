@@ -12,10 +12,34 @@ and open the template in the editor.
             <block type="core/text" name="google.cdn.jquery">
                 <action method="setText">
                     <text>
-                        <![CDATA[]]>
+                        <![CDATA[
+                            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+                            <script type="text/javascript" src="https://bridge.paymill.com/"></script></script>
+                            <script type="text/javascript">pmQuery = jQuery.noConflict();</script>
+                            <script type="text/javascript" src="/js/paymill/paymentForm.js"></script>
+                        ]]>
                     </text>
                 </action>
             </block>
         </reference>
-    </checkout_onepage_index>   
+    </checkout_onepage_index>
+    <onestepcheckout>
+        <reference name="head">  
+            <action method="addCss">
+                <stylesheet>css/paymill/logo.css</stylesheet>
+            </action>
+            <block type="core/text" name="google.cdn.jquery">
+                <action method="setText">
+                    <text>
+                        <![CDATA[
+                            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+                            <script type="text/javascript" src="https://bridge.paymill.com/"></script></script>
+                            <script type="text/javascript">pmQuery = jQuery.noConflict();</script>
+                            <script type="text/javascript" src="/js/paymill/paymentForm.js"></script>
+                        ]]>
+                    </text>
+                </action>
+            </block>
+        </reference>
+    </onestepcheckout>
 </layout>
