@@ -120,10 +120,7 @@ function paymillSubmitForm()
 		PAYMILL_ERROR_TEXT_IVALID_BANKCODE = pmQuery('.paymill-payment-error-bankcode').val();
 	}
 
-	var form = 'co-payment-form';
-	if (pmQuery("#onestepcheckout-form").length > 0) {
-		var form = 'onestepcheckout-form';
-	}
+	var form = pmQuery('#paymill_creditcard_number').closest("form").attr("id");
 
 	switch (PAYMILL_PAYMENT_NAME) {
 		case "paymill_creditcard":
