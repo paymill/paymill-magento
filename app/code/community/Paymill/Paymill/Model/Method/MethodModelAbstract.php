@@ -154,10 +154,10 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     public function assignData($data)
     {
         $post = $data->getData();
-        if (array_key_exists('paymill-payment-token', $post) 
-                && !empty($post['paymill-payment-token'])) {
+        if (array_key_exists('paymill-payment-token-' . $this->_getShortCode(), $post) 
+                && !empty($post['paymill-payment-token-' . $this->_getShortCode()])) {
             //Save Data into session
-            Mage::getSingleton('core/session')->setToken($post['paymill-payment-token']);
+            Mage::getSingleton('core/session')->setToken($post['paymill-payment-token-' . $this->_getShortCode()]);
             Mage::getSingleton('core/session')->setPaymentCode($this->getCode());
         } else {
             if (Mage::helper('paymill/fastCheckoutHelper')->hasData($this->_code)) {
@@ -252,6 +252,16 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         }
 
         return false;
+    }
+    
+    protected function _getShortCode()
+    {
+        $methods = array(
+            'paymill_creditcard'  => 'cc',
+            'paymill_directdebit' => 'elv'
+        );
+        
+        return $methods[$this->_code];
     }
 
 }

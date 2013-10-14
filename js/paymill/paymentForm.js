@@ -15,13 +15,28 @@ var PAYMILL_ERROR_TEXT_IVALID_HOLDER = null;
 var PAYMILL_ERROR_TEXT_IVALID_BANKCODE = null;
 var PAYMILL_ERROR_TEXT_IVALID_PAYMENT = null;
 
+
+function getPaymillCode()
+{
+	var methods = {
+		paymill_creditcard: "cc",
+		paymill_directdebit: 'elv'
+	 };
+	
+	if (methods.hasOwnProperty(pmQuery("input[name='payment[method]']:checked").val())) {
+		return methods[pmQuery("input[name='payment[method]']:checked").val()];
+	}
+	
+	return 'other';
+}
+
 /**
  * prints debug messages in the log if debug mode is active
  * @param {String} message
  */
 function debug(message)
 {
-	debug_state = pmQuery('.paymill-option-debug').val();
+	debug_state = pmQuery('.paymill-option-debug-' + getPaymillCode()).val();
 	if (debug_state === 1) {
 		var displayName = "";
 		if (PAYMILL_PAYMENT_NAME === 'paymill_creditcard') {
@@ -95,7 +110,7 @@ function paymillResponseHandler(error, result)
 	} else {
 		// Appending Token to form
 		debug("Saving Token in Form: " + result.token);
-		pmQuery('.paymill-payment-token').val(result.token);
+		pmQuery('.paymill-payment-token-' + getPaymillCode()).val(result.token);
 	}
 }
 /**
@@ -120,6 +135,11 @@ function paymillSubmitForm()
 		PAYMILL_ERROR_TEXT_IVALID_BANKCODE = pmQuery('.paymill-payment-error-bankcode').val();
 	}
 
+	
+	if (pmQuery('#paymill_creditcard_number').closest("form").attr("id") === undefined) {
+		pmQuery('#paymill_creditcard_number').closest("form").attr("id", 'paymill-checkout-form')
+	}
+	
 	var form = pmQuery('#paymill_creditcard_number').closest("form").attr("id");
 
 	switch (PAYMILL_PAYMENT_NAME) {
@@ -187,8 +207,8 @@ function paymillSubmitForm()
 
 				debug("Generating Token");
 				paymill.createToken({
-					amount_int: parseInt(pmQuery('.paymill-payment-amount').val()), // E.g. "15" for 0.15 Eur
-					currency: pmQuery('.paymill-payment-currency').val(), // ISO 4217 e.g. "EUR"
+					amount_int: parseInt(pmQuery('.paymill-payment-amount-' + getPaymillCode()).val()), // E.g. "15" for 0.15 Eur
+					currency: pmQuery('.paymill-payment-currency-' + getPaymillCode()).val(), // ISO 4217 e.g. "EUR"
 					number: pmQuery('#paymill_creditcard_number').val(),
 					exp_month: pmQuery('#paymill_creditcard_expiry_month').val(),
 					exp_year: pmQuery('#paymill_creditcard_expiry_year').val(),
@@ -235,8 +255,6 @@ function paymillSubmitForm()
 
 				debug("Generating Token");
 				paymill.createToken({
-					amount_int: pmQuery('.paymill-payment-amount').val(), // E.g. "15" for 0.15 Eur
-					currency: pmQuery('.paymill-payment-currency').val(), // ISO 4217 e.g. "EUR"
 					number: pmQuery('#paymill_directdebit_account').val(),
 					bank: pmQuery('#paymill_directdebit_bankcode').val(),
 					accountholder: pmQuery('#paymill_directdebit_holdername').val()
@@ -289,7 +307,7 @@ function addPaymillEvents()
 	});
 
 	//Gather Data
-	PAYMILL_PUBLIC_KEY = pmQuery('.paymill-info-public_key').val();
+	PAYMILL_PUBLIC_KEY = pmQuery('.paymill-info-public_key-' + getPaymillCode()).val();
 	pmQuery('#paymill_creditcard_number').live('input', paymillShowCardIcon);
 	pmQuery('#paymill_creditcard_number').live('input', paymillSubmitForm);
 	pmQuery('#paymill_creditcard_cvc').live('input', paymillSubmitForm);
