@@ -318,10 +318,3 @@ function addPaymillEvents()
 	eventsSetted = true;
 
 }
-
-
-Event.observe(window, 'load', function() {  
-	if (!eventsSetted) {
-		addPaymillEvents();
-	}
-});
