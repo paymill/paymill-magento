@@ -16,11 +16,13 @@ and open the template in the editor.
                             <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
                             <script type="text/javascript" src="https://bridge.paymill.com/"></script></script>
                             <script type="text/javascript">pmQuery = jQuery.noConflict();</script>
-                            <script type="text/javascript" src="/js/paymill/paymentForm.js"></script>
                         ]]>
                     </text>
                 </action>
             </block>
+            <action method="addJs">
+                <script>paymill/paymentForm.js</script>
+            </action>
         </reference>
     </checkout_onepage_index>
     <onestepcheckout>
@@ -35,11 +37,13 @@ and open the template in the editor.
                             <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
                             <script type="text/javascript" src="https://bridge.paymill.com/"></script></script>
                             <script type="text/javascript">pmQuery = jQuery.noConflict();</script>
-                            <script type="text/javascript" src="/js/paymill/paymentForm.js"></script>
                         ]]>
                     </text>
                 </action>
             </block>
+            <action method="addJs">
+                <script>paymill/paymentForm.js</script>
+            </action>
         </reference>
     </onestepcheckout>
 </layout>

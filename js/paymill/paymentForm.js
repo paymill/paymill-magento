@@ -119,6 +119,7 @@ function paymillResponseHandler(error, result)
  */
 function paymillSubmitForm()
 {
+	PAYMILL_PUBLIC_KEY = pmQuery('.paymill-info-public_key-' + getPaymillCode()).val();
 	PAYMILL_PAYMENT_NAME = pmQuery("input[name='payment[method]']:checked").val();
 
 	if (PAYMILL_PAYMENT_NAME === "paymill_creditcard") {
@@ -307,7 +308,6 @@ function addPaymillEvents()
 	});
 
 	//Gather Data
-	PAYMILL_PUBLIC_KEY = pmQuery('.paymill-info-public_key-' + getPaymillCode()).val();
 	pmQuery('#paymill_creditcard_number').live('input', paymillShowCardIcon);
 	pmQuery('#paymill_creditcard_number').live('input', paymillSubmitForm);
 	pmQuery('#paymill_creditcard_cvc').live('input', paymillSubmitForm);
@@ -319,8 +319,8 @@ function addPaymillEvents()
 
 }
 
-pmQuery(document).ready(function()
-{
+
+Event.observe(window, 'load', function() {  
 	if (!eventsSetted) {
 		addPaymillEvents();
 	}

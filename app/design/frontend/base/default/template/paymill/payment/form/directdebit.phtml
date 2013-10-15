@@ -1,7 +1,4 @@
 <?php $_code = $this->getMethodCode() ?>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://bridge.paymill.com/"></script></script>
-<script type="text/javascript">pmQuery = jQuery.noConflict();</script>
 <script type="text/javascript" src="<?php echo Mage::helper('paymill')->getJscriptPath() . "paymentForm.js" ?>"></script>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
     <li>
