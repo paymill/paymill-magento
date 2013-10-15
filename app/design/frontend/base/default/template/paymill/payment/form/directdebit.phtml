@@ -23,7 +23,13 @@
         </div>
     </li>
     <?php if (Mage::helper('paymill/optionHelper')->isShowingLabels()) : ?>
-        <li><div class='paymill_powered'><div class='paymill_credits'> <?php echo $this->__("paymill_slogan_elv"); ?> <a href='http://www.paymill.de' target='_blank'>PAYMILL</a></div></div></li>
+    <li>
+        <div class='paymill_powered'><div class='paymill_credits'> 
+            <?php echo $this->__("paymill_slogan_elv"); ?> 
+                <a href='http://www.paymill.de' target='_blank'>PAYMILL</a>
+            </div>
+        </div>
+    </li>
     <?php endif; ?>
     <li>
         <input class="paymill-payment-token-elv" name="payment[paymill-payment-token-elv]" id="payment[paymill-payment-token-elv]" type="hidden" />
