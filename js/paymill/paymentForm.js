@@ -307,14 +307,11 @@ function addPaymillEvents()
 		pmQuery('.paymill-info-fastCheckout-cc').val('false');
 	});
 
-	//Gather Data
-	pmQuery('#paymill_creditcard_number').live('input', paymillShowCardIcon);
 	pmQuery('#paymill_creditcard_number').live('input', paymillSubmitForm);
 	pmQuery('#paymill_creditcard_cvc').live('input', paymillSubmitForm);
 	pmQuery('#paymill_creditcard_expiry_month').live('change', paymillSubmitForm);
 	pmQuery('#paymill_creditcard_expiry_year').live('change', paymillSubmitForm);
-
 	pmQuery('#paymill_directdebit_bankcode').live('input', paymillSubmitForm);
+	pmQuery('#paymill_creditcard_number').live('input', paymillShowCardIcon);
 	eventsSetted = true;
-
 }
