@@ -25,7 +25,7 @@ and open the template in the editor.
             </action>
         </reference>
     </checkout_onepage_index>
-    <onestepcheckout>
+    <onestepcheckout_index_index>
         <reference name="head">  
             <action method="addCss">
                 <stylesheet>css/paymill/logo.css</stylesheet>
@@ -45,5 +45,5 @@ and open the template in the editor.
                 <script>paymill/paymentForm.js</script>
             </action>
         </reference>
-    </onestepcheckout>
+    </onestepcheckout_index_index>
 </layout>
