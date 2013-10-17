@@ -45,7 +45,13 @@ class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
      */
     public function getCustomerEmail($object)
     {
-        return $object->getCustomerEmail();
+        $email = $object->getCustomerEmail();
+        
+        if (empty($email)) {
+           $email =  $object->getBillingAddress()->getEmail();
+        }
+        
+        return $email;
     }
 
     /**
