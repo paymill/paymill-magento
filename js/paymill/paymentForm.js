@@ -176,7 +176,7 @@ function paymillSubmitForm()
 						'paymill-validate-cc-holder',
 						PAYMILL_ERROR_TEXT_IVALID_HOLDER_CC,
 						function(v) {
-							return (v !== '');
+							return (paymill.validateHolder(v));
 						},
 						''
 					),
