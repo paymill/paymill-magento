@@ -54,7 +54,6 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
         $paymentHelper = Mage::helper("paymill/paymentHelper");
         $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
         $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token);
-        $paymentProcessor->setPreAuthAmount(Mage::getSingleton('core/session')->getPreAuthAmount());
 
         //Always load client if email doesn't change
         $clientId = $fcHelper->getClientId();
@@ -93,6 +92,8 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
             return true;
         }
 
+        $this->_errorCode = $paymentProcessor->getErrorCode();
+        
         return false;
     }
 
@@ -124,7 +125,7 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
             $paymentProcessor->setPreauthId($preAuthorization);
             
             if (!$paymentProcessor->capture()) {
-                Mage::throwException("There was an error processing your capture.");
+                Mage::throwException(Mage::helper("paymill/paymentHelper")->getErrorMessage($paymentProcessor->getErrorCode()));
             }
 
             Mage::helper('paymill/loggingHelper')->log("Capture created", var_export($paymentProcessor->getLastResponse(), true));

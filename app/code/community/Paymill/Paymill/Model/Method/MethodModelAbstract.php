@@ -90,6 +90,8 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      * @var string
      */
     protected $_code = 'paymill_abstract';
+    
+    protected $_errorCode;
 
     /**
      * Check if currency is avaible for this payment
@@ -190,9 +192,9 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         }
 
         if (!$success) {
-            Mage::helper('paymill/loggingHelper')->log("There was an error processing the payment.");
+            Mage::helper('paymill/loggingHelper')->log(Mage::helper("paymill/paymentHelper")->getErrorMessage($this->_errorCode));
             Mage::getSingleton('checkout/session')->setGotoSection('payment');
-            Mage::throwException("There was an error processing your payment.");
+            Mage::throwException(Mage::helper("paymill/paymentHelper")->getErrorMessage($this->_errorCode));
         }
         
         //Finish as usual
@@ -212,10 +214,6 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
         $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token);
         
-        if ($this->getCode() === 'paymill_creditcard') {
-            $paymentProcessor->setPreAuthAmount(Mage::getSingleton('core/session')->getPreAuthAmount());
-        }
-
         //Always load client if email doesn't change
         $clientId = $fcHelper->getClientId();
         if (isset($clientId)) {
@@ -250,6 +248,8 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
 
             return true;
         }
+        
+        $this->_errorCode = $paymentProcessor->getErrorCode();
 
         return false;
     }

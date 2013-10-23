@@ -35,6 +35,7 @@ class Services_Paymill_PaymentProcessor
     private $_paymentId = null;
     //Source
     private $_source;
+    private $_errorCode;
 
     /**
      * Creates an object of the PaymentProcessor class.
@@ -257,7 +258,12 @@ class Services_Paymill_PaymentProcessor
         $this->_lastResponse = $transaction;
         if (isset($transaction['data']['response_code']) && $transaction['data']['response_code'] !== 20000) {
             $this->_log("An Error occured: " . $transaction['data']['response_code'], var_export($transaction, true));
-            throw new Exception("Invalid Result Exception: Invalid ResponseCode");
+            throw new Exception("Invalid Result Exception: Invalid ResponseCode", $transaction['data']['response_code']);
+        }
+        
+        if (isset($transaction['response_code']) && $transaction['response_code'] !== 20000) {
+            $this->_log("An Error occured: " . $transaction['response_code'], var_export($transaction, true));
+            throw new Exception("Invalid Result Exception: Invalid ResponseCode", $transaction['response_code']);
         }
 
         if (!isset($transaction['id']) && !isset($transaction['data']['id'])) {
@@ -333,8 +339,9 @@ class Services_Paymill_PaymentProcessor
 
             return true;
         } catch (Exception $ex) {
+            $this->_errorCode = $ex->getCode();
             // paymill wrapper threw an exception
-            $this->_log("Exception thrown from paymill wrapper.", $ex->getMessage());
+            $this->_log("Exception thrown from paymill wrapper. Code: " . $ex->getCode() . " Message: " . $ex->getMessage(), print_r($this->_transactionsObject->getResponse(), true));
             return false;
         }
     }
@@ -422,6 +429,11 @@ class Services_Paymill_PaymentProcessor
     public function getLastResponse()
     {
         return $this->_lastResponse;
+    }
+    
+    public function getErrorCode()
+    {
+        return $this->_errorCode;
     }
 
     /*     * **************************************************************************************************************

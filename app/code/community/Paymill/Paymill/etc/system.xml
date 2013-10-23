@@ -94,7 +94,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </version>
-
                         <active translate="label">
                             <label>paymill_opt_Enabled</label>
                             <sort_order>200</sort_order>
@@ -104,17 +103,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </active>
-                        
-                        <tokenTolerance translate="label, tooltip, comment">
-                            <label>paymill_token_tolerace</label>
-                            <sort_order>210</sort_order>
-                            <tooltip>paymill_token_tolerace_tooltip</tooltip>
-                            <comment>paymill_token_tolerace_comment</comment>
-                            <frontend_type>text</frontend_type>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </tokenTolerance>
                         <allowspecific translate="label">
                             <label>Payment from Applicable Countries</label>
                             <sort_order>220</sort_order>
