@@ -54,10 +54,10 @@
         <input class="paymill-option-debug-cc" name="payment[paymill-option-debug]" id="payment[paymill-option-debug]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode() ?>"/>
         <input class="paymill-info-public_key-cc" name="payment[paymill-info-public_key-cc]" id="payment[paymill-info-public_key-cc]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey() ?>"/>
         <input class="paymill-info-fastCheckout-cc" name="payment[paymill-info-fastCheckout-cc]" id="payment[paymill-info-fastCheckout-cc]" type="hidden" value="<?php echo $this->isNormalCheckout($_code) ?>"/>
-        <input class="paymill-payment-error-number" name="payment[paymill-payment-error-number]" id="payment[paymill-payment-error-number]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_cc") . "<br/>\n" ?>"/>
-        <input class="paymill-payment-error-holder" name="payment[paymill-payment-error-holder]" id="payment[paymill-payment-error-holder]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_cc") . "<br/>\n" ?>"/>
-        <input class="paymill-payment-error-expdate" name="payment[paymill-payment-error-expdate]" id="payment[paymill-payment-error-expdate]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_expdate") . "<br/>\n" ?>"/>
-        <input class="paymill-payment-error-cvc" name="payment[paymill-payment-error-cvc]" id="payment[paymill-payment-error--cvc]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_cvc") . "<br/>\n" ?>"/>
+        <input class="paymill-payment-error-number" name="payment[paymill-payment-error-number]" id="payment[paymill-payment-error-number]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_cc");?>"/>
+        <input class="paymill-payment-error-holder" name="payment[paymill-payment-error-holder]" id="payment[paymill-payment-error-holder]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_cc"); ?>"/>
+        <input class="paymill-payment-error-expdate" name="payment[paymill-payment-error-expdate]" id="payment[paymill-payment-error-expdate]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_expdate"); ?>"/>
+        <input class="paymill-payment-error-cvc" name="payment[paymill-payment-error-cvc]" id="payment[paymill-payment-error--cvc]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_cvc"); ?>"/>
     </li>
 </ul>
 <script type="text/javascript">
