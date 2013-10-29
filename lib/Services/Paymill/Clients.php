@@ -1,7 +1,5 @@
 <?php
 
-require_once ('Base.php');
-
 /**
  * Paymill API wrapper for clients resource
  */

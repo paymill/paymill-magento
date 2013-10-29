@@ -1,6 +1,5 @@
 <?php
 
-require_once 'Apiclient/Curl.php';
 /**
  * Paymill API wrapper super class
  */

@@ -166,11 +166,6 @@ class Services_Paymill_PaymentProcessor
      */
     private function _initiatePhpWrapperClasses()
     {
-        require_once $this->_libBase . 'Transactions.php';
-        require_once $this->_libBase . 'Preauthorizations.php';
-        require_once $this->_libBase . 'Clients.php';
-        require_once $this->_libBase . 'Payments.php';
-
         $this->_transactionsObject = new Services_Paymill_Transactions($this->_privateKey, $this->_apiUrl);
         $this->_preauthObject = new Services_Paymill_Preauthorizations($this->_privateKey, $this->_apiUrl);
         $this->_clientsObject = new Services_Paymill_Clients($this->_privateKey, $this->_apiUrl);
@@ -258,12 +253,12 @@ class Services_Paymill_PaymentProcessor
         $this->_lastResponse = $transaction;
         if (isset($transaction['data']['response_code']) && $transaction['data']['response_code'] !== 20000) {
             $this->_log("An Error occured: " . $transaction['data']['response_code'], var_export($transaction, true));
-            throw new Exception("Invalid Result Exception: Invalid ResponseCode", $transaction['data']['response_code']);
+            throw new Exception("Invalid Result Exception: Invalid ResponseCode", (int) $transaction['data']['response_code']);
         }
         
         if (isset($transaction['response_code']) && $transaction['response_code'] !== 20000) {
             $this->_log("An Error occured: " . $transaction['response_code'], var_export($transaction, true));
-            throw new Exception("Invalid Result Exception: Invalid ResponseCode", $transaction['response_code']);
+            throw new Exception("Invalid Result Exception: Invalid ResponseCode", (int) $transaction['response_code']);
         }
 
         if (!isset($transaction['id']) && !isset($transaction['data']['id'])) {

@@ -1,9 +1,5 @@
 <?php
 
-require_once 'Interface.php';
-
-require_once realpath(dirname(__FILE__)) . '/../Exception.php';
-
 if (!function_exists('json_decode')) {
     throw new Exception("Please install the PHP JSON extension");
 }
@@ -81,11 +77,13 @@ class Services_Paymill_Apiclient_Curl implements Services_Paymill_Apiclient_Inte
                     $responseCode = $this->_responseArray['body']['data']['response_code'];
                 }
 
-                return array("data" => array(
+                return array(
+                    "data" => array(
                         "error" => $errorMessage,
                         "response_code" => $responseCode,
                         "http_status_code" => $httpStatusCode
-                        ));
+                    )
+                );
             }
 
             return $this->_responseArray['body'];
@@ -110,7 +108,7 @@ class Services_Paymill_Apiclient_Curl implements Services_Paymill_Apiclient_Inte
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_USERAGENT => self::USER_AGENT,
             CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_CAINFO => realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'paymill.crt',
+            CURLOPT_CAINFO => Mage::getBaseDir() . '/lib/Services/Paymill/Apiclient/paymill.crt',
         );
 
         if (Services_Paymill_Apiclient_Interface::HTTP_GET === $method) {
