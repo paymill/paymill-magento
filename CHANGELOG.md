@@ -1,3 +1,8 @@
+## v3.4.1
+
+ * fix magento compiler problems
+ * jQuery compatibility when other versions loaded
+
 ## v3.4.0
 
  * Customer friendly error messages
