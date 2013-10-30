@@ -105,7 +105,7 @@
             </modules>
         </translate>
         <events>
-            <checkout_onepage_controller_success_action>
+            <sales_order_save_after>
                 <observers>
                     <paymill_paymill_model_observer>
                         <type>model</type>
@@ -113,7 +113,7 @@
                         <method>generateInvoice</method>
                     </paymill_paymill_model_observer>
                 </observers>
-            </checkout_onepage_controller_success_action>
+            </sales_order_save_after>
         </events>
     </frontend>
     

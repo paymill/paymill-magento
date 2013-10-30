@@ -29,14 +29,13 @@ class Paymill_Paymill_Model_Observer
      */
     public function generateInvoice(Varien_Event_Observer $observer)
     {
-        $orderIds = $observer->getEvent()->getOrderIds();
-        if ($orderIds) {
-            $orderId = current($orderIds);
-            if (!$orderId) {
-                return;
-            }
+        $order = $observer->getEvent()->getOrder();
+        $orders = Mage::getModel('sales/order_invoice')->getCollection()
+                        ->addAttributeToFilter('order_id', array('eq'=>$order->getId()));
+        $orders->getSelect()->limit(1);
+        if ((int)$orders->count() !== 0) {
+            return $this;
         }
-        $order = Mage::getModel('sales/order')->load($orderId);
         $paymentCode = $order->getPayment()->getMethod();
         if ($paymentCode === 'paymill_creditcard' || $paymentCode === 'paymill_directdebit') {
             if (Mage::helper('paymill/transactionHelper')->getPreAuthenticatedFlagState($order)) { // If the transaction is not flagged as a debit (not a preAuth) transaction
@@ -45,18 +44,8 @@ class Paymill_Paymill_Model_Observer
                 if ($order->canInvoice()) {
                     //Create the Invoice
                     Mage::helper('paymill/loggingHelper')->log(Mage::helper('paymill')->__($paymentCode), Mage::helper('paymill')->__('paymill_checkout_generating_invoice'), "Order Id: " . $order->getIncrementId());
-                    $invoice = $order->prepareInvoice();
-//
-//                    var_dump($invoice->getPayment());exit;
-//                    
-//                    
-//                    $invoice->register();
-                    Mage::getModel('core/resource_transaction')
-                       ->addObject($invoice)
-                       ->addObject($invoice->getOrder())
-                       ->save();
-               
-                    $invoice->sendEmail(true, '');
+                    $invoiceId = Mage::getModel('sales/order_invoice_api')->create($order->getIncrementId(), array());
+                    Mage::getModel('sales/order_invoice_api')->capture($invoiceId);
                 }
             }
         }
