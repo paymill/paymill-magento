@@ -39,15 +39,24 @@ class Paymill_Paymill_Model_Observer
         $order = Mage::getModel('sales/order')->load($orderId);
         $paymentCode = $order->getPayment()->getMethod();
         if ($paymentCode === 'paymill_creditcard' || $paymentCode === 'paymill_directdebit') {
-
             if (Mage::helper('paymill/transactionHelper')->getPreAuthenticatedFlagState($order)) { // If the transaction is not flagged as a debit (not a preAuth) transaction
                 Mage::helper('paymill/loggingHelper')->log("Debug", "No Invoice generated, since the transaction is flagged as preauth");
             } else {
                 if ($order->canInvoice()) {
                     //Create the Invoice
                     Mage::helper('paymill/loggingHelper')->log(Mage::helper('paymill')->__($paymentCode), Mage::helper('paymill')->__('paymill_checkout_generating_invoice'), "Order Id: " . $order->getIncrementId());
-                    $invoiceId = Mage::getModel('sales/order_invoice_api')->create($order->getIncrementId(), array());
-                    Mage::getModel('sales/order_invoice_api')->capture($invoiceId);
+                    $invoice = $order->prepareInvoice();
+//
+//                    var_dump($invoice->getPayment());exit;
+//                    
+//                    
+//                    $invoice->register();
+                    Mage::getModel('core/resource_transaction')
+                       ->addObject($invoice)
+                       ->addObject($invoice->getOrder())
+                       ->save();
+               
+                    $invoice->sendEmail(true, '');
                 }
             }
         }
@@ -65,7 +74,9 @@ class Paymill_Paymill_Model_Observer
         if ($order->getPayment()->getMethod() === 'paymill_creditcard' || $order->getPayment()->getMethod() === 'paymill_directdebit') {
             $amount = (int) ((string) ($creditmemo->getGrandTotal() * 100));
             Mage::helper('paymill/loggingHelper')->log("Trying to Refund.", var_export($order->getIncrementId(), true), $amount);
-            Mage::helper('paymill/refundHelper')->createRefund($order, $amount);
+            if (!Mage::helper('paymill/refundHelper')->createRefund($order, $amount)) {
+                
+            }
         }
     }
 
