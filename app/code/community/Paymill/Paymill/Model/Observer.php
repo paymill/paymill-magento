@@ -46,6 +46,7 @@ class Paymill_Paymill_Model_Observer
                     Mage::helper('paymill/loggingHelper')->log(Mage::helper('paymill')->__($paymentCode), Mage::helper('paymill')->__('paymill_checkout_generating_invoice'), "Order Id: " . $order->getIncrementId());
                     $invoiceId = Mage::getModel('sales/order_invoice_api')->create($order->getIncrementId(), array());
                     Mage::getModel('sales/order_invoice_api')->capture($invoiceId);
+                    $order->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT, true)->save();
                 }
             }
         }
