@@ -21,12 +21,12 @@ function getPaymillCode()
 	var methods = {
 		paymill_creditcard: "cc",
 		paymill_directdebit: 'elv'
-	 };
-	
+	};
+
 	if (methods.hasOwnProperty(pmQuery("input[name='payment[method]']:checked").val())) {
 		return methods[pmQuery("input[name='payment[method]']:checked").val()];
 	}
-	
+
 	return 'other';
 }
 
@@ -136,11 +136,11 @@ function paymillSubmitForm()
 		PAYMILL_ERROR_TEXT_IVALID_BANKCODE = pmQuery('.paymill-payment-error-bankcode').val();
 	}
 
-	
+
 	if (pmQuery('#paymill_creditcard_number').closest("form").attr("id") === undefined) {
 		pmQuery('#paymill_creditcard_number').closest("form").attr("id", 'paymill-checkout-form')
 	}
-	
+
 	var form = pmQuery('#paymill_creditcard_number').closest("form").attr("id");
 
 	switch (PAYMILL_PAYMENT_NAME) {
@@ -187,7 +187,7 @@ function paymillSubmitForm()
 							if (paymill.cardType(pmQuery('#paymill_creditcard_number').val()).toLowerCase() === 'maestro') {
 								return true;
 							}
-							
+
 							return paymill.validateCvc(v);
 						},
 						''
@@ -195,13 +195,18 @@ function paymillSubmitForm()
 				};
 
 				Object.extend(Validation.methods, nv);
-
-				if (!paymillValidator.validate()) {
+				paymillValidator.validate();
+				var valid = paymill.validateCvc(pmQuery('#paymill_creditcard_cvc').val()) 
+						 && paymill.validateHolder(pmQuery('#paymill_creditcard_holdername').val()) 
+						 && paymill.validateExpiry(pmQuery('#paymill_creditcard_expiry_month').val(), pmQuery('#paymill_creditcard_expiry_year').val()) 
+						 && paymill.validateCardNumber(pmQuery('#paymill_creditcard_number').val());
+				 
+				if (!valid) {
 					return false;
 				}
-				
+
 				var cvc = '000';
-				
+
 				if (pmQuery('#paymill_creditcard_cvc').val() !== '') {
 					cvc = pmQuery('#paymill_creditcard_cvc').val();
 				}
@@ -249,8 +254,12 @@ function paymillSubmitForm()
 				};
 
 				Object.extend(Validation.methods, nv);
+				paymillValidator.validate();
+				var valid = pmQuery('#paymill_directdebit_holdername').val() !== ''
+						 && paymill.validateAccountNumber(pmQuery('#paymill_directdebit_account').val())
+						 && paymill.validateBankCode(pmQuery('#paymill_directdebit_bankcode').val());
 
-				if (!paymillValidator.validate()) {
+				if (!valid) {
 					return false;
 				}
 

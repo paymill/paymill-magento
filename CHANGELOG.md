@@ -1,3 +1,7 @@
+## v3.4.2
+
+ * only validate the paymill form instead the complete checkout form
+
 ## v3.4.1
 
  * fix magento compiler problems
