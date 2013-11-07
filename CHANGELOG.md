@@ -1,21 +1,17 @@
 ## v3.4.2
-
  * only validate the paymill form instead the complete checkout form
  * fix not working crdeit card icons
 
 ## v3.4.1
-
  * fix magento compiler problems
  * jQuery compatibility when other versions loaded
 
 ## v3.4.0
-
  * Customer friendly error messages
  * Better owner validation
  * Global css and js loading
 
 ## v3.3.1
-
  * Receive customer email saver
  * Change event binding sequence in paymentForm.js
 
