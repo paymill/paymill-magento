@@ -1,6 +1,7 @@
 ## v3.4.2
 
  * only validate the paymill form instead the complete checkout form
+ * fix not working crdeit card icons
 
 ## v3.4.1
 

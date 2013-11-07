@@ -20,42 +20,42 @@
 
 .paymill_creditcard_number-visa
 {
-    background: url('../../images/paymill/icon_32x20_visa.png') no-repeat center right;
+    background: url('../../images/paymill/icon_32x20_visa.png') no-repeat center right !important;
 }
 
 .paymill_creditcard_number-mastercard
 {
-    background: url('../../images/paymill/icon_32x20_mastercard.png') no-repeat center right;
+    background: url('../../images/paymill/icon_32x20_mastercard.png') no-repeat center right !important;
 }
 
 .paymill_creditcard_number-american
 {
-    background: url('../../images/paymill/icon_32x20_amex.png') no-repeat center right;
+    background: url('../../images/paymill/icon_32x20_amex.png') no-repeat center right !important;
 }
 
 .paymill_creditcard_number-jcb
 {
-    background: url('../../images/paymill/icon_32x20_jcb.png') no-repeat center right;
+    background: url('../../images/paymill/icon_32x20_jcb.png') no-repeat center right !important;
 }
 
 .paymill_creditcard_number-maestro
 {
-    background: url('../../images/paymill/icon_32x20_maestro.png') no-repeat center right;
+    background: url('../../images/paymill/icon_32x20_maestro.png') no-repeat center right !important;
 }
 
 .paymill_creditcard_number-unionpay
 {
-    background: url('../../images/paymill/icon_32x20_unionpay.png') no-repeat center right;
+    background: url('../../images/paymill/icon_32x20_unionpay.png') no-repeat center right !important;
 }
 
 .paymill_creditcard_number-diners
 {
-    background: url('../../images/paymill/icon_32x20_dinersclub.png') no-repeat center right;
+    background: url('../../images/paymill/icon_32x20_dinersclub.png') no-repeat center right !important;
 }
 
 .paymill_creditcard_number-discover
 {
-    background: url('../../images/paymill/icon_32x20_discover.png') no-repeat center right;
+    background: url('../../images/paymill/icon_32x20_discover.png') no-repeat center right !important;
 }
 
 .tooltip 
