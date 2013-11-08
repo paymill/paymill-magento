@@ -30,28 +30,32 @@ class Paymill_Paymill_Model_Observer
     public function generateInvoice(Varien_Event_Observer $observer)
     {
         $order = $observer->getEvent()->getOrder();
-        $orders = Mage::getModel('sales/order_invoice')->getCollection()
-                        ->addAttributeToFilter('order_id', array('eq'=>$order->getId()));
-        $orders->getSelect()->limit(1);
-        if ((int)$orders->count() !== 0) {
-            return $this;
-        }
-        $paymentCode = $order->getPayment()->getMethod();
-        if ($paymentCode === 'paymill_creditcard' || $paymentCode === 'paymill_directdebit') {
+        if ($order->getPayment()->getMethod() === 'paymill_creditcard' || $order->getPayment()->getMethod() === 'paymill_directdebit') {
             if (Mage::helper('paymill/transactionHelper')->getPreAuthenticatedFlagState($order)) { // If the transaction is not flagged as a debit (not a preAuth) transaction
                 Mage::helper('paymill/loggingHelper')->log("Debug", "No Invoice generated, since the transaction is flagged as preauth");
             } else {
                 if ($order->canInvoice()) {
-                    //Create the Invoice
-                    Mage::helper('paymill/loggingHelper')->log(Mage::helper('paymill')->__($paymentCode), Mage::helper('paymill')->__('paymill_checkout_generating_invoice'), "Order Id: " . $order->getIncrementId());
-                    $invoiceId = Mage::getModel('sales/order_invoice_api')->create($order->getIncrementId(), array());
-                    Mage::getModel('sales/order_invoice_api')->capture($invoiceId);
-                    $order->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT, true)->save();
+                    $invoice = $order->prepareInvoice();
+
+                    $invoice->register();
+                    Mage::getModel('core/resource_transaction')
+                       ->addObject($invoice)
+                       ->addObject($invoice->getOrder())
+                       ->save();
+
+                    $invoice->sendEmail(true, '');
+                    $this->_changeOrderStatus($order);
                 }
             }
         }
     }
-
+ 
+    private function _changeOrderStatus($order)
+    {
+        $order->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT, true);        
+        $order->save();
+    }
+    
     /**
      * Registered for the sales_order_creditmemo_refund event
      * Creates a refund based on the created creditmemo

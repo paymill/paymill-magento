@@ -1,3 +1,7 @@
+## v3.5.0
+ * remove empty input fields while focusing
+ * automatic email after successful invoice creation
+
 ## v3.4.3
  * avoid input field jumping during the validation
 

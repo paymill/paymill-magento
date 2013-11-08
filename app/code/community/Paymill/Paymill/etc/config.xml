@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Paymill_Paymill>
-            <version>3.4.3</version>
+            <version>3.5.0</version>
         </Paymill_Paymill>
     </modules>
     
@@ -60,6 +60,18 @@
                 </connection>
             </paymill_read>
         </resources>
+        
+        <events>
+            <sales_order_place_after>
+                <observers>
+                    <paymill_paymill_model_observer>
+                        <type>singleton</type>
+                        <class>paymill/observer</class>
+                        <method>generateInvoice</method>
+                    </paymill_paymill_model_observer>
+                </observers>
+            </sales_order_place_after>
+        </events>
     </global>
  
  
@@ -104,17 +116,6 @@
                 </Paymill_Paymill>
             </modules>
         </translate>
-        <events>
-            <sales_order_save_after>
-                <observers>
-                    <paymill_paymill_model_observer>
-                        <type>model</type>
-                        <class>Paymill_Paymill_Model_Observer</class>
-                        <method>generateInvoice</method>
-                    </paymill_paymill_model_observer>
-                </observers>
-            </sales_order_save_after>
-        </events>
     </frontend>
     
     <adminhtml>

@@ -281,36 +281,29 @@ function paymillSubmitForm()
 
 function addPaymillEvents()
 {
-
 	pmQuery('#paymill_directdebit_holdername').live('focus', function() {
 		pmQuery('.paymill-info-fastCheckout-elv').val('false');
-		pmQuery('#paymill_directdebit_holdername').val('');
 	});
 
 	pmQuery('#paymill_directdebit_account').live('focus', function() {
 		pmQuery('.paymill-info-fastCheckout-elv').val('false');
-		pmQuery('#paymill_directdebit_account').val('');
 	});
 
 
 	pmQuery('#paymill_directdebit_bankcode').live('focus', function() {
 		pmQuery('.paymill-info-fastCheckout-elv').val('false');
-		pmQuery('#paymill_directdebit_bankcode').val('');
 	});
 
 	pmQuery('#paymill_creditcard_holdername').live('focus', function() {
 		pmQuery('.paymill-info-fastCheckout-cc').val('false');
-		pmQuery('#paymill_creditcard_holdername').val('');
 	});
 
 	pmQuery('#paymill_creditcard_cvc').live('focus', function() {
 		pmQuery('.paymill-info-fastCheckout-cc').val('false');
-		pmQuery('#paymill_creditcard_cvc').val('');
 	});
 
 	pmQuery('#paymill_creditcard_number').live('focus', function() {
 		pmQuery('.paymill-info-fastCheckout-cc').val('false');
-		pmQuery('#paymill_creditcard_number').val('');
 	});
 
 	pmQuery('#paymill_creditcard_expiry_month').live('change', function() {
