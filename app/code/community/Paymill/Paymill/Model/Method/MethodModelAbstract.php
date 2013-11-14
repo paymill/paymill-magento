@@ -155,7 +155,13 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      */
     public function assignData($data)
     {
-        $post = $data->getData();
+        parent::assignData($data);
+        if (is_array($data)) {
+            $post = $data;
+        } else {
+            $post = $data->getData();
+        }
+        
         if (array_key_exists('paymill-payment-token-' . $this->_getShortCode(), $post) 
                 && !empty($post['paymill-payment-token-' . $this->_getShortCode()])) {
             //Save Data into session
@@ -164,14 +170,11 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         } else {
             if (Mage::helper('paymill/fastCheckoutHelper')->hasData($this->_code)) {
                 Mage::getSingleton('core/session')->setToken('dummyToken');
-            } else {
-                Mage::helper('paymill/loggingHelper')->log("No token found.");
-                Mage::throwException("There was an error processing your payment.");
             }
         }
 
         //Finish as usual
-        return parent::assignData($data);
+        return $this;
     }
 
     /**
@@ -182,6 +185,12 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      */
     public function authorize(Varien_Object $payment, $amount)
     {
+        $token = Mage::getSingleton('core/session')->getToken();
+        if (empty($token)) {
+            Mage::helper('paymill/loggingHelper')->log("No token found.");
+            Mage::throwException("There was an error processing your payment.");
+        }
+        
         $success = false;
         if (Mage::helper('paymill/optionHelper')->isPreAuthorizing() && $this->_code === "paymill_creditcard") {
             Mage::helper('paymill/loggingHelper')->log("Starting payment process as preAuth");

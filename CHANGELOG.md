@@ -1,3 +1,6 @@
+## v3.5.1
+ * move token validation from assignData to authorize
+
 ## v3.5.0
  * remove empty input fields while focusing
  * automatic email after successful invoice creation
