@@ -1,3 +1,6 @@
+## v3.5.2
+ * set order state to processing after a automatic invoice creation
+
 ## v3.5.1
  * move token validation from assignData to authorize
 

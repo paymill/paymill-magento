@@ -52,7 +52,7 @@ class Paymill_Paymill_Model_Observer
  
     private function _changeOrderStatus($order)
     {
-        $order->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT, true);        
+        $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true);
         $order->save();
     }
     
