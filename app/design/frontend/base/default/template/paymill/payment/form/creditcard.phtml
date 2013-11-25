@@ -37,15 +37,6 @@
             <input value="<?php echo $this->getPaymentEntry($_code, 'cvc'); ?>" type="text" id="<?php echo $_code ?>_cvc" class="input-text paymill-validate-cc-cvc"/>
         </div>
     </li>
-    <?php if (Mage::helper('paymill/optionHelper')->isShowingLabels()) : ?>
-    <li>
-        <div class='paymill_powered'>
-            <div class='paymill_credits'>
-                <?php echo $this->__("paymill_slogan"); ?><a href='http://www.paymill.de' target='_blank'>PAYMILL</a>
-            </div>
-        </div>
-    </li>
-    <?php endif; ?>
     <li>
         <input class="paymill-payment-token-cc" name="payment[paymill-payment-token-cc]" id="payment[paymill-payment-token-cc]" type="hidden" />
         <input class="paymill_3ds_cancel" name="payment[paymill_3ds_cancel]" id="payment[paymill_3ds_cancel]" type="hidden" value="<?php echo $this->__("paymill_3ds_cancel") ?>"/>
