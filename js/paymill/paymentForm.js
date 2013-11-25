@@ -71,7 +71,7 @@ function paymillShowCardIcon()
  */
 function paymillResponseHandler(error, result)
 {
-	var paymillValidator = new Validation(pmQuery('#paymill_creditcard_number').closest("form").attr("id"));
+	var paymillValidator = new Validation(pmQuery("input[name='payment[method]']:checked").closest("form").attr("id"));
 	paymillValidator.validate();
 	if (error) {
 		// Appending error

@@ -1,4 +1,6 @@
 ## v3.5.2
+ * send invoice mail only when the option is setted
+ * better js validation
  * set order state to processing after a automatic invoice creation
 
 ## v3.5.1

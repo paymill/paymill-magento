@@ -22,32 +22,28 @@
 {
     background-image: url('../../images/paymill/icon_32x20_visa.png') !important;
     background-repeat: no-repeat !important;
-    background-position-x: right !important;
-    background-position-y: center !important;
+    background-position: right center !important;
 }
 
 .paymill-card-number-mastercard
 {
     background-image: url('../../images/paymill/icon_32x20_mastercard.png') !important;
     background-repeat: no-repeat !important;
-    background-position-x: right !important;
-    background-position-y: center !important;
+    background-position: right center !important;
 }
 
 .paymill-card-number-amex
 {
     background-image: url('../../images/paymill/icon_32x20_amex.png') !important;
     background-repeat: no-repeat !important;
-    background-position-x: right !important;
-    background-position-y: center !important;
+    background-position: right center !important;
 }
 
 .paymill-card-number-jcb
 {
     background-image: url('../../images/paymill/icon_32x20_jcb.png') !important;
     background-repeat: no-repeat !important;
-    background-position-x: right !important;
-    background-position-y: center !important;
+    background-position: right center !important;
         
 }
 
@@ -55,32 +51,28 @@
 {
     background-image: url('../../images/paymill/icon_32x20_maestro.png') !important;
     background-repeat: no-repeat !important;
-    background-position-x: right !important;
-    background-position-y: center !important;
+    background-position: right center !important;
 }
 
 .paymill-card-number-carte-bleue
 {
     background-image: url('../../images/paymill/icon_32x20_unionpay.png') !important;
     background-repeat: no-repeat !important;
-    background-position-x: right !important;
-    background-position-y: center !important;
+    background-position: right center !important;
 }
 
 .paymill-card-number-diners
 {
     background-image: url('../../images/paymill/icon_32x20_dinersclub.png') !important;
     background-repeat: no-repeat !important;
-    background-position-x: right !important;
-    background-position-y: center !important;
+    background-position: right center !important;
 }
 
 .paymill-card-number-discover
 {
     background-image: url('../../images/paymill/icon_32x20_discover.png') !important;
     background-repeat: no-repeat !important;
-    background-position-x: right !important;
-    background-position-y: center !important;
+    background-position: right center !important;
 }
 
 .tooltip 
