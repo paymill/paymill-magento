@@ -42,6 +42,13 @@ $installer->run("
         UNIQUE KEY `userId` (`user_id`)
     ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
 ");
-    
+
+$installer->run("UPDATE sales_flat_quote_payment SET method = 'paymill_creditcard' WHERE method = 'paymillcc';");
+
+$installer->run("UPDATE sales_flat_order_payment SET method = 'paymill_creditcard' WHERE method = 'paymillcc';");
+
+$installer->run("UPDATE sales_flat_quote_payment SET method = 'paymill_directdebit' WHERE method = 'paymillelv';");
+
+$installer->run("UPDATE sales_flat_order_payment SET method = 'paymill_directdebit' WHERE method = 'paymillelv';");
 
 $installer->endSetup();

@@ -69,6 +69,8 @@ function paymillShowCardIcon()
  */
 function paymillResponseHandler(error, result)
 {
+	var paymillValidator = new Validation(pmQuery('#paymill_creditcard_number').closest("form").attr("id"));
+	paymillValidator.validate();
 	if (error) {
 		// Appending error
 		PAYMILL_ERROR_STRING += error.apierror + "\n";
@@ -111,7 +113,7 @@ function paymillSubmitForm()
 				if (!valid) {
 					return false;
 				}
-
+				
 				var cvc = '000';
 
 				if (pmQuery('#paymill_creditcard_cvc').val() !== '') {
