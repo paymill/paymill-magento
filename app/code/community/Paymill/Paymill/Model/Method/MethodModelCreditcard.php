@@ -43,61 +43,6 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
     protected $_infoBlockType = 'paymill/payment_info_paymentFormCreditcard';
 
     /**
-     * Deals with payment processing when preAuth mode is active
-     */
-    public function preAuth(Varien_Object $payment, $amount)
-    {
-        //Gathering data from session
-        $token = Mage::getSingleton('core/session')->getToken();
-
-        //Create Payment Processor
-        $paymentHelper = Mage::helper("paymill/paymentHelper");
-        $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
-        $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token);
-
-        //Always load client if email doesn't change
-        $clientId = $fcHelper->getClientId();
-        if (isset($clientId)) {
-            $paymentProcessor->setClientId($clientId);
-        }
-        
-        //Loading Fast Checkout Data (if enabled and given)
-        if ($fcHelper->hasData($this->_code) && $token === 'dummyToken') {
-            $paymentId = $fcHelper->getPaymentId($this->_code);
-            if (isset($paymentId)) {
-                $paymentProcessor->setPaymentId($paymentId);
-            }
-        }
-
-        //Process Payment
-        $success = $paymentProcessor->processPayment(false);
-
-        If ($success) {
-            //Save Transaction Data
-            $transactionHelper = Mage::helper("paymill/transactionHelper");
-            $transactionModel = $transactionHelper->createTransactionModel($paymentProcessor->getPreauthId(), true);
-            $transactionHelper->setAdditionalInformation($payment, $transactionModel);
-
-            
-            //Allways update the client
-            $clientId = $paymentProcessor->getClientId();
-            $fcHelper->saveData($this->_code, $clientId);
-            
-            //Save payment data for FastCheckout (if enabled)
-            if ($fcHelper->isFastCheckoutEnabled()) { //Fast checkout enabled
-                $paymentId = $paymentProcessor->getPaymentId();
-                $fcHelper->saveData($this->_code, $clientId, $paymentId);
-            }
-
-            return true;
-        }
-
-        $this->_errorCode = $paymentProcessor->getErrorCode();
-        
-        return false;
-    }
-
-    /**
      * Gets called when a capture gets triggered (default on invoice generation)
      * 
      * @throws Exception

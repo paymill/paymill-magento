@@ -53,6 +53,26 @@ class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
         
         return $email;
     }
+    
+    public function getClientData()
+    {
+        $clients = new Services_Paymill_Clients(
+            Mage::helper('paymill/optionHelper')->getPrivateKey(), 
+            Mage::helper('paymill')->getApiUrl()
+        );
+        
+        $clientId = Mage::helper("paymill/fastCheckoutHelper")->getClientId();
+        
+        $client = null;
+        if (!empty($clientId)) {
+            $client = $clients->getOne($clientId);
+            if (!array_key_exists('email', $client)) {
+                $client = null;
+            }
+        }
+        
+        return $client;
+    }
 
     /**
      * Returns the Id of the user currently  logged in.

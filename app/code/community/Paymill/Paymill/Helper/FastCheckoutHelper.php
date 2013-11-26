@@ -85,6 +85,10 @@ class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstrac
             );
             
             $payment = $payments->getOne($this->getPaymentId($code));
+            
+            if (!array_key_exists('last4', $payment) && !array_key_exists('code', $payment)) {
+                $payment = null;
+            }
         }
         
         return $payment;

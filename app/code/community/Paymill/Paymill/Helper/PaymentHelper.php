@@ -74,7 +74,6 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function getErrorMessage($code)
     {
-        Mage::log($code, null, 'paymill.log');
         $message = 'General undefined response.';
         if (array_key_exists($code, $this->_responseCodes)) {
             $message = $this->_responseCodes[$code];

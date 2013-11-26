@@ -69,6 +69,8 @@ class Paymill_Paymill_Model_Fastcheckout extends Mage_Core_Model_Abstract
         if ($customerExists == 1) {
             $obj = $collection->getFirstItem();
 
+            $obj->setClientId($clientId)->save();
+            
             if ($paymentMethodCode === 'paymill_creditcard') {
                 $logger->log("Saving Fast Checkout Data", "Customer data already exists. Saving CC only Data.");
                 $obj->setCcPaymentId($paymentId)

@@ -43,6 +43,6 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormAbstract extends Mage_Paymen
      */
     public function isNormalCheckout($code)
     {
-        return !Mage::helper('paymill/fastCheckoutHelper')->hasData($code) ? 'false' : 'true';
+        return is_null(Mage::helper('paymill/fastCheckoutHelper')->getPaymentData($code)) ? 'false' : 'true';
     }
 }
