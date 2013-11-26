@@ -92,3 +92,4 @@
 "Timeout on side of the acquirer.", "Die Schnittstelle zum Acquirer reagiert nicht, daher bekommen wir keine Antwort ob die Transaktion erfolgreich durchgelaufen ist."
 "Risk management transaction timeout.", "Es gibt eine Zeitüberschreitung bei der Risiko-Management Transaktion."
 "Duplicate transaction.", "Doppelte Transaktion."
+"paymill_send_invoice_mail", "Rechnungs Mail senden"

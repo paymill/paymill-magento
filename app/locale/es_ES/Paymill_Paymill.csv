@@ -91,3 +91,4 @@
 "Timeout on side of the acquirer.", "Timeout on side of the acquirer."
 "Risk management transaction timeout.", "Risk management transaction timeout."
 "Duplicate transaction.", "Duplicate transaction."
+"paymill_send_invoice_mail", "Send invoice mail"

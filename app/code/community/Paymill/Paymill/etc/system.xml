@@ -133,12 +133,15 @@
                         </preAuth_active>
                         <send_invoice_mail translate="label">
                             <label>paymill_send_invoice_mail</label>
-                            <sort_order>360</sort_order>
+                            <sort_order>370</sort_order>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <depends>
+                                <preAuth_active>0</preAuth_active>
+                            </depends>
                         </send_invoice_mail>
                         <sort_order translate="label">
                             <label>paymill_opt_Sort</label>
