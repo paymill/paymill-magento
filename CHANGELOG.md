@@ -1,3 +1,6 @@
+## v3.5.3
+ * fix broken image in pdf invoice
+
 ## v3.5.2
  * check if payments and clients exist
  * remove PAYMILL label

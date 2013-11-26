@@ -29,7 +29,18 @@ class Paymill_Paymill_Block_Payment_Info_PaymentFormCreditcard extends Mage_Paym
         parent::_construct();
         $this->setTemplate('paymill/payment/info/creditcard.phtml');
     }
-
+    
+    /**
+     * Render as PDF
+     *
+     * @return string
+     */
+    public function toPdf()
+    {
+        $this->setTemplate('paymill/payment/info/creditcard_pdf.phtml');
+        return $this->toHtml();
+    }
+    
     /**
      * Add custom information to payment method information
      *

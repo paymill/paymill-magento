@@ -29,7 +29,18 @@ class Paymill_Paymill_Block_Payment_Info_PaymentFormDirectdebit extends Mage_Pay
         parent::_construct();
         $this->setTemplate('paymill/payment/info/directdebit.phtml');
     }
-
+    
+    /**
+     * Render as PDF
+     *
+     * @return string
+     */
+    public function toPdf()
+    {
+        $this->setTemplate('paymill/payment/info/directdebit_pdf.phtml');
+        return $this->toHtml();
+    }
+    
     /**
      * Add custom information to payment method information
      *
