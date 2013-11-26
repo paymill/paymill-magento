@@ -1,4 +1,5 @@
 ## v3.5.2
+ * check if payments and clients exist
  * remove PAYMILL label
  * send invoice mail only when the option is setted
  * better js validation
