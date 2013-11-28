@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Paymill_Paymill>
-            <version>3.5.3</version>
+            <version>3.5.4</version>
         </Paymill_Paymill>
     </modules>
     
@@ -83,7 +83,7 @@
                 <active>0</active>
                 <currency>EUR,USD</currency>
                 <model>paymill/method_methodModelCreditcard</model>
-                <order_status>pending</order_status>
+                <order_status>processing</order_status>
                 <title>paymill_credit_card</title>
                 <payment_action>authorize</payment_action>
             </paymill_creditcard>
@@ -92,7 +92,7 @@
                 <active>0</active>
                 <currency>EUR,USD</currency>
                 <model>paymill/method_methodModelDirectdebit</model>
-                <order_status>pending_payment</order_status>
+                <order_status>pending</order_status>
                 <title>paymill_direct_debit</title>
                 <payment_action>authorize</payment_action>
             </paymill_directdebit>

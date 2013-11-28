@@ -43,18 +43,12 @@ class Paymill_Paymill_Model_Observer
                        ->addObject($invoice->getOrder())
                        ->save();
                     
+                    $invoice->pay()->save();
+                    
                     $invoice->sendEmail(Mage::getStoreConfig('payment/paymill_creditcard/send_invoice_mail', Mage::app()->getStore()->getStoreId()), '');
-
-                    $this->_changeOrderStatus($order);
                 }
             }
         }
-    }
- 
-    private function _changeOrderStatus($order)
-    {
-        $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true);
-        $order->save();
     }
     
     /**

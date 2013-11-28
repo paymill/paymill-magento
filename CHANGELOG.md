@@ -1,3 +1,7 @@
+## v3.5.4
+ * set invoice state to paid
+ * selectable order states
+
 ## v3.5.3
  * fix broken image in pdf invoice
 
