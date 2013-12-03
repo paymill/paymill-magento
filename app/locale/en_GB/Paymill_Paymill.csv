@@ -29,6 +29,7 @@
 "paymill_error_text_invalid_expdate","Invalid Expiry Date"
 "paymill_error_text_invalid_holder_cc","Please enter a card holder."
 "paymill_error_text_invalid_holder_elv","Please enter an account holder."
+"paymill_error_text_invalid_token", "There is a problem with your credit card data: "
 "paymill_error_text_invalid_bankcode","Invalid Bankcode"
 "paymill_error_text_invalid_payment","The payment you chose could not be identified. Please contact the support"
 "paymill_account","Accountnumber"

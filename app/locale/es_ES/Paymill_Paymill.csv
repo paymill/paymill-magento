@@ -29,6 +29,7 @@
 "paymill_error_text_invalid_expdate","Fecha de expiración inválida"
 "paymill_error_text_invalid_holder_cc","Por favor, introduce el nombre del titular de la tarjeta."
 "paymill_error_text_invalid_holder_elv","Por favor, introduce el nombre del titular de la cuenta."
+"paymill_error_text_invalid_token", "There is a problem with your credit card data: "
 "paymill_error_text_invalid_bankcode","Código de banco inválido."
 "paymill_error_text_invalid_payment","No se ha podido indentificar el método de pago escogido. Por favor, contáctese con nuestro equipo de soporte al cliente."
 "paymill_account","Número de cuenta"

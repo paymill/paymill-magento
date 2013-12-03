@@ -38,7 +38,7 @@
         </div>
     </li>
     <li>
-        <input class="paymill-payment-token-cc" name="payment[paymill-payment-token-cc]" id="payment[paymill-payment-token-cc]" type="hidden" />
+        <input class="paymill-payment-token-cc paymill-validate-cc-token required-entry" name="payment[paymill-payment-token-cc]" id="payment[paymill-payment-token-cc]" type="hidden" />
         <input class="paymill_3ds_cancel" name="payment[paymill_3ds_cancel]" id="payment[paymill_3ds_cancel]" type="hidden" value="<?php echo $this->__("paymill_3ds_cancel") ?>"/>
         <input class="paymill-payment-amount-cc" name="payment[paymill-payment-amount-cc]" id="payment[paymill-payment-amount-cc]" type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getAmount() ?>"/>
         <input class="paymill-payment-currency-cc" name="payment[paymill-payment-currency-cc]" id="payment[paymill-payment-currency-cc]" type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getCurrency() ?>"/>
@@ -48,7 +48,8 @@
         <input class="paymill-payment-error-number" name="payment[paymill-payment-error-number]" id="payment[paymill-payment-error-number]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_cc");?>"/>
         <input class="paymill-payment-error-holder" name="payment[paymill-payment-error-holder]" id="payment[paymill-payment-error-holder]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_cc"); ?>"/>
         <input class="paymill-payment-error-expdate" name="payment[paymill-payment-error-expdate]" id="payment[paymill-payment-error-expdate]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_expdate"); ?>"/>
-        <input class="paymill-payment-error-cvc" name="payment[paymill-payment-error-cvc]" id="payment[paymill-payment-error--cvc]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_cvc"); ?>"/>
+        <input class="paymill-payment-error-cvc" name="payment[paymill-payment-error-cvc]" id="payment[paymill-payment-error--cvc]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_token"); ?>"/>
+        <input class="paymill-payment-error-cc-token" name="payment[paymill-payment-error-cc-token]" id="payment[paymill-payment-error-cc-token]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_token"); ?>"/>
     </li>
 </ul>
 <script type="text/javascript">
