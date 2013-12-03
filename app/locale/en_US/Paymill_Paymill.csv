@@ -26,7 +26,7 @@
 "paymill_private_key_comment","You can find your Private Key in the Paymill cockpit by clicking: MY ACCOUNT->Settings->API keys"
 "paymill_error_text_invalid_number_cc","Please enter a valid Credit Card number."
 "paymill_error_text_invalid_number_elv","Please enter a valid Accountnumber"
-"paymill_error_text_invalid_token", "There is a problem with your credit card data: "
+"paymill_error_text_invalid_token", "There is a problem occurred: "
 "paymill_error_text_invalid_expdate","Invalid Expiry Date"
 "paymill_error_text_invalid_holder_cc","Please enter a card holder."
 "paymill_error_text_invalid_holder_elv","Please enter an account holder."

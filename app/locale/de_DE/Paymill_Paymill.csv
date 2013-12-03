@@ -29,7 +29,7 @@
 "paymill_error_text_invalid_expdate","Ungültiges Ablaufdatum"
 "paymill_error_text_invalid_holder_cc","Bitte geben Sie einen Karteninhaber an."
 "paymill_error_text_invalid_holder_elv","Bitte geben Sie einen Kontoinhaber an."
-"paymill_error_text_invalid_token", "Es gibt ein Problem mit Ihren Kreditkarten Daten: "
+"paymill_error_text_invalid_token", "Folgender Fehler ist aufgetreten: "
 "paymill_error_text_invalid_bankcode","Ungültige Bankleitzahl"
 "paymill_error_text_invalid_payment","Zahlart konnte nicht identifiziert werden. Bitte kontaktieren Sie den Support."
 "paymill_account","Kontonummer"

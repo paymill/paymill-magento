@@ -78,7 +78,7 @@ function paymillResponseHandler(error, result)
 		
 		nv['paymill-validate-' + getPaymillCode() + '-token'] = new Validator(
 			'paymill-validate-' + getPaymillCode() + '-token',
-			getValueIfExist('.paymill-payment-error-' + getPaymillCode() + '-token') + error.apierror,
+			getValueIfExist('.paymill-payment-error-' + getPaymillCode() + '-token') + error.message,
 			function(v) {
 				return v !== '';
 			},
@@ -87,6 +87,7 @@ function paymillResponseHandler(error, result)
 
 		Object.extend(Validation.methods, nv);
 		debug(error.apierror);
+		debug(error.message);
 		debug("Paymill Response Handler triggered: Error.");
 	} else {
 		// Appending Token to form
