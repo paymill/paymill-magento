@@ -1,3 +1,6 @@
+## v3.5.5
+ * expend js validation to paymill token field
+
 ## v3.5.4
  * set invoice state to paid
  * selectable order states
