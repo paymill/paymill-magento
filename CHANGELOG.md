@@ -1,3 +1,6 @@
+## v3.5.6
+ * get token amount via ajax
+
 ## v3.5.5
  * expend js validation to paymill token field
 
