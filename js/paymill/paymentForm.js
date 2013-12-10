@@ -71,7 +71,6 @@ function paymillShowCardIcon()
  */
 function paymillResponseHandler(error, result)
 {
-	var paymillValidator = new Validation(pmQuery("input[name='payment[method]']:checked").closest("form").attr("id"));
 	if (error) {
 		// Appending error
 		var nv = {};
@@ -95,7 +94,7 @@ function paymillResponseHandler(error, result)
 		pmQuery('.paymill-payment-token-' + getPaymillCode()).val(result.token);
 	}
 	
-	paymillValidator.validate();
+	pmQuery('#paymill-layer').removeClass("paymill-layer");
 }
 
 function getValueIfExist(selector)
@@ -128,16 +127,18 @@ function paymillSubmitForm()
 				if (!valid) {
 					return false;
 				}
+				
+				pmQuery('#paymill-layer').addClass("paymill-layer");
 
 				var cvc = '000';
 
 				if (pmQuery('#paymill_creditcard_cvc').val() !== '') {
 					cvc = pmQuery('#paymill_creditcard_cvc').val();
 				}
-
+				
 				debug("Generating Token");
 				paymill.createToken({
-					amount_int: parseInt(pmQuery('.paymill-payment-amount-' + getPaymillCode()).val()), // E.g. "15" for 0.15 Eur
+					amount_int: parseInt(getTokenAmount()),
 					currency: pmQuery('.paymill-payment-currency-' + getPaymillCode()).val(), // ISO 4217 e.g. "EUR"
 					number: pmQuery('#paymill_creditcard_number').val(),
 					exp_month: pmQuery('#paymill_creditcard_expiry_month').val(),
@@ -168,6 +169,34 @@ function paymillSubmitForm()
 	}
 
 	return false;
+}
+
+function getTokenAmount()
+{	
+	var returnVal = null;
+	pmQuery.ajax({
+		async: false,
+		type: "POST",
+		url: pmQuery('.paymill-payment-token-url-cc').val(),
+	}).done(function(msg) {
+		returnVal = msg;
+	}).fail(function(jqXHR, textStatus) {
+		// Appending error
+		var nv = {};
+		
+		nv['paymill-validate-' + getPaymillCode() + '-token'] = new Validator(
+			'paymill-validate-' + getPaymillCode() + '-token',
+			getValueIfExist('.paymill-payment-error-' + getPaymillCode() + '-token') + " Amount not accessable. Reason: " + textStatus,
+			function(v) {
+				return v !== '';
+			},
+			''
+		);
+
+		Object.extend(Validation.methods, nv);
+	});
+	
+	return returnVal;
 }
 
 function unsetElvValidationRules()

@@ -1,4 +1,5 @@
 <?php $_code = $this->getMethodCode() ?>
+<div id="paymill-layer"></div>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
     <li>
         <label for="<?php echo $_code ?>_holdername" class="required"><em>*</em><?php echo $this->__("paymill_Holder") ?></label>
@@ -40,7 +41,7 @@
     <li>
         <input class="paymill-payment-token-cc paymill-validate-cc-token required-entry" name="payment[paymill-payment-token-cc]" id="payment[paymill-payment-token-cc]" type="hidden" />
         <input class="paymill_3ds_cancel" name="payment[paymill_3ds_cancel]" id="payment[paymill_3ds_cancel]" type="hidden" value="<?php echo $this->__("paymill_3ds_cancel") ?>"/>
-        <input class="paymill-payment-amount-cc" name="payment[paymill-payment-amount-cc]" id="payment[paymill-payment-amount-cc]" type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getAmount() ?>"/>
+        <input class="paymill-payment-token-url-cc" name="payment[paymill-payment-token-url-cc]" id="payment[paymill-payment-token-url-cc]" type="hidden" value="<?php echo  $this->getUrl('paymill/token/total', array('_secure'=>true));  ?>"/>
         <input class="paymill-payment-currency-cc" name="payment[paymill-payment-currency-cc]" id="payment[paymill-payment-currency-cc]" type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getCurrency() ?>"/>
         <input class="paymill-option-debug-cc" name="payment[paymill-option-debug]" id="payment[paymill-option-debug]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode() ?>"/>
         <input class="paymill-info-public_key-cc" name="payment[paymill-info-public_key-cc]" id="payment[paymill-info-public_key-cc]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey() ?>"/>
@@ -52,6 +53,7 @@
         <input class="paymill-payment-error-cc-token" name="payment[paymill-payment-error-cc-token]" id="payment[paymill-payment-error-cc-token]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_token"); ?>"/>
     </li>
 </ul>
+
 <script type="text/javascript">
     //<![CDATA[
     addPaymillEvents();
