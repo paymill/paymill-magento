@@ -94,6 +94,8 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     protected $_errorCode;
     
     protected $_preAuthFlag;
+    
+    protected $_canUseInternal = false;
 
     /**
      * Check if currency is avaible for this payment
