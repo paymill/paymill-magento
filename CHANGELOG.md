@@ -1,4 +1,8 @@
 ## v3.5.6
+ * remove not empty validation for token field add the validation only in case of a token generating error
+ * no internal order possible
+
+## v3.5.6
  * get token amount via ajax
 
 ## v3.5.5
