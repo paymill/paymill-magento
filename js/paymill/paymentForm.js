@@ -77,7 +77,7 @@ function paymillResponseHandler(error, result)
 		
 		nv['paymill-validate-' + getPaymillCode() + '-token'] = new Validator(
 			'paymill-validate-' + getPaymillCode() + '-token',
-			getValueIfExist('.paymill-payment-error-' + getPaymillCode() + '-token') + error.message,
+			getValueIfExist('.paymill-payment-error-' + getPaymillCode() + '-token') + getValueIfExist('.PAYMILL_' + error.apierror + "-" + getPaymillCode()),
 			function(v) {
 				return v !== '';
 			},
@@ -435,6 +435,14 @@ function addPaymillEvents()
 		});
 
 		pmQuery('#paymill_directdebit_bankcode').live('input', function() {
+			paymillSubmitForm();
+		});
+
+		pmQuery('#paymill_directdebit_account').live('input', function() {
+			paymillSubmitForm();
+		});
+
+		pmQuery('#paymill_directdebit_holdername').live('input', function() {
 			paymillSubmitForm();
 		});
 
