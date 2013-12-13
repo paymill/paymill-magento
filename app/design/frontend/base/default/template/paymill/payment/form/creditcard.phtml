@@ -1,4 +1,4 @@
-<?php $_code = $this->getMethodCode() ?>
+<?php $_code = $this->getMethodCode(); ?>
 <div id="paymill-layer"></div>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
     <li>
@@ -65,6 +65,13 @@
         <input class="PAYMILL_field_invalid_amount_int-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_amount_int"); ?>"/>
         <input class="PAYMILL_field_field_invalid_amount-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_field_invalid_amount"); ?>"/>
         <input class="PAYMILL_field_field_field_invalid_currency-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_field_field_invalid_currency"); ?>"/>
+        <input class="PAYMILL_field_invalid_account_number-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_account_number"); ?>"/>
+        <input class="PAYMILL_field_invalid_account_holder-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_account_holder"); ?>"/>
+        <input class="PAYMILL_field_invalid_bank_code-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_bank_code"); ?>"/>
+        <input class="PAYMILL_field_invalid_iban-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_iban"); ?>"/>
+        <input class="PAYMILL_field_invalid_bic-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_bic"); ?>"/>
+        <input class="PAYMILL_field_invalid_country-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_country"); ?>"/>
+        <input class="PAYMILL_field_invalid_bank_data-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_bank_data"); ?>"/>
     </li>
 </ul>
 

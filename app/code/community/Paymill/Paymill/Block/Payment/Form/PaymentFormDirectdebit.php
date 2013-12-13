@@ -36,11 +36,21 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormDirectdebit extends Paymill_
         
         $data = array();
         if (!is_null($payment)) {
-            $data['code'] = $payment['code'];
             $data['holder'] = $payment['holder'];
-            $data['account'] = $payment['account'];
+            if (array_key_exists('code', $payment) && array_key_exists('account', $payment)) {
+                $data['code'] = $payment['code'];
+                $data['account'] = $payment['account'];
+            } elseif (array_key_exists('iban', $payment) && array_key_exists('bic', $payment)) {
+                $data['bic'] = $payment['bic'];
+                $data['iban'] = $payment['iban'];
+            }
         }
         
         return $data;
+    }
+    
+    public function isSepa()
+    {
+        return Mage::getStoreConfig('payment/paymill_directdebit/sepa', Mage::app()->getStore()->getStoreId()) ? 'true' : 'false';
     }
 }
