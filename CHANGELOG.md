@@ -1,4 +1,4 @@
-## v3.5.8
+## v3.5.8 charge during invoice creation
  * charge during invoice creation
 
 ## v3.5.8
