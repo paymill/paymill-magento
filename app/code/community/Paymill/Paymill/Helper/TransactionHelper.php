@@ -48,8 +48,11 @@ class Paymill_Paymill_Helper_TransactionHelper extends Mage_Core_Helper_Abstract
     {
         $object->setAdditionalInformation('paymillTransactionId', $transactionModel->getTransactionId());
         $object->setAdditionalInformation('paymillPreAuthFlag', $transactionModel->getPreAuthorizationFlag());
-        Mage::helper('paymill/loggingHelper')->log("Saved Transaction Data.", "Order " . $object->getIncrementId() .
-                $object->getReservedOrderId(), var_export($object->getAdditionalInformation(), true));
+        Mage::helper('paymill/loggingHelper')->log(
+            "Saved Transaction Data.",
+            "Order " . $object->getIncrementId() . $object->getReservedOrderId(), 
+            var_export($object->getAdditionalInformation(), true)
+        );
 
         return true;
     }
@@ -86,11 +89,12 @@ class Paymill_Paymill_Helper_TransactionHelper extends Mage_Core_Helper_Abstract
      * @param Boolean $isPreAuthenticated
      * @return Paymill_Paymill_Model_TransactionData Model with the desired attributes
      */
-    public function createTransactionModel($transactionId, $isPreAuthenticated = false)
+    public function createTransactionModel($id, $isPreAuthenticated = false)
     {
         $transactionModel = new Paymill_Paymill_Model_TransactionData();
-        $transactionModel->setTransactionId($transactionId);
+        $transactionModel->setTransactionId($id);
         $transactionModel->setPreAuthorizationFlag($isPreAuthenticated);
+        
         return $transactionModel;
     }
 

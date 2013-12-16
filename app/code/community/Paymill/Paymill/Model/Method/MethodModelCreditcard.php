@@ -55,7 +55,6 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
 
         if ($transactionHelper->getPreAuthenticatedFlagState($order)) {
             //Capture preAuth
-            $preAuthorization = $transactionHelper->getTransactionId($order);
             $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();
             $apiUrl = Mage::helper('paymill')->getApiUrl();
             $libBase = null;
@@ -65,11 +64,15 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
             $params['currency'] = Mage::app()->getStore()->getCurrentCurrencyCode();
             $params['description'] = Mage::helper('paymill/paymentHelper')->getDescription($order);
             $params['source'] = Mage::helper('paymill')->getSourceString();
-
-            $paymentProcessor = new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
-            $paymentProcessor->setPreauthId($preAuthorization);
+            $params['name'] = Mage::helper("paymill/customerHelper")->getCustomerName($order);
+            $params['email'] = Mage::helper("paymill/customerHelper")->getCustomerEmail($order);
+            $params['token'] = 'dummyToken';
             
-            if (!$paymentProcessor->capture()) {
+            $paymentProcessor = new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
+            $paymentProcessor->setPaymentId($payment->getAdditionalInformation('paymillPaymentId'));
+            $paymentProcessor->setClientId($payment->getAdditionalInformation('paymillClientId'));
+            
+            if (!$paymentProcessor->processPayment()) {
                 Mage::throwException(Mage::helper("paymill/paymentHelper")->getErrorMessage($paymentProcessor->getErrorCode()));
             }
 

@@ -21,8 +21,10 @@
 class Paymill_Paymill_Model_TransactionData
 {
 
-    private $_preAuthorizationFlag = null;
-    private $_transactionId = null;
+    private $_preAuthorizationFlag;
+    private $_transactionId;
+    private $_clientId;
+    private $_paymentId;
 
     /**
      * Returns the state of the PreAuthorizationFlag
@@ -60,4 +62,23 @@ class Paymill_Paymill_Model_TransactionData
         $this->_transactionId = $id;
     }
 
+    public function getClientId()
+    {
+        return $this->_clientId;
+    }
+
+    public function setClientId($clientId)
+    {
+        $this->_clientId = $clientId;
+    }
+
+    public function getPaymentId()
+    {
+        return $this->_paymentId;
+    }
+
+    public function setPaymentId($paymentId)
+    {
+        $this->_paymentId = $paymentId;
+    }
 }

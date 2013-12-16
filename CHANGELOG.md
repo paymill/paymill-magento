@@ -1,4 +1,7 @@
 ## v3.5.8
+ * charge during invoice creation
+
+## v3.5.8
  * log token errors
 
 ## v3.5.7

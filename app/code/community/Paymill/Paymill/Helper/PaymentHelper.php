@@ -170,7 +170,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      * @param Integer $authorizedAmount Amount used for the Token generation
      * @return Services_Paymill_PaymentProcessor
      */
-    public function createPaymentProcessor($paymentCode, $token)
+    public function createPaymentProcessor($paymentCode, $token, $amount)
     {
         $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();
         $apiUrl = Mage::helper('paymill')->getApiUrl();
@@ -179,7 +179,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
 
         $params = array();
         $params['token'] = $token;
-        $params['amount'] = (int) $this->getAmount();
+        $params['amount'] = (int) $amount;
         $params['currency'] = $this->getCurrency();
         $params['payment'] = $this->getPaymentType($paymentCode); // The chosen payment (cc | elv)
         $params['name'] = Mage::helper("paymill/customerHelper")->getCustomerName($quote);

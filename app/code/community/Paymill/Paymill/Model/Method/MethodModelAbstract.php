@@ -198,10 +198,10 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         if (Mage::helper('paymill/optionHelper')->isPreAuthorizing() && $this->_code === "paymill_creditcard") {
             Mage::helper('paymill/loggingHelper')->log("Starting payment process as preAuth");
             $this->_preAuthFlag = true;
+            $amount = 1;
         } else {
             Mage::helper('paymill/loggingHelper')->log("Starting payment process as debit");
             $this->_preAuthFlag = false;
-            
         }
         
         $success = $this->payment($payment, $amount);
@@ -227,7 +227,14 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         //Create Payment Processor
         $paymentHelper = Mage::helper("paymill/paymentHelper");
         $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
-        $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token);
+        
+        if ($this->_preAuthFlag) {
+            $amount = round($amount * 100);
+        } else {
+            $amount = $paymentHelper->getAmount();
+        }
+        
+        $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token, $amount);
         
         //Always load client if email doesn't change
         $clientId = $fcHelper->getClientId();
@@ -251,12 +258,22 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
             
             $id = $paymentProcessor->getTransactionId();
             if ($this->_preAuthFlag) {
+                $preAuth = new Services_Paymill_Preauthorizations(
+                    Mage::helper('paymill/optionHelper')->getPrivateKey(),
+                    Mage::helper('paymill')->getApiUrl()
+                );
+                
+                $preAuth->delete($paymentProcessor->getPreauthId());
+                
                 $id = $paymentProcessor->getPreauthId();
             }
             
             $transactionModel = $transactionHelper->createTransactionModel($id, $this->_preAuthFlag);
             $transactionHelper->setAdditionalInformation($payment, $transactionModel);
-            
+
+            $payment->setAdditionalInformation('paymillPaymentId', $paymentProcessor->getPaymentId());
+            $payment->setAdditionalInformation('paymillClientId', $paymentProcessor->getClientId());
+        
             //Allways update the client
             $clientId = $paymentProcessor->getClientId();
             $fcHelper->saveData($this->_code, $clientId);
