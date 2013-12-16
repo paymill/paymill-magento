@@ -10,7 +10,6 @@ var PAYMILL_ERROR_STRING = "";
 
 var eventFlag = false;
 
-
 function getPaymillCode()
 {
 	var methods = {
@@ -31,7 +30,8 @@ function getPaymillCode()
  */
 function debug(message)
 {
-	if (pmQuery('.paymill-option-debug-' + getPaymillCode()).val() == '1') {
+	debug_state = pmQuery('.paymill-option-debug-' + getPaymillCode()).val();
+	if (debug_state === 1) {
 		var displayName = "";
 		if (PAYMILL_PAYMENT_NAME === 'paymill_creditcard') {
 			displayName = 'Credit Card';
@@ -42,9 +42,8 @@ function debug(message)
 		if (PAYMILL_PAYMENT_NAME === 'Preparing Payment') {
 			displayName = 'Preparing Payment';
 		}
-		
-		console.log("[" + displayName + "]");
-		console.log(message);
+
+		console.log("[" + displayName + "] " + message);
 	}
 }
 
@@ -78,7 +77,7 @@ function paymillResponseHandler(error, result)
 		
 		nv['paymill-validate-' + getPaymillCode() + '-token'] = new Validator(
 			'paymill-validate-' + getPaymillCode() + '-token',
-			getValueIfExist('.paymill-payment-error-' + getPaymillCode() + '-token') + getValueIfExist('.PAYMILL_' + error.apierror + "-" + getPaymillCode()),
+			getValueIfExist('.paymill-payment-error-' + getPaymillCode() + '-token') + error.message,
 			function(v) {
 				return v !== '';
 			},
@@ -86,7 +85,8 @@ function paymillResponseHandler(error, result)
 		);
 
 		Object.extend(Validation.methods, nv);
-		debug(error);
+		debug(error.apierror);
+		debug(error.message);
 		debug("Paymill Response Handler triggered: Error.");
 	} else {
 		// Appending Token to form
@@ -150,37 +150,20 @@ function paymillSubmitForm()
 			break;
 		case "paymill_directdebit":
 			if (pmQuery('.paymill-info-fastCheckout-elv').val() === 'false') {
-				if (pmQuery('.paymill-info-sepa-elv').val() === 'false') {
-					var valid = pmQuery('#paymill_directdebit_holdername').val() !== ''
-							 && paymill.validateAccountNumber(pmQuery('#paymill_directdebit_account').val())
-							 && paymill.validateBankCode(pmQuery('#paymill_directdebit_bankcode').val());
+				var valid = pmQuery('#paymill_directdebit_holdername').val() !== ''
+						 && paymill.validateAccountNumber(pmQuery('#paymill_directdebit_account').val())
+						 && paymill.validateBankCode(pmQuery('#paymill_directdebit_bankcode').val());
 
-					if (!valid) {
-						return false;
-					}
-
-					debug("Generating Token");
-					paymill.createToken({
-						number: pmQuery('#paymill_directdebit_account').val(),
-						bank: pmQuery('#paymill_directdebit_bankcode').val(),
-						accountholder: pmQuery('#paymill_directdebit_holdername').val()
-					}, paymillResponseHandler);
-				} else {
-					var valid = pmQuery('#paymill_directdebit_holdername').val() !== ''
-							 && pmQuery('#paymill_directdebit_iban').val() !== ''
-							 && pmQuery('#paymill_directdebit_bic').val()  !== '';
-
-					if (!valid) {
-						return false;
-					}
-
-					debug("Generating Token");
-					paymill.createToken({
-						iban: pmQuery('#paymill_directdebit_iban').val(),
-						bic: pmQuery('#paymill_directdebit_bic').val(),
-						accountholder: pmQuery('#paymill_directdebit_holdername').val()
-					}, paymillResponseHandler);
+				if (!valid) {
+					return false;
 				}
+
+				debug("Generating Token");
+				paymill.createToken({
+					number: pmQuery('#paymill_directdebit_account').val(),
+					bank: pmQuery('#paymill_directdebit_bankcode').val(),
+					accountholder: pmQuery('#paymill_directdebit_holdername').val()
+				}, paymillResponseHandler);
 			}
 			break;
 	}
@@ -222,22 +205,6 @@ function unsetElvValidationRules()
 		'paymill-validate-dd-holdername': new Validator(
 			'paymill-validate-dd-holdername',
 			'',
-			function(v) {
-				return true;
-			},
-			''
-		),
-		'paymill-validate-dd-iban': new Validator(
-			'paymill-validate-dd-iban',
-			getValueIfExist('.paymill-payment-error-iban-elv'),
-			function(v) {
-				return true;
-			},
-			''
-		),
-		'paymill-validate-dd-bic': new Validator(
-			'paymill-validate-dd-bic',
-			getValueIfExist('.paymill-payment-error-bic-elv'),
 			function(v) {
 				return true;
 			},
@@ -318,22 +285,6 @@ function setElvValidationRules()
 		'paymill-validate-dd-holdername': new Validator(
 			'paymill-validate-dd-holdername',
 			getValueIfExist('.paymill-payment-error-holder-elv'),
-			function(v) {
-				return !(v === '');
-			},
-			''
-		),
-		'paymill-validate-dd-iban': new Validator(
-			'paymill-validate-dd-iban',
-			getValueIfExist('.paymill-payment-error-iban-elv'),
-			function(v) {
-				return !(v === '');
-			},
-			''
-		),
-		'paymill-validate-dd-bic': new Validator(
-			'paymill-validate-dd-bic',
-			getValueIfExist('.paymill-payment-error-bic-elv'),
 			function(v) {
 				return !(v === '');
 			},
@@ -427,20 +378,6 @@ function addPaymillEvents()
 	}
 	
 	if (!eventFlag) {
-		pmQuery('#paymill_directdebit_iban').keyup(function() {
-			var iban = pmQuery('#paymill_directdebit_iban').val();
-			if (!iban.match(/^DE/)) {
-				var newVal = "DE";
-				if (iban.match(/^.{2}(.*)/)) {
-					newVal += iban.match(/^.{2}(.*)/)[1];
-				}
-				pmQuery('#paymill_directdebit_iban').val(newVal);
-			}
-		});
-		
-		pmQuery('#paymill_directdebit_iban').trigger('keyup');
-
-		
 		pmQuery('#paymill_directdebit_holdername').live('focus', function() {
 			setElvValidationRules();
 			pmQuery('.paymill-info-fastCheckout-elv').val('false');
@@ -452,16 +389,6 @@ function addPaymillEvents()
 		});
 
 		pmQuery('#paymill_directdebit_bankcode').live('focus', function() {
-			setElvValidationRules();
-			pmQuery('.paymill-info-fastCheckout-elv').val('false');
-		});
-
-		pmQuery('#paymill_directdebit_iban').live('focus', function() {
-			setElvValidationRules();
-			pmQuery('.paymill-info-fastCheckout-elv').val('false');
-		});
-
-		pmQuery('#paymill_directdebit_bic').live('focus', function() {
 			setElvValidationRules();
 			pmQuery('.paymill-info-fastCheckout-elv').val('false');
 		});
@@ -508,22 +435,6 @@ function addPaymillEvents()
 		});
 
 		pmQuery('#paymill_directdebit_bankcode').live('input', function() {
-			paymillSubmitForm();
-		});
-
-		pmQuery('#paymill_directdebit_account').live('input', function() {
-			paymillSubmitForm();
-		});
-
-		pmQuery('#paymill_directdebit_iban').live('input', function() {
-			paymillSubmitForm();
-		});
-
-		pmQuery('#paymill_directdebit_bic').live('input', function() {
-			paymillSubmitForm();
-		});
-
-		pmQuery('#paymill_directdebit_holdername').live('input', function() {
 			paymillSubmitForm();
 		});
 

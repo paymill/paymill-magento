@@ -1,4 +1,4 @@
-<?php $_code = $this->getMethodCode(); ?>
+<?php $_code = $this->getMethodCode() ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
     <li>
         <p class="paymill-payment-errors alert-error" style="display:none;"></p>
@@ -9,7 +9,6 @@
             <input value="<?php echo $this->getPaymentEntry($_code, 'holder'); ?>" type="text" id="<?php echo $_code ?>_holdername" class="input-text paymill-validate-dd-holdername required-entry"/>
         </div>
     </li>
-    <?php if (!Mage::getStoreConfig('payment/' . $_code . '/sepa', Mage::app()->getStore()->getStoreId())): ?>
     <li>
         <label for="<?php echo $_code ?>_account" class="required"><em>*</em><?php echo $this->__("paymill_account") ?></label>
         <div class="input-box">
@@ -22,51 +21,15 @@
             <input value="<?php echo $this->getPaymentEntry($_code, 'code'); ?>" type="text" id="<?php echo $_code ?>_bankcode" class="input-text paymill-validate-dd-bankcode required-entry"/>
         </div>
     </li>
-    <?php else: ?>
     <li>
-        <label for="<?php echo $_code ?>_iban" class="required"><em>*</em><?php echo $this->__("paymill_iban") ?></label>
-        <div class="input-box">
-            <input value="<?php echo $this->getPaymentEntry($_code, 'iban'); ?>" type="text" id="<?php echo $_code ?>_iban" class="input-text paymill-validate-dd-iban required-entry"/>
-        </div>
-    </li>
-    <li>
-        <label for="<?php echo $_code ?>_bic" class="required"><em>*</em><?php echo $this->__("paymill_bic") ?></label>
-        <div class="input-box">
-            <input value="<?php echo $this->getPaymentEntry($_code, 'bic'); ?>" type="text" id="<?php echo $_code ?>_bic" class="input-text paymill-validate-dd-bic required-entry"/>
-        </div>
-    </li>
-    <?php endif; ?>
-    <li>
-        <input class="paymill-payment-token-elv paymill-validate-elv-token" name="payment[paymill-payment-token-elv]" id="payment[paymill-payment-token-elv]" type="hidden" />
-        <input class="paymill-option-debug-elv" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode(); ?>" />
-        <input class="paymill-info-public_key-elv" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey(); ?>" />
-        <input class="paymill-info-fastCheckout-elv" type="hidden" value="<?php echo $this->isNormalCheckout($_code); ?>" />
-        <input class="paymill-info-sepa-elv" type="hidden" value="<?php echo $this->isSepa(); ?>" />
-        <input class="paymill-payment-error-number-elv" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_elv"); ?>" />
-        <input class="paymill-payment-error-holder-elv" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_elv"); ?>" />
-        <input class="paymill-payment-error-bankcode" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_bankcode"); ?>" />
-        <input class="paymill-payment-error-elv-token" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_token"); ?>"/>
-        <input class="PAYMILL_internal_server_error-elv" type="hidden" value="<?php echo $this->__("PAYMILL_internal_server_error"); ?>"/>
-        <input class="PAYMILL_invalid_public_key-elv" type="hidden" value="<?php echo $this->__("PAYMILL_invalid_public_key"); ?>"/>
-        <input class="PAYMILL_invalid_payment_data-elv" type="hidden" value="<?php echo $this->__("PAYMILL_invalid_payment_data"); ?>"/>
-        <input class="PAYMILL_unknown_error-elv" type="hidden" value="<?php echo $this->__("PAYMILL_unknown_error"); ?>"/>
-        <input class="PAYMILL_3ds_cancelled-elv" type="hidden" value="<?php echo $this->__("PAYMILL_3ds_cancelled"); ?>"/>
-        <input class="PAYMILL_field_invalid_card_number-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_card_number"); ?>"/>
-        <input class="PAYMILL_field_invalid_card_exp_year-ekv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_card_exp_year"); ?>"/>
-        <input class="PAYMILL_field_invalid_card_exp_month-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_card_exp_month"); ?>"/>
-        <input class="PAYMILL_field_invalid_card_exp-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_card_exp"); ?>"/>
-        <input class="PAYMILL_field_invalid_card_cvc-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_card_cvc"); ?>"/>
-        <input class="PAYMILL_field_invalid_card_holder-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_card_holder"); ?>"/>
-        <input class="PAYMILL_field_invalid_amount_int-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_amount_int"); ?>"/>
-        <input class="PAYMILL_field_field_invalid_amount-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_field_invalid_amount"); ?>"/>
-        <input class="PAYMILL_field_field_field_invalid_currency-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_field_field_invalid_currency"); ?>"/>
-        <input class="PAYMILL_field_invalid_account_number-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_account_number"); ?>"/>
-        <input class="PAYMILL_field_invalid_account_holder-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_account_holder"); ?>"/>
-        <input class="PAYMILL_field_invalid_bank_code-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_bank_code"); ?>"/>
-        <input class="PAYMILL_field_invalid_iban-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_iban"); ?>"/>
-        <input class="PAYMILL_field_invalid_bic-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_bic"); ?>"/>
-        <input class="PAYMILL_field_invalid_country-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_country"); ?>"/>
-        <input class="PAYMILL_field_invalid_bank_data-elv" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_bank_data"); ?>"/>
+        <input class="paymill-payment-token-elv paymill-validate-elv-token required-entry" name="payment[paymill-payment-token-elv]" id="payment[paymill-payment-token-elv]" type="hidden" />
+        <input class="paymill-option-debug-elv" name="payment[paymill-option-debug-elv]" id="payment[paymill-option-debug-elv]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode() ?>" />
+        <input class="paymill-info-public_key-elv" name="payment[paymill-info-public_key-elv]" id="payment[paymill-info-public_key-elv]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey() ?>" />
+        <input class="paymill-info-fastCheckout-elv"  name="payment[paymill-info-fastCheckout-elv]" id="payment[paymill-info-fastCheckout-elv]" type="hidden" value="<?php echo $this->isNormalCheckout($_code) ?>" />
+        <input class="paymill-payment-error-number-elv" name="payment[paymill-payment-error-number-elv]" id="payment[paymill-payment-error-number-elv]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_elv"); ?>" />
+        <input class="paymill-payment-error-holder-elv" name="payment[paymill-payment-error-holder-elv]" id="payment[paymill-payment-error-holder-elv]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_elv"); ?>" />
+        <input class="paymill-payment-error-bankcode" name="payment[paymill-payment-error-bankcode]" id="payment[paymill-payment-error-bankcode]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_bankcode"); ?>" />
+        <input class="paymill-payment-error-elv-token" name="payment[paymill-payment-error-elv-token]" id="payment[paymill-payment-error-elv-token]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_token"); ?>"/>
     </li>
 </ul>
 <script type="text/javascript">

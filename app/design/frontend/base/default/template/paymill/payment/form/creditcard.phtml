@@ -1,4 +1,4 @@
-<?php $_code = $this->getMethodCode(); ?>
+<?php $_code = $this->getMethodCode() ?>
 <div id="paymill-layer"></div>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
     <li>
@@ -40,38 +40,17 @@
     </li>
     <li>
         <input class="paymill-payment-token-cc paymill-validate-cc-token" name="payment[paymill-payment-token-cc]" id="payment[paymill-payment-token-cc]" type="hidden" />
-        <input class="paymill_3ds_cancel" type="hidden" value="<?php echo $this->__("paymill_3ds_cancel"); ?>"/>
-        <input class="paymill-payment-token-url-cc" type="hidden" value="<?php echo  $this->getUrl('paymill/token/total', array('_secure'=>true));  ?>"/>
-        <input class="paymill-payment-currency-cc" type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getCurrency(); ?>"/>
-        <input class="paymill-option-debug-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode(); ?>"/>
-        <input class="paymill-info-public_key-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey(); ?>"/>
-        <input class="paymill-info-fastCheckout-cc" type="hidden" value="<?php echo $this->isNormalCheckout($_code); ?>"/>
-        <input class="paymill-payment-error-number" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_cc");?>"/>
-        <input class="paymill-payment-error-holder" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_cc"); ?>"/>
-        <input class="paymill-payment-error-expdate" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_expdate"); ?>"/>
-        <input class="paymill-payment-error-cvc" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_token"); ?>"/>
-        <input class="paymill-payment-error-cc-token" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_token"); ?>"/>
-        <input class="PAYMILL_internal_server_error-cc" type="hidden" value="<?php echo $this->__("PAYMILL_internal_server_error"); ?>"/>
-        <input class="PAYMILL_invalid_public_key-cc" type="hidden" value="<?php echo $this->__("PAYMILL_invalid_public_key"); ?>"/>
-        <input class="PAYMILL_invalid_payment_data-cc" type="hidden" value="<?php echo $this->__("PAYMILL_invalid_payment_data"); ?>"/>
-        <input class="PAYMILL_unknown_error-cc" type="hidden" value="<?php echo $this->__("PAYMILL_unknown_error"); ?>"/>
-        <input class="PAYMILL_3ds_cancelled-cc" type="hidden" value="<?php echo $this->__("PAYMILL_3ds_cancelled"); ?>"/>
-        <input class="PAYMILL_field_invalid_card_number-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_card_number"); ?>"/>
-        <input class="PAYMILL_field_invalid_card_exp_year-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_card_exp_year"); ?>"/>
-        <input class="PAYMILL_field_invalid_card_exp_month-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_card_exp_month"); ?>"/>
-        <input class="PAYMILL_field_invalid_card_exp-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_card_exp"); ?>"/>
-        <input class="PAYMILL_field_invalid_card_cvc-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_card_cvc"); ?>"/>
-        <input class="PAYMILL_field_invalid_card_holder-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_card_holder"); ?>"/>
-        <input class="PAYMILL_field_invalid_amount_int-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_amount_int"); ?>"/>
-        <input class="PAYMILL_field_field_invalid_amount-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_field_invalid_amount"); ?>"/>
-        <input class="PAYMILL_field_field_field_invalid_currency-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_field_field_invalid_currency"); ?>"/>
-        <input class="PAYMILL_field_invalid_account_number-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_account_number"); ?>"/>
-        <input class="PAYMILL_field_invalid_account_holder-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_account_holder"); ?>"/>
-        <input class="PAYMILL_field_invalid_bank_code-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_bank_code"); ?>"/>
-        <input class="PAYMILL_field_invalid_iban-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_iban"); ?>"/>
-        <input class="PAYMILL_field_invalid_bic-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_bic"); ?>"/>
-        <input class="PAYMILL_field_invalid_country-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_country"); ?>"/>
-        <input class="PAYMILL_field_invalid_bank_data-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_bank_data"); ?>"/>
+        <input class="paymill_3ds_cancel" name="payment[paymill_3ds_cancel]" id="payment[paymill_3ds_cancel]" type="hidden" value="<?php echo $this->__("paymill_3ds_cancel") ?>"/>
+        <input class="paymill-payment-token-url-cc" name="payment[paymill-payment-token-url-cc]" id="payment[paymill-payment-token-url-cc]" type="hidden" value="<?php echo  $this->getUrl('paymill/token/total', array('_secure'=>true));  ?>"/>
+        <input class="paymill-payment-currency-cc" name="payment[paymill-payment-currency-cc]" id="payment[paymill-payment-currency-cc]" type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getCurrency() ?>"/>
+        <input class="paymill-option-debug-cc" name="payment[paymill-option-debug]" id="payment[paymill-option-debug]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode() ?>"/>
+        <input class="paymill-info-public_key-cc" name="payment[paymill-info-public_key-cc]" id="payment[paymill-info-public_key-cc]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey() ?>"/>
+        <input class="paymill-info-fastCheckout-cc" name="payment[paymill-info-fastCheckout-cc]" id="payment[paymill-info-fastCheckout-cc]" type="hidden" value="<?php echo $this->isNormalCheckout($_code) ?>"/>
+        <input class="paymill-payment-error-number" name="payment[paymill-payment-error-number]" id="payment[paymill-payment-error-number]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_cc");?>"/>
+        <input class="paymill-payment-error-holder" name="payment[paymill-payment-error-holder]" id="payment[paymill-payment-error-holder]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_cc"); ?>"/>
+        <input class="paymill-payment-error-expdate" name="payment[paymill-payment-error-expdate]" id="payment[paymill-payment-error-expdate]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_expdate"); ?>"/>
+        <input class="paymill-payment-error-cvc" name="payment[paymill-payment-error-cvc]" id="payment[paymill-payment-error--cvc]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_token"); ?>"/>
+        <input class="paymill-payment-error-cc-token" name="payment[paymill-payment-error-cc-token]" id="payment[paymill-payment-error-cc-token]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_token"); ?>"/>
     </li>
 </ul>
 
