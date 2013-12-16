@@ -451,14 +451,26 @@ function addPaymillEvents()
 			paymillSubmitForm();
 		});
 
-		pmQuery('#paymill_directdebit_bankcode').live('input', function() {
-			paymillSubmitForm();
-		});
-
 		pmQuery('#paymill_creditcard_number').live('input', function() {
 			paymillSubmitForm();
 		});
 		
+		pmQuery('#paymill_creditcard_holdername').live('input', function() {
+			paymillSubmitForm();
+		});
+
+		pmQuery('#paymill_directdebit_holdername').live('input', function() {
+			paymillSubmitForm();
+		});
+		
+		pmQuery('#paymill_directdebit_account').live('input', function() {
+			paymillSubmitForm();
+		});
+		
+		pmQuery('#paymill_directdebit_bankcode').live('input', function() {
+			paymillSubmitForm();
+		});
+
 		eventFlag = true;
 	}
 }
