@@ -1,6 +1,5 @@
 ## v3.5.8
- * add bridge errors
- * elv SEPA added
+ * log token errors
 
 ## v3.5.7
  * remove not empty validation for token field add the validation only in case of a token generating error

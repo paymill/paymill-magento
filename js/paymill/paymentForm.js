@@ -85,6 +85,9 @@ function paymillResponseHandler(error, result)
 		);
 
 		Object.extend(Validation.methods, nv);
+		
+		logError(error);
+		
 		debug(error.apierror);
 		debug(error.message);
 		debug("Paymill Response Handler triggered: Error.");
@@ -171,13 +174,27 @@ function paymillSubmitForm()
 	return false;
 }
 
+function logError(data)
+{
+	pmQuery.ajax({
+		async: false,
+		type: "POST",
+		url: pmQuery('.paymill-payment-token-url-' + getPaymillCode()).val() + 'log',
+		data: {error: data},
+	}).done(function(msg) {
+		debug('Logging done.');
+	}).fail(function(jqXHR, textStatus) {
+		debug('Logging failed.');
+	});
+}
+
 function getTokenAmount()
 {	
 	var returnVal = null;
 	pmQuery.ajax({
 		async: false,
 		type: "POST",
-		url: pmQuery('.paymill-payment-token-url-cc').val(),
+		url: pmQuery('.paymill-payment-token-url-cc').val() + "total",
 	}).done(function(msg) {
 		returnVal = msg;
 	}).fail(function(jqXHR, textStatus) {
