@@ -22,7 +22,7 @@
         </div>
     </li>
     <li>
-        <input class="paymill-payment-token-elv paymill-validate-elv-token required-entry" name="payment[paymill-payment-token-elv]" id="payment[paymill-payment-token-elv]" type="hidden" />
+        <input class="paymill-payment-token-elv paymill-validate-elv-token" name="payment[paymill-payment-token-elv]" id="payment[paymill-payment-token-elv]" type="hidden" />
         <input class="paymill-option-debug-elv" name="payment[paymill-option-debug-elv]" id="payment[paymill-option-debug-elv]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode() ?>" />
         <input class="paymill-info-public_key-elv" name="payment[paymill-info-public_key-elv]" id="payment[paymill-info-public_key-elv]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey() ?>" />
         <input class="paymill-info-fastCheckout-elv"  name="payment[paymill-info-fastCheckout-elv]" id="payment[paymill-info-fastCheckout-elv]" type="hidden" value="<?php echo $this->isNormalCheckout($_code) ?>" />
