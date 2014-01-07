@@ -47,7 +47,7 @@ class Paymill_Paymill_Helper_TransactionHelper extends Mage_Core_Helper_Abstract
     public function setAdditionalInformation(Mage_Sales_Model_Order_Payment $object, Paymill_Paymill_Model_TransactionData $transactionModel)
     {
         $object->setAdditionalInformation('paymillTransactionId', $transactionModel->getTransactionId());
-        $object->setAdditionalInformation('paymillPreAuthFlag', $transactionModel->getPreAuthorizationFlag());
+        $object->setAdditionalInformation('paymillPreAuthFlag', $transactionModel->isPreAuthorization());
         Mage::helper('paymill/loggingHelper')->log("Saved Transaction Data.", "Order " . $object->getIncrementId() .
                 $object->getReservedOrderId(), var_export($object->getAdditionalInformation(), true));
 
@@ -59,12 +59,12 @@ class Paymill_Paymill_Helper_TransactionHelper extends Mage_Core_Helper_Abstract
      * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order $object
      * @return booelean PreAuthorizationFlag
      */
-    public function getPreAuthenticatedFlagState($object)
+    public function isPreAuthenticated($object)
     {
         $payment = $object->getPayment();
         $transactionObject = $this->getAdditionalInformation($payment);
         Mage::helper('paymill/loggingHelper')->log("Read Model from object to return Flag.", var_export($transactionObject, true));
-        return $transactionObject->getPreAuthorizationFlag();
+        return $transactionObject->isPreAuthorization();
     }
 
     /**

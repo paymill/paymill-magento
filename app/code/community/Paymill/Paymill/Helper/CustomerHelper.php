@@ -46,23 +46,22 @@ class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
     public function getCustomerEmail($object)
     {
         $email = $object->getCustomerEmail();
-        
+
         if (empty($email)) {
-           $email =  $object->getBillingAddress()->getEmail();
+            $email = $object->getBillingAddress()->getEmail();
         }
-        
+
         return $email;
     }
-    
+
     public function getClientData()
     {
         $clients = new Services_Paymill_Clients(
-            Mage::helper('paymill/optionHelper')->getPrivateKey(), 
-            Mage::helper('paymill')->getApiUrl()
+                Mage::helper('paymill/optionHelper')->getPrivateKey(), Mage::helper('paymill')->getApiUrl()
         );
-        
+
         $clientId = Mage::helper("paymill/fastCheckoutHelper")->getClientId();
-        
+
         $client = null;
         if (!empty($clientId)) {
             $client = $clients->getOne($clientId);
@@ -70,7 +69,7 @@ class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
                 $client = null;
             }
         }
-        
+
         return $client;
     }
 
@@ -85,7 +84,7 @@ class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
         if (Mage::getSingleton('customer/session')->isLoggedIn()) {
             $result = Mage::getSingleton('customer/session')->getId();
         }
-        
+
         return $result;
     }
 

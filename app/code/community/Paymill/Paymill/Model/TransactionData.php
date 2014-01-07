@@ -28,7 +28,7 @@ class Paymill_Paymill_Model_TransactionData
      * Returns the state of the PreAuthorizationFlag
      * @return Boolean
      */
-    public function getPreAuthorizationFlag()
+    public function isPreAuthorization()
     {
         return $this->_preAuthorizationFlag;
     }

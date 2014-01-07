@@ -31,7 +31,7 @@ class Paymill_Paymill_Model_Observer
     {
         $order = $observer->getEvent()->getOrder();
         if ($order->getPayment()->getMethod() === 'paymill_creditcard') {
-            if (Mage::helper('paymill/transactionHelper')->getPreAuthenticatedFlagState($order)) { // If the transaction is not flagged as a debit (not a preAuth) transaction
+            if (Mage::helper('paymill/transactionHelper')->isPreAuthenticated($order)) { // If the transaction is not flagged as a debit (not a preAuth) transaction
                 Mage::helper('paymill/loggingHelper')->log("Debug", "No Invoice generated, since the transaction is flagged as preauth");
             } else {
                 if ($order->canInvoice()) {

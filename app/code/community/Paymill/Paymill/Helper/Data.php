@@ -77,9 +77,9 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isPrivateKeySet()
     {
-       return Mage::helper('paymill/OptionHelper')->getPrivateKey() !== "";
+        return Mage::helper('paymill/OptionHelper')->getPrivateKey() !== "";
     }
-    
+
     /**
      * Validates the public key value by comparing it to an empty string
      * @return boolean
@@ -88,5 +88,5 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::helper('paymill/OptionHelper')->getPublicKey() !== "";
     }
-    
+
 }
