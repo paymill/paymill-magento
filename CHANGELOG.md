@@ -1,3 +1,6 @@
+## v3.6.0
+ * add elv sepa 
+
 ## v3.5.9
  * set existing invoices to paid
 

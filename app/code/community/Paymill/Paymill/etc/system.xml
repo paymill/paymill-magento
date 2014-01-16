@@ -225,6 +225,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </order_status>
+                        <sepa translate="label">
+                            <label>paymill_activate_sepa</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>355</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sepa>
                         <sort_order translate="label">
                             <label>paymill_opt_Sort</label>
                             <frontend_type>text</frontend_type>

@@ -30,17 +30,8 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormDirectdebit extends Paymill_
         $this->setTemplate('paymill/payment/form/directdebit.phtml');
     }
     
-    public function getPaymentData($code)
+    public function isSepa()
     {
-        $payment = parent::getPaymentData($code);
-        
-        $data = array();
-        if (!is_null($payment)) {
-            $data['code'] = $payment['code'];
-            $data['holder'] = $payment['holder'];
-            $data['account'] = $payment['account'];
-        }
-        
-        return $data;
+        return Mage::getStoreConfig('payment/paymill_directdebit/sepa', Mage::app()->getStore()->getStoreId()) ? 'true' : 'false';
     }
 }
