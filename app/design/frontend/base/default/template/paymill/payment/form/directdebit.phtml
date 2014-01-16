@@ -1,0 +1,40 @@
+<?php $_code = $this->getMethodCode() ?>
+<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+    <li>
+        <p class="paymill-payment-errors alert-error" style="display:none;"></p>
+    </li>
+    <li>
+        <label for="<?php echo $_code ?>_holdername" class="required"><em>*</em><?php echo $this->__("paymill_Holder") ?></label>
+        <div class="input-box">
+            <input value="<?php echo $this->getPaymentEntry($_code, 'holder'); ?>" type="text" id="<?php echo $_code ?>_holdername" class="input-text paymill-validate-dd-holdername required-entry"/>
+        </div>
+    </li>
+    <li>
+        <label for="<?php echo $_code ?>_account" class="required"><em>*</em><?php echo $this->__("paymill_account") ?></label>
+        <div class="input-box">
+            <input value="<?php echo $this->getPaymentEntry($_code, 'account'); ?>" type="text" id="<?php echo $_code ?>_account" class="input-text paymill-validate-dd-account required-entry"/>
+        </div>
+    </li>
+    <li>
+        <label for="<?php echo $_code ?>_bankcode" class="required"><em>*</em><?php echo $this->__("paymill_bankcode") ?></label>
+        <div class="input-box">
+            <input value="<?php echo $this->getPaymentEntry($_code, 'code'); ?>" type="text" id="<?php echo $_code ?>_bankcode" class="input-text paymill-validate-dd-bankcode required-entry"/>
+        </div>
+    </li>
+    <li>
+        <input class="paymill-payment-token-elv paymill-validate-elv-token" name="payment[paymill-payment-token-elv]" id="payment[paymill-payment-token-elv]" type="hidden" />
+        <input class="paymill-option-debug-elv" name="payment[paymill-option-debug-elv]" id="payment[paymill-option-debug-elv]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode() ?>" />
+        <input class="paymill-info-public_key-elv" name="payment[paymill-info-public_key-elv]" id="payment[paymill-info-public_key-elv]" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey() ?>" />
+        <input class="paymill-info-fastCheckout-elv"  name="payment[paymill-info-fastCheckout-elv]" id="payment[paymill-info-fastCheckout-elv]" type="hidden" value="<?php echo $this->isNormalCheckout($_code) ?>" />
+        <input class="paymill-payment-error-number-elv" name="payment[paymill-payment-error-number-elv]" id="payment[paymill-payment-error-number-elv]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_elv"); ?>" />
+        <input class="paymill-payment-error-holder-elv" name="payment[paymill-payment-error-holder-elv]" id="payment[paymill-payment-error-holder-elv]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_elv"); ?>" />
+        <input class="paymill-payment-error-bankcode" name="payment[paymill-payment-error-bankcode]" id="payment[paymill-payment-error-bankcode]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_bankcode"); ?>" />
+        <input class="paymill-payment-error-elv-token" name="payment[paymill-payment-error-elv-token]" id="payment[paymill-payment-error-elv-token]" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_token"); ?>"/>
+        <input class="paymill-payment-token-url-elv" name="payment[paymill-payment-token-url-elv]" id="payment[paymill-payment-token-url-elv]" type="hidden" value="<?php echo  $this->getUrl('paymill/token', array('_secure' => true));  ?>"/>
+    </li>
+</ul>
+<script type="text/javascript">
+    //<![CDATA[
+    addPaymillEvents();
+    //]]>
+</script>
