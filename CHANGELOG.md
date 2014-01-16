@@ -1,3 +1,6 @@
+## v3.5.9
+ * set existing invoices to paid
+
 ## v3.5.8
  * log token errors
 

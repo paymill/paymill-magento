@@ -53,7 +53,7 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
         $transactionHelper = Mage::helper("paymill/transactionHelper");
         $order = $payment->getOrder();
 
-        if ($transactionHelper->getPreAuthenticatedFlagState($order)) {
+        if ($transactionHelper->isPreAuthenticated($order)) {
             //Capture preAuth
             $preAuthorization = $transactionHelper->getTransactionId($order);
             $privateKey = Mage::helper('paymill/optionHelper')->getPrivateKey();

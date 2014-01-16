@@ -23,7 +23,7 @@ class Paymill_Paymill_Model_Mysql4_Fastcheckout extends Mage_Core_Model_Mysql4_A
     /**
      * Construct
      */
-    function _construct()
+    public function _construct()
     {
         $this->_init('paymill/fastcheckout', 'id');
     }

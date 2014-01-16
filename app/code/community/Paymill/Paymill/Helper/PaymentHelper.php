@@ -104,8 +104,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function getCurrency()
     {
-        $currency_code = Mage::app()->getStore()->getCurrentCurrencyCode();
-        return $currency_code;
+        return Mage::app()->getStore()->getCurrentCurrencyCode();
     }
 
     /**

@@ -24,7 +24,7 @@ class Paymill_Paymill_Model_Fastcheckout extends Mage_Core_Model_Abstract
     /**
      * Construct
      */
-    function _construct()
+    public function _construct()
     {
         parent::_construct();
         $this->_init('paymill/fastcheckout');

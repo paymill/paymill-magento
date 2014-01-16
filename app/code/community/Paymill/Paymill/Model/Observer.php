@@ -31,7 +31,7 @@ class Paymill_Paymill_Model_Observer
     {
         $order = $observer->getEvent()->getOrder();
         if ($order->getPayment()->getMethod() === 'paymill_creditcard') {
-            if (Mage::helper('paymill/transactionHelper')->getPreAuthenticatedFlagState($order)) { // If the transaction is not flagged as a debit (not a preAuth) transaction
+            if (Mage::helper('paymill/transactionHelper')->isPreAuthenticated($order)) { // If the transaction is not flagged as a debit (not a preAuth) transaction
                 Mage::helper('paymill/loggingHelper')->log("Debug", "No Invoice generated, since the transaction is flagged as preauth");
             } else {
                 if ($order->canInvoice()) {
@@ -46,6 +46,10 @@ class Paymill_Paymill_Model_Observer
                     $invoice->pay()->save();
                     
                     $invoice->sendEmail(Mage::getStoreConfig('payment/paymill_creditcard/send_invoice_mail', Mage::app()->getStore()->getStoreId()), '');
+                } else {
+                    foreach ($order->getInvoiceCollection() as $invoice) {
+                        $invoice->pay()->save();
+                    }
                 }
             }
         }
@@ -64,7 +68,7 @@ class Paymill_Paymill_Model_Observer
             $amount = (int) ((string) ($creditmemo->getGrandTotal() * 100));
             Mage::helper('paymill/loggingHelper')->log("Trying to Refund.", var_export($order->getIncrementId(), true), $amount);
             if (!Mage::helper('paymill/refundHelper')->createRefund($order, $amount)) {
-                
+                Mage::throwException('Refund failed.');
             }
         }
     }
