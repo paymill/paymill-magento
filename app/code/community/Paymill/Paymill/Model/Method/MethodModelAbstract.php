@@ -245,6 +245,8 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         
         $success = $paymentProcessor->processPayment(!$this->_preAuthFlag);
 
+        $this->_existingClientHandling($clientId);
+        
         If ($success) {
             //Save Transaction Data
             $transactionHelper = Mage::helper("paymill/transactionHelper");
@@ -273,6 +275,28 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         $this->_errorCode = $paymentProcessor->getErrorCode();
 
         return false;
+    }
+    
+    private function _existingClientHandling($clientId)
+    {
+        if (!empty($clientId)) {
+            $clients = new Services_Paymill_Clients(
+                trim(Mage::helper('paymill/optionHelper')->getPrivateKey()),
+                Mage::helper('paymill')->getApiUrl()
+            );
+     
+            $quote = Mage::getSingleton('checkout/session')->getQuote();
+            
+            $client = $clients->getOne($clientId);
+            if (Mage::helper("paymill/customerHelper")->getCustomerEmail($quote) !== $client['email']) {
+                $clients->update(
+                    array(
+                        'id' => $clientId,
+                        'email' => Mage::helper("paymill/customerHelper")->getCustomerEmail($quote)
+                    )
+                );
+            }
+        }
     }
     
     protected function _getShortCode()
