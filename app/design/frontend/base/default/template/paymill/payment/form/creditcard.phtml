@@ -1,9 +1,6 @@
 <?php $_code = $this->getMethodCode(); ?>
 <div id="paymill-layer"></div>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
-    <li id="token-error-list">
-        <div id="token-error" style="display:none;"></div>
-    </li>
     <li>
         <label for="<?php echo $_code ?>_holdername" class="required"><em>*</em><?php echo $this->__("paymill_Holder") ?></label>
         <div class="input-box">
