@@ -1,6 +1,9 @@
 <?php $_code = $this->getMethodCode(); ?>
 <div id="paymill-layer"></div>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+    <li id="token-error-list">
+        <div id="token-error" style="display:none;"></div>
+    </li>
     <li>
         <label for="<?php echo $_code ?>_holdername" class="required"><em>*</em><?php echo $this->__("paymill_Holder") ?></label>
         <div class="input-box">
@@ -49,7 +52,7 @@
         <input class="paymill-payment-error-number" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_cc");?>"/>
         <input class="paymill-payment-error-holder" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_cc"); ?>"/>
         <input class="paymill-payment-error-expdate" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_expdate"); ?>"/>
-        <input class="paymill-payment-error-cvc" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_token"); ?>"/>
+        <input class="paymill-payment-error-cvc" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_cvc"); ?>"/>
         <input class="paymill-payment-error-cc-token" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_token"); ?>"/>
         <input class="PAYMILL_internal_server_error-cc" type="hidden" value="<?php echo $this->__("PAYMILL_internal_server_error"); ?>"/>
         <input class="PAYMILL_invalid_public_key-cc" type="hidden" value="<?php echo $this->__("PAYMILL_invalid_public_key"); ?>"/>

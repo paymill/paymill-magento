@@ -74,16 +74,15 @@ function paymillResponseHandler(error, result)
 	if (error) {
 		// Appending error
 		var nv = {};
-		
 		nv['paymill-validate-' + getPaymillCode() + '-token'] = new Validator(
 			'paymill-validate-' + getPaymillCode() + '-token',
 			getValueIfExist('.paymill-payment-error-' + getPaymillCode() + '-token') + error.message,
 			function(v) {
-				return v !== '';
+				return false;
 			},
 			''
 		);
-
+		
 		Object.extend(Validation.methods, nv);
 		
 		logError(error);
