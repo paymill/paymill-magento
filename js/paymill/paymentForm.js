@@ -443,7 +443,21 @@ function addPaymillEvents()
 		unsetCcValidationRules();
 	}
 	
+	pmQuery('#paymill_directdebit_iban').keyup(function() {
+			var iban = pmQuery('#paymill_directdebit_iban').val();
+			if (!iban.match(/^DE/)) {
+				var newVal = "DE";
+				if (iban.match(/^.{2}(.*)/)) {
+					newVal += iban.match(/^.{2}(.*)/)[1];
+				}
+				pmQuery('#paymill_directdebit_iban').val(newVal);
+			}
+	});
+	
+	pmQuery('#paymill_directdebit_iban').trigger('keyup');
+	
 	if (!eventFlag) {
+
 		pmQuery('#paymill_directdebit_holdername').live('input', function() {
 			setElvValidationRules();
 			pmQuery('.paymill-info-fastCheckout-elv').val('false');
