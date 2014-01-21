@@ -444,32 +444,32 @@ function addPaymillEvents()
 	}
 	
 	if (!eventFlag) {
-		pmQuery('#paymill_directdebit_holdername').live('focus', function() {
+		pmQuery('#paymill_directdebit_holdername').live('input', function() {
 			setElvValidationRules();
 			pmQuery('.paymill-info-fastCheckout-elv').val('false');
 		});
 
-		pmQuery('#paymill_directdebit_account').live('focus', function() {
+		pmQuery('#paymill_directdebit_account').live('input', function() {
 			setElvValidationRules();
 			pmQuery('.paymill-info-fastCheckout-elv').val('false');
 		});
 
-		pmQuery('#paymill_directdebit_bankcode').live('focus', function() {
+		pmQuery('#paymill_directdebit_bankcode').live('input', function() {
 			setElvValidationRules();
 			pmQuery('.paymill-info-fastCheckout-elv').val('false');
 		});
 
-		pmQuery('#paymill_creditcard_holdername').live('focus', function() {
+		pmQuery('#paymill_creditcard_holdername').live('input', function() {
 			setCcValidationRules();
 			pmQuery('.paymill-info-fastCheckout-cc').val('false');
 		});
 
-		pmQuery('#paymill_creditcard_cvc').live('focus', function() {
+		pmQuery('#paymill_creditcard_cvc').live('input', function() {
 			setCcValidationRules();
 			pmQuery('.paymill-info-fastCheckout-cc').val('false');
 		});
 
-		pmQuery('#paymill_creditcard_number').live('focus', function() {
+		pmQuery('#paymill_creditcard_number').live('input', function() {
 			setCcValidationRules();
 			pmQuery('.paymill-info-fastCheckout-cc').val('false');
 		});
