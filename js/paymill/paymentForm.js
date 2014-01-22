@@ -196,7 +196,7 @@ function logError(data)
 	pmQuery.ajax({
 		async: false,
 		type: "POST",
-		url: pmQuery('.paymill-payment-token-url-' + getPaymillCode()).val() + 'log',
+		url: pmQuery('.paymill-payment-token-log-' + getPaymillCode()).val() + 'log',
 		data: {error: data},
 	}).done(function(msg) {
 		debug('Logging done.');

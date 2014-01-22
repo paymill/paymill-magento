@@ -42,6 +42,7 @@
         <input class="paymill-payment-token-cc paymill-validate-cc-token" name="payment[paymill-payment-token-cc]" id="payment[paymill-payment-token-cc]" type="hidden" />
         <input class="paymill_3ds_cancel" type="hidden" value="<?php echo $this->__("paymill_3ds_cancel"); ?>"/>
         <input class="paymill-payment-token-url-cc" type="hidden" value="<?php echo  $this->getUrl('paymill/token/total', array('_secure'=>true));  ?>"/>
+        <input class="paymill-payment-token-log-cc" type="hidden" value="<?php echo  $this->getUrl('paymill/token/log', array('_secure'=>true));  ?>"/>
         <input class="paymill-payment-currency-cc" type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getCurrency(); ?>"/>
         <input class="paymill-option-debug-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode(); ?>"/>
         <input class="paymill-info-public_key-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey(); ?>"/>

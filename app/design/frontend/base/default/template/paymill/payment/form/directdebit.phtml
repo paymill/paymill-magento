@@ -42,6 +42,7 @@
         <input class="paymill-info-public_key-elv" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey(); ?>" />
         <input class="paymill-info-fastCheckout-elv" type="hidden" value="<?php echo $this->isNormalCheckout($_code); ?>" />
         <input class="paymill-info-sepa-elv" type="hidden" value="<?php echo $this->isSepa(); ?>" />
+        <input class="paymill-payment-token-log-elv" type="hidden" value="<?php echo  $this->getUrl('paymill/token/log', array('_secure'=>true));  ?>"/>
         <input class="paymill-payment-error-number-elv" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_elv"); ?>" />
         <input class="paymill-payment-error-holder-elv" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_elv"); ?>" />
         <input class="paymill-payment-error-bankcode" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_bankcode"); ?>" />
