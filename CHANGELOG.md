@@ -1,3 +1,6 @@
+## v3.6.1
+ * sepa fix
+
 ## v3.6.0
  * add elv sepa 
 

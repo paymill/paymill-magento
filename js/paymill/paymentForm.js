@@ -533,6 +533,14 @@ function addPaymillEvents()
 		pmQuery('#paymill_directdebit_bankcode').live('input', function() {
 			paymillSubmitForm();
 		});
+		
+		pmQuery('#paymill_directdebit_iban').live('input', function() {
+			paymillSubmitForm();
+		});
+		
+		pmQuery('#paymill_directdebit_bic').live('input', function() {
+			paymillSubmitForm();
+		});
 
 		eventFlag = true;
 	}
