@@ -11,7 +11,7 @@
                     <sort_order>700</sort_order>
                     <fields>
                         <version>
-                            <label>v3.6.1</label>
+                            <label>v3.6.2</label>
                             <sort_order>1</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <frontend_type>label</frontend_type>
@@ -77,7 +77,7 @@
                     <sort_order>800</sort_order>
                     <fields>
                         <version>
-                            <label>v3.6.1</label>
+                            <label>v3.6.2</label>
                             <sort_order>100</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <frontend_type>label</frontend_type>
@@ -152,6 +152,14 @@
                                 <preAuth_active>0</preAuth_active>
                             </depends>
                         </send_invoice_mail>
+                        <checkout_desc translate="label">
+                            <label>paymill_checkout_desc</label>
+                            <sort_order>380</sort_order>
+                            <frontend_type>textarea</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </checkout_desc>
                         <sort_order translate="label">
                             <label>paymill_opt_Sort</label>
                             <frontend_type>text</frontend_type>
@@ -171,7 +179,7 @@
                     <sort_order>800</sort_order>
                     <fields>
                         <version>
-                            <label>v3.6.1</label>
+                            <label>v3.6.2</label>
                             <sort_order>100</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <frontend_type>label</frontend_type>
@@ -229,11 +237,19 @@
                             <label>paymill_activate_sepa</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>355</sort_order>
+                            <sort_order>365</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </sepa>
+                        <checkout_desc translate="label">
+                            <label>paymill_checkout_desc</label>
+                            <sort_order>370</sort_order>
+                            <frontend_type>textarea</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </checkout_desc>
                         <sort_order translate="label">
                             <label>paymill_opt_Sort</label>
                             <frontend_type>text</frontend_type>

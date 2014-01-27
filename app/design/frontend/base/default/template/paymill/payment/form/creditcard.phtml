@@ -74,6 +74,11 @@
         <input class="PAYMILL_field_invalid_country-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_country"); ?>"/>
         <input class="PAYMILL_field_invalid_bank_data-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_bank_data"); ?>"/>
     </li>
+    <?php if (!is_null(Mage::getStoreConfig('payment/paymill_creditcard/checkout_desc', Mage::app()->getStore()->getStoreId()))): ?>
+    <li>
+        <?php echo Mage::getStoreConfig('payment/paymill_creditcard/checkout_desc', Mage::app()->getStore()->getStoreId()); ?>
+    </li>
+    <?php endif; ?>
 </ul>
 
 <script type="text/javascript">

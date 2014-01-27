@@ -1,3 +1,7 @@
+## v3.6.2
+ * add detectCardBrand
+ * add configurable checkout text
+
 ## v3.6.1
  * sepa fix
 
