@@ -75,6 +75,20 @@
     background-position: right center !important;
 }
 
+.paymill-card-number-carte-bleue
+{
+    background-image: url('../../images/paymill/icon_32x20_carte-bleue.png') !important;
+    background-repeat: no-repeat !important;
+    background-position: right center !important;
+}
+
+.paymill-card-number-carta-si
+{
+    background-image: url('../../images/paymill/icon_32x20_carte-bleue.png') !important;
+    background-repeat: no-repeat !important;
+    background-position: right center !important;
+}
+
 .tooltip 
 {
     margin-left: 3px;
