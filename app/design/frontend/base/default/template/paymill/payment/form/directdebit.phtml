@@ -77,6 +77,8 @@
 </ul>
 <script type="text/javascript">
     //<![CDATA[
-    addPaymillEvents();
+    paymillElv = new Paymill('<?php echo $_code; ?>');
+    paymillElv.setCodes();
+    paymillElv.addPaymillEvents();
     //]]>
 </script>
