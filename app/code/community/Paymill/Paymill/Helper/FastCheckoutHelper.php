@@ -77,7 +77,7 @@ class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstrac
     
     public function getPaymentData($code)
     {
-        $payment = null;
+        $payment = array();
         if ($this->hasData($code)) {
             $payments = new Services_Paymill_Payments(
                 Mage::helper('paymill/optionHelper')->getPrivateKey(), 
@@ -87,7 +87,7 @@ class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstrac
             $payment = $payments->getOne($this->getPaymentId($code));
             
             if (!array_key_exists('last4', $payment) && !array_key_exists('code', $payment)) {
-                $payment = null;
+                $payment = array();
             }
         }
         
