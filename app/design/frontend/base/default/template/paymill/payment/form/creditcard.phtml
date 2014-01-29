@@ -82,7 +82,8 @@
 
 <script type="text/javascript">
     //<![CDATA[
-    paymillCc = new Paymill('<?php echo $_code; ?>');
+    paymillCc = new Paymill();
+    paymillCc.setPaymillCode('<?php echo $_code; ?>');
     paymillCc.setCodes();
     paymillCc.addPaymillEvents();
     //]]>
