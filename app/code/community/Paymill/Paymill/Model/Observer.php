@@ -43,6 +43,8 @@ class Paymill_Paymill_Model_Observer
                        ->addObject($invoice->getOrder())
                        ->save();
                     
+                    $invoice->setTransactionId(Mage::helper('paymill/transactionHelper')->getTransactionId($order));
+                    
                     $invoice->pay()->save();
                     
                     $invoice->sendEmail(Mage::getStoreConfig('payment/paymill_creditcard/send_invoice_mail', Mage::app()->getStore()->getStoreId()), '');
@@ -54,24 +56,5 @@ class Paymill_Paymill_Model_Observer
             }
         }
     }
-    
-    /**
-     * Registered for the sales_order_creditmemo_refund event
-     * Creates a refund based on the created creditmemo
-     * @param Varien_Event_Observer $observer
-     */
-    public function refundCreditmemo(Varien_Event_Observer $observer)
-    {
-        $creditmemo = $observer->getEvent()->getCreditmemo();
-        $order = $creditmemo->getOrder();
-        if ($order->getPayment()->getMethod() === 'paymill_creditcard' || $order->getPayment()->getMethod() === 'paymill_directdebit') {
-            $amount = (int) ((string) ($creditmemo->getGrandTotal() * 100));
-            Mage::helper('paymill/loggingHelper')->log("Trying to Refund.", var_export($order->getIncrementId(), true), $amount);
-            if (!Mage::helper('paymill/refundHelper')->createRefund($order, $amount)) {
-                Mage::throwException('Refund failed.');
-            }
-        }
-    }
-
 }
 

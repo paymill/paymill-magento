@@ -263,7 +263,7 @@ Paymill.prototype.unsetElvValidationRules = function()
 		),
 		'paymill-validate-dd-iban': new Validator(
 			'paymill-validate-dd-iban',
-			getValueIfExist('.paymill-payment-error-iban-elv'),
+			'',
 			function(v) {
 				return true;
 			},
@@ -271,7 +271,7 @@ Paymill.prototype.unsetElvValidationRules = function()
 		),
 		'paymill-validate-dd-bic': new Validator(
 			'paymill-validate-dd-bic',
-			getValueIfExist('.paymill-payment-error-bic-elv'),
+			'',
 			function(v) {
 				return true;
 			},
@@ -449,27 +449,29 @@ Paymill.prototype.setCcValidationRules = function()
 
 Paymill.prototype.addPaymillEvents = function()
 {
+	var that = this;
+	
 	this.setElvValidationRules();
 
 	this.setCcValidationRules();
 
 	if (pmQuery('.paymill-info-fastCheckout-elv').val() === 'true') {
-		this.unsetElvValidationRules();
+		that.unsetElvValidationRules();
 	}
 
 	if (pmQuery('.paymill-info-fastCheckout-cc').val() === 'true') {
-		this.unsetCcValidationRules();
+		that.unsetCcValidationRules();
 	}
 
 	pmQuery('#' + this.paymillCode + '_iban').keyup(function() {
-		var iban = pmQuery('#' + this.paymillCode + '_iban').val();
+		var iban = pmQuery('#' + that.paymillCode + '_iban').val();
 		if (!iban.match(/^DE/)) {
 			var newVal = "DE";
 			if (iban.match(/^.{2}(.*)/)) {
 				newVal += iban.match(/^.{2}(.*)/)[1];
 			}
 
-			pmQuery('#' + this.paymillCode + '_iban').val(newVal);
+			pmQuery('#' + that.paymillCode + '_iban').val(newVal);
 		}
 	});
 
@@ -477,7 +479,7 @@ Paymill.prototype.addPaymillEvents = function()
 
 	if (!this.eventFlag) {
 
-		var that = this;
+		
 		pmQuery('#' + this.paymillCode + '_holdername').live('input', function() {
 			that.setElvValidationRules();
 			pmQuery('.paymill-info-fastCheckout-elv').val('false');
@@ -562,7 +564,7 @@ Paymill.prototype.addPaymillEvents = function()
 			that.paymillSubmitForm();
 		});
 
-		that.eventFlag = true;
+		this.eventFlag = true;
 	}
 }
 

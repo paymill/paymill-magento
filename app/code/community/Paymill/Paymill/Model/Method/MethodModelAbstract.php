@@ -20,14 +20,6 @@
  */
 abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Payment_Model_Method_Abstract
 {
-
-    /**
-     * Is method a gateaway
-     *
-     * @var boolean
-     */
-    protected $_isGateway = false;
-
     /**
      * Can use the Authorize method
      *
@@ -55,6 +47,13 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      * @var boolean
      */
     protected $_canCapture = true;
+    
+    /**
+     * Can use the partial capture method
+     *
+     * @var boolean
+     */
+    protected $_canCapturePartial = false;
 
     /**
      * Can this method use for checkout
@@ -69,13 +68,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      * @var boolean
      */
     protected $_canUseForMultishipping = false;
-
-    /**
-     * Is a initalize needed
-     *
-     * @var boolean
-     */
-    protected $_isInitializeNeeded = false;
+    
 
     /**
      * Payment Title
@@ -309,4 +302,24 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         return $methods[$this->_code];
     }
 
+    public function refund(\Varien_Object $payment, $amount)
+    {
+        parent::refund($payment, $amount);
+        $order = $payment->getOrder();
+        if ($order->getPayment()->getMethod() === 'paymill_creditcard' || $order->getPayment()->getMethod() === 'paymill_directdebit') {
+            $amount = (int) ((string) ($amount * 100));
+            Mage::helper('paymill/loggingHelper')->log("Trying to Refund.", var_export($order->getIncrementId(), true), $amount);
+            
+            if (!Mage::helper('paymill/refundHelper')->createRefund($order, $amount)) {
+                Mage::throwException('Refund failed.');
+            }
+        }
+        return $this;
+    }
+    
+    public function processInvoice($invoice, $payment)
+    {
+        parent::processInvoice($invoice, $payment);
+        $invoice->setTransactionId(Mage::helper('paymill/transactionHelper')->getTransactionId($payment->getOrder()));
+    }
 }

@@ -20,7 +20,6 @@
  */
 class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill_Model_Method_MethodModelAbstract
 {
-
     /**
      * Magento method code
      *
@@ -49,6 +48,7 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
      */
     public function capture(Varien_Object $payment, $amount)
     {
+        parent::capture($payment, $amount);
         //Initalizing variables and helpers
         $transactionHelper = Mage::helper("paymill/transactionHelper");
         $order = $payment->getOrder();
