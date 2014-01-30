@@ -1,3 +1,6 @@
+## v3.6.3
+ * improve javascript
+
 ## v3.6.2
  * add detectCardBrand
  * add configurable checkout text
