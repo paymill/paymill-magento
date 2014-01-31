@@ -224,6 +224,7 @@ Paymill.prototype.logError = function(data)
 
 Paymill.prototype.getTokenAmount = function()
 {
+	var that = this;
 	var returnVal = null;
 	pmQuery.ajax({
 		async: false,
@@ -235,9 +236,9 @@ Paymill.prototype.getTokenAmount = function()
 		// Appending error
 		var nv = {};
 
-		nv['paymill-validate-' + this.getPaymillCode() + '-token'] = new Validator(
-			'paymill-validate-' + this.getPaymillCode() + '-token',
-			this.getValueIfExist('.paymill-payment-error-' + this.getPaymillCode() + '-token') + " Amount not accessable. Reason: " + textStatus,
+		nv['paymill-validate-' + that.getPaymillCode() + '-token'] = new Validator(
+			'paymill-validate-' + that.getPaymillCode() + '-token',
+			that.getValueIfExist('.paymill-payment-error-' + that.getPaymillCode() + '-token') + " Amount not accessable. Reason: " + textStatus,
 			function(v) {
 				return v !== '';
 			},
@@ -396,6 +397,7 @@ Paymill.prototype.setElvValidationRules = function()
 
 Paymill.prototype.setCcValidationRules = function()
 {
+	var that = this;
 	var nvCc = {
 		'paymill-validate-cc-number': new Validator(
 			'paymill-validate-cc-number',
@@ -434,7 +436,7 @@ Paymill.prototype.setCcValidationRules = function()
 			'paymill-validate-cc-cvc',
 			this.getValueIfExist('.paymill-payment-error-cvc'),
 			function(v) {
-				if (paymill.cardType(pmQuery('#' + this.paymillCode + '_number').val()).toLowerCase() === 'maestro') {
+				if (paymill.cardType(pmQuery('#' + that.paymillCode + '_number').val()).toLowerCase() === 'maestro') {
 					return true;
 				}
 
