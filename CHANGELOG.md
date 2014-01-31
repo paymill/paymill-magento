@@ -1,6 +1,7 @@
 ## v3.6.3
  * improve javascript
  * fix problem when a token error occurs
+ * online offline refund compatibility added
 
 ## v3.6.2
  * add detectCardBrand
