@@ -1,4 +1,3 @@
-//Backend Options
 var PAYMILL_PUBLIC_KEY = null;
 
 function Paymill()
@@ -210,15 +209,16 @@ Paymill.prototype.paymillSubmitForm = function()
 
 Paymill.prototype.logError = function(data)
 {
+	var that = this;
 	pmQuery.ajax({
 		async: false,
 		type: "POST",
 		url: pmQuery('.paymill-payment-token-log-' + this.getPaymillCode()).val(),
 		data: {error: data},
 	}).done(function(msg) {
-		this.debug('Logging done.');
+		that.debug('Logging done.');
 	}).fail(function(jqXHR, textStatus) {
-		this.debug('Logging failed.');
+		that.debug('Logging failed.');
 	});
 }
 
@@ -228,7 +228,7 @@ Paymill.prototype.getTokenAmount = function()
 	pmQuery.ajax({
 		async: false,
 		type: "POST",
-		url: pmQuery('.paymill-payment-token-url-cc').val() + "total",
+		url: pmQuery('.paymill-payment-token-url-cc').val(),
 	}).done(function(msg) {
 		returnVal = msg;
 	}).fail(function(jqXHR, textStatus) {
@@ -478,7 +478,6 @@ Paymill.prototype.addPaymillEvents = function()
 	pmQuery('#' + this.paymillCode + '_iban').trigger('keyup');
 
 	if (!this.eventFlag) {
-
 		
 		pmQuery('#' + this.paymillCode + '_holdername').live('input', function() {
 			that.setElvValidationRules();
@@ -491,6 +490,16 @@ Paymill.prototype.addPaymillEvents = function()
 		});
 
 		pmQuery('#' + this.paymillCode + '_bankcode').live('input', function() {
+			that.setElvValidationRules();
+			pmQuery('.paymill-info-fastCheckout-elv').val('false');
+		});
+		
+		pmQuery('#' + this.paymillCode + '_iban').live('input', function() {
+			that.setElvValidationRules();
+			pmQuery('.paymill-info-fastCheckout-elv').val('false');
+		});
+		
+		pmQuery('#' + this.paymillCode + '_bic').live('input', function() {
 			that.setElvValidationRules();
 			pmQuery('.paymill-info-fastCheckout-elv').val('false');
 		});
@@ -575,14 +584,25 @@ Paymill.prototype.addPaymillEvents = function()
  */
 paymillResponseHandler = function(error, result)
 {
+	var nv = {};
 	paymillObj = new Paymill();
 	paymillObj.setCodes();
 	if (error) {
+		
+		var message = 'unknown_error';
+		var key = error.apierror;
+		if(paymillObj.getValueIfExist('.PAYMILL_' + key + '-' + paymillObj.getPaymillCode()) !== ''){
+			message = paymillObj.getValueIfExist('.PAYMILL_' + key + '-' + paymillObj.getPaymillCode());
+		}
+		
+		if (message === 'unknown_error' && error.message !== undefined) {
+			message = error.message;
+		}
+		
 		// Appending error
-		var nv = {};
 		nv['paymill-validate-' + paymillObj.getPaymillCode() + '-token'] = new Validator(
 			'paymill-validate-' + paymillObj.getPaymillCode() + '-token',
-			paymillObj.getValueIfExist('.paymill-payment-error-' + paymillObj.getPaymillCode() + '-token') + error.message,
+			paymillObj.getValueIfExist('.paymill-payment-error-' + paymillObj.getPaymillCode() + '-token') + message,
 			function(v) {
 				return false;
 			},
@@ -597,6 +617,16 @@ paymillResponseHandler = function(error, result)
 		paymillObj.debug(error.message);
 		paymillObj.debug("Paymill Response Handler triggered: Error.");
 	} else {
+		nv['paymill-validate-' + paymillObj.getPaymillCode() + '-token'] = new Validator(
+			'paymill-validate-' + paymillObj.getPaymillCode() + '-token',
+			'',
+			function(v) {
+				return true;
+			},
+			''
+		);
+
+		Object.extend(Validation.methods, nv);
 		// Appending Token to form
 		paymillObj.debug("Saving Token in Form: " + result.token);
 		pmQuery('.paymill-payment-token-' + paymillObj.getPaymillCode()).val(result.token);
