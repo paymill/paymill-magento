@@ -135,6 +135,11 @@ Paymill.prototype.paymillSubmitForm = function()
 {
 	PAYMILL_PUBLIC_KEY = pmQuery('.paymill-info-public_key-' + this.getPaymillCode()).val();
 	this.paymillSelectedPaymentName = pmQuery("input[name='payment[method]']:checked").val();
+			
+	if (!window.PAYMILL_LOADING !== "undefined" && window.PAYMILL_LOADING) {
+		return false;
+	}
+	
 	switch (this.paymillSelectedPaymentName) {
 		case this.paymillCc:
 			paymill.config('3ds_cancel_label', pmQuery('.paymill_3ds_cancel').val());
@@ -154,6 +159,7 @@ Paymill.prototype.paymillSubmitForm = function()
 					cvc = pmQuery('#' + this.paymillSelectedPaymentName + '_cvc').val();
 				}
 
+				window.PAYMILL_LOADING = true;
 				this.debug("Generating Token");
 				paymill.createToken({
 					amount_int: parseInt(this.getTokenAmount()),
@@ -177,6 +183,7 @@ Paymill.prototype.paymillSubmitForm = function()
 						return false;
 					}
 
+					window.PAYMILL_LOADING = true;
 					this.debug("Generating Token");
 					paymill.createToken({
 						number: pmQuery('#' + this.paymillSelectedPaymentName + '_account').val(),
@@ -192,6 +199,7 @@ Paymill.prototype.paymillSubmitForm = function()
 						return false;
 					}
 
+					window.PAYMILL_LOADING = true;
 					this.debug("Generating Token");
 					paymill.createToken({
 						iban: pmQuery('#' + this.paymillSelectedPaymentName + '_iban').val(),
@@ -586,11 +594,13 @@ Paymill.prototype.addPaymillEvents = function()
  */
 paymillResponseHandler = function(error, result)
 {
+	window.PAYMILL_LOADING = false;
+	
 	var nv = {};
 	paymillObj = new Paymill();
 	paymillObj.setCodes();
 	if (error) {
-		
+		pmQuery('#paymill_creditcard_cvc').val('');
 		var message = 'unknown_error';
 		var key = error.apierror;
 		if(paymillObj.getValueIfExist('.PAYMILL_' + key + '-' + paymillObj.getPaymillCode()) !== ''){

@@ -61,7 +61,7 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Paymill_P
         $payment = parent::getPaymentData($code);
         
         $data = array();
-        if (!is_null($payment)) {
+        if (!empty($payment)) {
             $data['cc_number'] = '************' . $payment['last4'];
             $data['expire_year'] = $payment['expire_year'];
             $data['expire_month'] = $payment['expire_month'];

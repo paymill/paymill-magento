@@ -1,3 +1,7 @@
+## v3.6.4
+ * remove prefilled stars from the payment form
+ * avoid double token creation
+
 ## v3.6.3
  * improve javascript
  * fix problem when a token error occurs
