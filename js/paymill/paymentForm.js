@@ -1,5 +1,9 @@
 var PAYMILL_PUBLIC_KEY = null;
 
+/**
+ * Build object
+ * @returns {Paymill}
+ */
 function Paymill()
 {
 	this.paymillSelectedPaymentName = "Preparing Payment";
@@ -7,17 +11,28 @@ function Paymill()
 	
 }
 
+/**
+ * Set payment code
+ * @param String code
+ */
 Paymill.prototype.setPaymillCode = function(code)
 {
 	this.paymillCode = code;
 }
 
+/**
+ * Set the possible payment codes
+ */
 Paymill.prototype.setCodes = function()
 {
 	this.paymillCc = 'paymill_creditcard';
 	this.paymillElv = 'paymill_directdebit';
 }
 
+/**
+ * Get selected payments short code
+ * @returns String
+ */
 Paymill.prototype.getPaymillCode = function()
 {
 	var methods = {
@@ -57,6 +72,12 @@ Paymill.prototype.debug = function(message)
 	}
 }
 
+/**
+ * Get credit card brand
+ * 
+ * @param String creditcardNumber
+ * @returns String
+ */
 Paymill.prototype.detectCreditcardBranding = function(creditcardNumber)
 {
 	var brand = 'unknown';
@@ -118,6 +139,12 @@ Paymill.prototype.paymillShowCardIcon = function()
 	}
 }
 
+/**
+ * Prototype selector
+ * 
+ * @param {type} selector
+ * @returns {String}
+ */
 Paymill.prototype.getValueIfExist = function(selector)
 {
 	if ($$(selector)[0]) {
@@ -128,6 +155,7 @@ Paymill.prototype.getValueIfExist = function(selector)
 }
 
 /**
+ * Validate the form data and try to create a token
  * 
  * @returns {Boolean}
  */
@@ -215,6 +243,10 @@ Paymill.prototype.paymillSubmitForm = function()
 	return false;
 }
 
+/**
+ * Log data
+ * @param String data
+ */
 Paymill.prototype.logError = function(data)
 {
 	var that = this;
@@ -230,6 +262,10 @@ Paymill.prototype.logError = function(data)
 	});
 }
 
+/**
+ * Return order amount
+ * @return float
+ */
 Paymill.prototype.getTokenAmount = function()
 {
 	var that = this;
@@ -259,6 +295,9 @@ Paymill.prototype.getTokenAmount = function()
 	return returnVal;
 }
 
+/**
+ * Unset elv validation rules
+ */
 Paymill.prototype.unsetElvValidationRules = function()
 {
 	var nvElv = {
@@ -307,6 +346,9 @@ Paymill.prototype.unsetElvValidationRules = function()
 	Object.extend(Validation.methods, nvElv);
 }
 
+/**
+ * Unset cc validation rules
+ */
 Paymill.prototype.unsetCcValidationRules = function()
 {
 	var nvCc = {
@@ -355,6 +397,9 @@ Paymill.prototype.unsetCcValidationRules = function()
 	Object.extend(Validation.methods, nvCc);
 }
 
+/**
+ * Set elv validation rules
+ */
 Paymill.prototype.setElvValidationRules = function()
 {
 	var nvElv = {
@@ -403,6 +448,9 @@ Paymill.prototype.setElvValidationRules = function()
 	Object.extend(Validation.methods, nvElv);
 }
 
+/**
+ * Set cc validation rules
+ */
 Paymill.prototype.setCcValidationRules = function()
 {
 	var that = this;
@@ -457,6 +505,9 @@ Paymill.prototype.setCcValidationRules = function()
 	Object.extend(Validation.methods, nvCc);
 }
 
+/**
+ * Add all paymill events
+ */
 Paymill.prototype.addPaymillEvents = function()
 {
 	var that = this;

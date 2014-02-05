@@ -21,7 +21,16 @@
 class Paymill_Paymill_Model_TransactionData
 {
 
+    /**
+     * Is pre-auth
+     * @var boolean
+     */
     private $_preAuthorizationFlag = null;
+    
+    /**
+     * Paymill transaction  id
+     * @var string
+     */
     private $_transactionId = null;
 
     /**

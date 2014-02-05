@@ -75,6 +75,12 @@ class Paymill_Paymill_Helper_FastCheckoutHelper extends Mage_Core_Helper_Abstrac
         return false;
     }
     
+    /**
+     * Return payment data if available
+     * 
+     * @param string $code
+     * @return array
+     */
     public function getPaymentData($code)
     {
         $payment = array();

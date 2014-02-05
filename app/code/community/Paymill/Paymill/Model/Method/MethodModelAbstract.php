@@ -84,10 +84,25 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      */
     protected $_code = 'paymill_abstract';
     
+    /**
+     * Paymill error code
+     * 
+     * @var string
+     */
     protected $_errorCode;
     
+    /**
+     * Is pre-auth
+     * 
+     * @var boolean
+     */
     protected $_preAuthFlag;
     
+    /**
+     * Can use for internal payments
+     * 
+     * @var boolean
+     */
     protected $_canUseInternal = false;
 
     /**
@@ -270,6 +285,11 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         return false;
     }
     
+    /**
+     * Handle paymill client update if exist
+     * 
+     * @param string $clientId
+     */
     private function _existingClientHandling($clientId)
     {
         if (!empty($clientId)) {
@@ -292,6 +312,10 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         }
     }
     
+    /**
+     * Return paymill short code
+     * @return string
+     */
     protected function _getShortCode()
     {
         $methods = array(
@@ -302,6 +326,13 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         return $methods[$this->_code];
     }
 
+    /**
+     * Handle online refunds and trigger the refund at paymill side
+     * 
+     * @param \Varien_Object $payment
+     * @param float $amount
+     * @return \Paymill_Paymill_Model_Method_MethodModelAbstract
+     */
     public function refund(\Varien_Object $payment, $amount)
     {
         parent::refund($payment, $amount);
@@ -317,6 +348,12 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         return $this;
     }
     
+    /**
+     * Set invoice transaction id
+     * 
+     * @param Mage_Sales_Model_Order_Invoice $invoice
+     * @param type $payment
+     */
     public function processInvoice($invoice, $payment)
     {
         parent::processInvoice($invoice, $payment);

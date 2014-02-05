@@ -54,6 +54,10 @@ class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
         return $email;
     }
 
+    /**
+     * Return paymill client data
+     * @return array
+     */
     public function getClientData()
     {
         $clients = new Services_Paymill_Clients(
