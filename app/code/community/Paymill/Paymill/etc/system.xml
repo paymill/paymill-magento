@@ -11,7 +11,7 @@
                     <sort_order>700</sort_order>
                     <fields>
                         <version>
-                            <label>v3.6.4</label>
+                            <label>v3.6.5</label>
                             <sort_order>1</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <frontend_type>label</frontend_type>
@@ -68,7 +68,7 @@
                         </logging_active>
                     </fields>
                 </paymill>
-                
+
                 <paymill_creditcard module="paymill" translate="label">
                     <label>paymill_credit_card_label</label>
                     <show_in_default>1</show_in_default>
@@ -77,7 +77,7 @@
                     <sort_order>800</sort_order>
                     <fields>
                         <version>
-                            <label>v3.6.4</label>
+                            <label>v3.6.5</label>
                             <sort_order>100</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <frontend_type>label</frontend_type>
@@ -170,7 +170,7 @@
                         </sort_order>
                     </fields>
                 </paymill_creditcard>
-                
+
                 <paymill_directdebit module="paymill" translate="label">
                     <label>paymill_direct_debit_label</label>
                     <show_in_default>1</show_in_default>
@@ -179,7 +179,7 @@
                     <sort_order>800</sort_order>
                     <fields>
                         <version>
-                            <label>v3.6.4</label>
+                            <label>v3.6.5</label>
                             <sort_order>100</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <frontend_type>label</frontend_type>

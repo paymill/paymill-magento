@@ -2,11 +2,11 @@
 <config>
     <modules>
         <Paymill_Paymill>
-            <version>3.6.4</version>
+            <version>3.6.5</version>
         </Paymill_Paymill>
     </modules>
-    
-   
+
+
     <global>
         <blocks>
             <paymill>
@@ -31,7 +31,7 @@
                 </entities>
             </paymill_mysql4>
         </models>
- 
+
         <helpers>
             <paymill>
                 <class>Paymill_Paymill_Helper</class>
@@ -47,20 +47,20 @@
                     <use>core_setup</use>
                 </connection>
             </paymill_setup>
-            
+
             <paymill_write>
                 <connection>
                     <use>core_write</use>
                 </connection>
             </paymill_write>
-            
+
             <paymill_read>
                 <connection>
                     <use>core_read</use>
                 </connection>
             </paymill_read>
         </resources>
-        
+
         <events>
             <sales_order_place_after>
                 <observers>
@@ -73,8 +73,8 @@
             </sales_order_place_after>
         </events>
     </global>
- 
- 
+
+
     <!-- declare default configuration values for this module -->
     <default>
         <!-- 'payment' configuration section (tab) -->
@@ -87,7 +87,7 @@
                 <title>paymill_credit_card</title>
                 <payment_action>authorize</payment_action>
             </paymill_creditcard>
-            
+
             <paymill_directdebit>
                 <active>0</active>
                 <currency>EUR,USD</currency>
@@ -98,7 +98,7 @@
             </paymill_directdebit>
         </payment>
     </default>
-    
+
     <frontend>
         <layout>
             <updates>
@@ -117,7 +117,7 @@
             </modules>
         </translate>
     </frontend>
-    
+
     <adminhtml>
         <translate>
             <modules>
@@ -135,7 +135,7 @@
                 </paymill>
             </updates>
         </layout>
-        
+
         <global_search>
             <paymill_search>
                 <class>paymill/log_search</class>
@@ -143,7 +143,7 @@
             </paymill_search>
         </global_search>
     </adminhtml>
-    
+
     <admin>
         <routers>
             <paymill>
@@ -155,5 +155,5 @@
             </paymill>
         </routers>
     </admin>
-    
+
 </config>

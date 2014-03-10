@@ -1,3 +1,9 @@
+## v3.6.5
+ * added BIC Validation (Lengthcheck)
+ * added IBAN Validation
+ * added languages it, fr, es, pt and updated en, de
+ * improved CC Brand detection with greyscale Logos if Brand was detected but number not valid yet
+
 ## v3.6.4
  * remove prefilled stars from the payment form
  * avoid double token creation
@@ -15,7 +21,7 @@
  * sepa fix
 
 ## v3.6.0
- * add elv sepa 
+ * add elv sepa
 
 ## v3.5.9
  * set existing invoices to paid
@@ -94,12 +100,12 @@
  * better token validation
 
 ## v3.0.6
- * Fixed a bug causing the plugin to crash during invoice creation 
+ * Fixed a bug causing the plugin to crash during invoice creation
  * Payment Methods will now only be displayed if the Keys are set in the config
  * Fixed a bug causing warnings in the Magento systemlog in multiple cases
 
 ## v3.0.4
- * Payment template changed 
+ * Payment template changed
  * several bugfixes
 
 ## v3.0.0
