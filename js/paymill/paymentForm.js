@@ -224,7 +224,8 @@ Paymill.prototype.paymillSubmitForm = function()
                                         ibanValidator = new PaymillIban();
 					var valid = pmQuery('#' + this.paymillSelectedPaymentName + '_holdername').val() !== ''
 							&& ibanValidator.validate(pmQuery('#' + this.paymillSelectedPaymentName + '_iban').val())
-							&& pmQuery('#' + this.paymillSelectedPaymentName + '_bic').val() !== '';
+							&& (pmQuery('#' + this.paymillSelectedPaymentName + '_bic').val().length === 8
+                                                            || pmQuery('#' + this.paymillSelectedPaymentName + '_bic').val().length === 11);
 
 					if (!valid) {
 						return false;
@@ -427,7 +428,7 @@ Paymill.prototype.setElvValidationRules = function()
 			'paymill-validate-dd-bic',
 			this.getValueIfExist('.paymill-payment-error-bic-elv'),
 			function(v) {
-				return !(v === '');
+				return v.length === 8 || v.length === 11;
 			},
 			''
 		),
