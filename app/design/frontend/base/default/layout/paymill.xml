@@ -5,7 +5,7 @@ and open the template in the editor.
 -->
 <layout version="0.1.0">
     <default>
-        <reference name="head">  
+        <reference name="head">
             <action method="addCss">
                 <stylesheet>css/paymill/logo.css</stylesheet>
             </action>
@@ -21,8 +21,15 @@ and open the template in the editor.
                 </action>
             </block>
             <action method="addJs">
+                <script>paymill/Iban.js</script>
+            </action>
+            <action method="addJs">
+                <script>paymill/BrandDetection.js</script>
+            </action>
+            <action method="addJs">
                 <script>paymill/paymentForm.js</script>
             </action>
+
         </reference>
     </default>
 </layout>
