@@ -83,6 +83,9 @@ Paymill.prototype.paymillShowCardIcon = function()
 	pmQuery('#' + this.paymillCode + '_number')[0].className = pmQuery('#' + this.paymillCode + '_number')[0].className.replace(/paymill-card-number-.*/g, '');
 	if (brand !== 'unknown') {
 		pmQuery('#' + this.paymillCode + '_number').addClass("paymill-card-number-" + brand);
+                if (!detector.validate(pmQuery('#' + this.paymillCode + '_number').val())) {
+                    pmQuery('#' + this.paymillCode + '_number').addClass("paymill-card-number-grayscale");
+                }
 	}
 }
 
