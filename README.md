@@ -13,7 +13,7 @@ PAYMILL extension for Magento compatible with: 1.5, 1.6, 1.6.1, 1.6.2.0, 1.7, 1.
 * Optional configuration for authorization and manual capture with credit card payments
 * Optional fast checkout configuration allowing your customers not to enter their payment detail over and over during checkout
 * Improved payment form with visual feedback for your customers
-* Supported Languages: German, English
+* Supported Languages: German, English, Italian, Portuguese, French, Spanish
 * Backend Log with custom View accessible from your shop backend
 * support for the OneStepCheckout Extension
 
