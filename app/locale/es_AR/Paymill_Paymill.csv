@@ -51,8 +51,8 @@ paymill_backend_log_id,Id
 paymill_backend_log_merchant_info,"Händler Informationen"
 paymill_log,"PAYMILL Log"
 paymill_backend_log_version,Modulversion
-paymill_credit_card_label,"PAYMILL Kreditkartenzahlung & ELV"
-paymill_direct_debit_label,"PAYMILL Kreditkartenzahlung & ELV"
+paymill_credit_card_label,"PAYMILL Kreditkartenzahlung"
+paymill_direct_debit_label,"PAYMILL ELV"
 paymill_activate_sepa,"SEPA Formular anzeigen"
 paymill_Basic_Setting,"Paymill Grundeinstellungen"
 paymill_iban,IBAN
@@ -172,8 +172,8 @@ paymill_backend_log_id,Id
 paymill_backend_log_merchant_info,"Merchant information"
 paymill_log,"PAYMILL log"
 paymill_backend_log_version,"Module version"
-paymill_credit_card_label,"PAYMILL credit card payments & direct debit"
-paymill_direct_debit_label,"PAYMILL credit card payments & direct debit"
+paymill_credit_card_label,"PAYMILL credit card payments"
+paymill_direct_debit_label,"PAYMILL direct debit"
 paymill_activate_sepa,"Show SEPA form"
 paymill_Basic_Setting,"Paymill Basic Settings"
 paymill_iban,IBAN
@@ -293,8 +293,8 @@ paymill_backend_log_id,Identificación
 paymill_backend_log_merchant_info,"Información del comerciante"
 paymill_log,"Registro de PAYMILL"
 paymill_backend_log_version,"Versión del módulo"
-paymill_credit_card_label,"Pagos con tarjeta de crédito PAYMILL y con dedomiciliación bancaria"
-paymill_direct_debit_label,"Pagos con tarjeta de crédito PAYMILL y con dedomiciliación bancaria"
+paymill_credit_card_label,"Pagos con tarjeta de crédito PAYMILL"
+paymill_direct_debit_label,"Pagos con dedomiciliación bancaria PAYMILL"
 paymill_activate_sepa,"Mostrar solicitud SEPA"
 paymill_Basic_Setting,"Configuración Básica Paymill"
 paymill_iban,IBAN
