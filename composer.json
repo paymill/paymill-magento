@@ -1,0 +1,53 @@
+{
+    "name": "paymill/paymill-magento",
+    "type": "magento-module",
+    "description": "Magento Extension for PAYMILL payments",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*"
+    },
+    "extra":{
+        "map":[
+          ["app/code/community/Paymill/Paymill", "app/code/community/Paymill/Paymill"],
+          ["app/design/adminhtml/base/default/layout/paymill.xml", "app/design/adminhtml/base/default/layout/paymill.xml"],
+          ["app/design/adminhtml/base/default/template/paymill", "app/design/adminhtml/base/default/template/paymill"],
+          ["app/design/frontend/base/default/layout/paymill.xml", "app/design/frontend/base/default/layout/paymill.xml"],
+          ["app/design/frontend/base/default/template/paymill", "app/design/frontend/base/default/template/paymill"],
+          ["app/etc/modules/Paymill_Paymill.xml", "app/etc/modules/Paymill_Paymill.xml"],
+          ["app/locale/de_AT/Paymill_Paymill.csv", "app/locale/de_AT/Paymill_Paymill.csv"],
+          ["app/locale/de_CH/Paymill_Paymill.csv", "app/locale/de_CH/Paymill_Paymill.csv"],
+          ["app/locale/de_DE/Paymill_Paymill.csv", "app/locale/de_DE/Paymill_Paymill.csv"],
+          ["app/locale/en_AU/Paymill_Paymill.csv", "app/locale/en_AU/Paymill_Paymill.csv"],
+          ["app/locale/en_CA/Paymill_Paymill.csv", "app/locale/en_CA/Paymill_Paymill.csv"],
+          ["app/locale/en_GB/Paymill_Paymill.csv", "app/locale/en_GB/Paymill_Paymill.csv"],
+          ["app/locale/en_IE/Paymill_Paymill.csv", "app/locale/en_IE/Paymill_Paymill.csv"],
+          ["app/locale/en_NZ/Paymill_Paymill.csv", "app/locale/en_NZ/Paymill_Paymill.csv"],
+          ["app/locale/en_US/Paymill_Paymill.csv", "app/locale/en_US/Paymill_Paymill.csv"],
+          ["app/locale/en_ZA/Paymill_Paymill.csv", "app/locale/en_ZA/Paymill_Paymill.csv"],
+          ["app/locale/es_AR/Paymill_Paymill.csv", "app/locale/es_AR/Paymill_Paymill.csv"],
+          ["app/locale/es_CL/Paymill_Paymill.csv", "app/locale/es_CL/Paymill_Paymill.csv"],
+          ["app/locale/es_CO/Paymill_Paymill.csv", "app/locale/es_CO/Paymill_Paymill.csv"],
+          ["app/locale/es_CR/Paymill_Paymill.csv", "app/locale/es_CR/Paymill_Paymill.csv"],
+          ["app/locale/es_ES/Paymill_Paymill.csv", "app/locale/es_ES/Paymill_Paymill.csv"],
+          ["app/locale/es_MX/Paymill_Paymill.csv", "app/locale/es_MX/Paymill_Paymill.csv"],
+          ["app/locale/es_PA/Paymill_Paymill.csv", "app/locale/es_PA/Paymill_Paymill.csv"],
+          ["app/locale/es_PE/Paymill_Paymill.csv", "app/locale/es_PE/Paymill_Paymill.csv"],
+          ["app/locale/es_VE/Paymill_Paymill.csv", "app/locale/es_VE/Paymill_Paymill.csv"],
+          ["app/locale/fr_CA/Paymill_Paymill.csv", "app/locale/fr_CA/Paymill_Paymill.csv"],
+          ["app/locale/fr_FR/Paymill_Paymill.csv", "app/locale/fr_FR/Paymill_Paymill.csv"],
+          ["app/locale/it_CH/Paymill_Paymill.csv", "app/locale/it_CH/Paymill_Paymill.csv"],
+          ["app/locale/it_IT/Paymill_Paymill.csv", "app/locale/it_IT/Paymill_Paymill.csv"],
+          ["app/locale/pt_BR/Paymill_Paymill.csv", "app/locale/pt_BR/Paymill_Paymill.csv"],
+          ["app/locale/pt_PT/Paymill_Paymill.csv", "app/locale/pt_PT/Paymill_Paymill.csv"],
+          ["js/paymill", "js/paymill"],
+          ["lib/Services/Paymill", "lib/Services/Paymill"],
+          ["skin/frontend/base/default/css/paymill", "skin/frontend/base/default/css/paymill"],
+          ["skin/frontend/base/default/images/paymill", "skin/frontend/base/default/images/paymill"]
+        ]
+    },
+    "authors":[
+        {
+            "name":"paymill",
+            "email":"github@paymill.de"
+        }
+    ]
+}
