@@ -22,11 +22,28 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Paymill_P
 {
 
     /**
+     * This var is used for the Branddetection, if empty all will be shown, else only the selected ones
+     *
+     * @var string
+     */
+    private $creditCardLogosBrand = '';
+
+    /**
+     * This var is used to show the logos in the checkout, if empty none will be shown
+     *
+     * @var string
+     */
+    private $creditCardLogosDisplay = '';
+
+    /**
      * Construct
      */
     protected function _construct()
     {
         parent::_construct();
+
+        $this->setPaymillCcLogos();
+
         $this->setTemplate('paymill/payment/form/creditcard.phtml');
     }
 
@@ -73,20 +90,28 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Paymill_P
         return $data;
     }
 
-    public function getPaymillCcLogos() {
+    private function setPaymillCcLogos() {
         $cards = explode(',', Mage::getStoreConfig('payment/paymill_creditcard/specificcreditcard'));
-        $creditCardLogos = '';
+        $this->creditCardLogosDisplay = '';
+        $this->creditCardLogosBrand = 'var paymillCcBrands = new Array();';
         foreach($cards as $card) {
-            $creditCardLogos .= sprintf(
+            $this->creditCardLogosDisplay .= sprintf(
                 '<img src="%s" alt="%s"/>',
                 $this->getSkinUrl('images/paymill/icon_32x20_' . $card . '.png'),
                 $card
             );
+            $this->creditCardLogosBrand .= sprintf(
+                'paymillCcBrands.push("%s");',
+                $card
+            );
         }
-
-        return $creditCardLogos;
     }
-    
-    
 
+    public function getCreditCardLogosBrand() {
+        return $this->creditCardLogosBrand;
+    }
+
+    public function getCreditCardLogosDisplay() {
+        return $this->creditCardLogosDisplay;
+    }
 }

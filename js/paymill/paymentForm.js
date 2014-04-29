@@ -77,11 +77,14 @@ Paymill.prototype.debug = function(message)
  */
 Paymill.prototype.paymillShowCardIcon = function()
 {
-        var detector = new PaymillBrandDetection();
-        var brand = detector.detect(pmQuery('#' + this.paymillCode + '_number').val());
+    var detector = new PaymillBrandDetection();
+    var brand = detector.detect(pmQuery('#' + this.paymillCode + '_number').val());
 	brand = brand.toLowerCase();
 	pmQuery('#' + this.paymillCode + '_number')[0].className = pmQuery('#' + this.paymillCode + '_number')[0].className.replace(/paymill-card-number-.*/g, '');
 	if (brand !== 'unknown') {
+        if(this.creditcards.length > 0 && pmQuery.inArray(brand, this.creditcards) === -1) {
+            return;
+        }
 		pmQuery('#' + this.paymillCode + '_number').addClass("paymill-card-number-" + brand);
                 if (!detector.validate(pmQuery('#' + this.paymillCode + '_number').val())) {
                     pmQuery('#' + this.paymillCode + '_number').addClass("paymill-card-number-grayscale");
@@ -649,4 +652,12 @@ paymillResponseHandler = function(error, result)
 		paymillObj.debug("Saving Token in Form: " + result.token);
 		pmQuery('.paymill-payment-token-' + paymillObj.getPaymillCode()).val(result.token);
 	}
+}
+
+/**
+    If array is empty, all creditcards are shown in Brand Detection
+ */
+Paymill.prototype.setBrandCreditcards = function(creditcards)
+{
+    this.creditcards = creditcards;
 }

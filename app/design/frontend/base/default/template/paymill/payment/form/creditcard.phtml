@@ -1,7 +1,7 @@
 <?php $_code = $this->getMethodCode(); ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
     <li>
-        <?php echo $this->getPaymillCcLogos();?>
+        <?php echo $this->getCreditCardLogosDisplay();?>
     </li>
     <li>
         <label for="<?php echo $_code ?>_holdername" class="required"><em>*</em><?php echo $this->__("paymill_Holder") ?></label>
@@ -89,5 +89,7 @@
     paymillCc.setPaymillCode('<?php echo $_code; ?>');
     paymillCc.setCodes();
     paymillCc.addPaymillEvents();
+    <?php echo $this->getCreditCardLogosBrand();?>
+    paymillCc.setBrandCreditcards(paymillCcBrands);
     //]]>
 </script>
