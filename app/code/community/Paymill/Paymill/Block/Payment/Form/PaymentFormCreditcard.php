@@ -72,6 +72,20 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Paymill_P
         
         return $data;
     }
+
+    public function getPaymillCcLogos() {
+        $cards = explode(',', Mage::getStoreConfig('payment/paymill_creditcard/specificcreditcard'));
+        $creditCardLogos = '';
+        foreach($cards as $card) {
+            $creditCardLogos .= sprintf(
+                '<img src="%s" alt="%s"/>',
+                $this->getSkinUrl('images/paymill/icon_32x20_' . $card . '.png'),
+                $card
+            );
+        }
+
+        return $creditCardLogos;
+    }
     
     
 
