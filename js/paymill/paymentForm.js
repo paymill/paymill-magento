@@ -86,9 +86,9 @@ Paymill.prototype.paymillShowCardIcon = function()
             return;
         }
 		pmQuery('#' + this.paymillCode + '_number').addClass("paymill-card-number-" + brand);
-                if (!detector.validate(pmQuery('#' + this.paymillCode + '_number').val())) {
-                    pmQuery('#' + this.paymillCode + '_number').addClass("paymill-card-number-grayscale");
-                }
+        if (!detector.validate(pmQuery('#' + this.paymillCode + '_number').val())) {
+            pmQuery('#' + this.paymillCode + '_number').addClass("paymill-card-number-grayscale");
+        }
 	}
 }
 
@@ -155,10 +155,10 @@ Paymill.prototype.paymillSubmitForm = function()
 			break;
 		case this.paymillElv:
 			if (pmQuery('.paymill-info-fastCheckout-elv').val() === 'false') {
-				if (pmQuery('.paymill-info-sepa-elv').val() === 'false') {
+				if (!this.isSepa()) {
 					var valid = pmQuery('#' + this.paymillSelectedPaymentName + '_holdername').val() !== ''
-							&& paymill.validateAccountNumber(pmQuery('#' + this.paymillSelectedPaymentName + '_account').val())
-							&& paymill.validateBankCode(pmQuery('#' + this.paymillSelectedPaymentName + '_bankcode').val());
+							&& paymill.validateAccountNumber(pmQuery('#' + this.paymillSelectedPaymentName + '_account_iban').val())
+							&& paymill.validateBankCode(pmQuery('#' + this.paymillSelectedPaymentName + '_bankcode_bic').val());
 
 					if (!valid) {
 						return false;
@@ -167,18 +167,18 @@ Paymill.prototype.paymillSubmitForm = function()
 					window.PAYMILL_LOADING = true;
 					this.debug("Generating Token");
 					paymill.createToken({
-						number: pmQuery('#' + this.paymillSelectedPaymentName + '_account').val(),
-						bank: pmQuery('#' + this.paymillSelectedPaymentName + '_bankcode').val(),
+						number: pmQuery('#' + this.paymillSelectedPaymentName + '_account_iban').val(),
+						bank: pmQuery('#' + this.paymillSelectedPaymentName + '_bankcode_bic').val(),
 						accountholder: pmQuery('#' + this.paymillSelectedPaymentName + '_holdername').val()
 					}, paymillResponseHandler);
 				} else {
-                                        ibanWithoutSpaces = pmQuery('#' + this.paymillSelectedPaymentName + '_iban').val();
-                                        ibanWithoutSpaces = ibanWithoutSpaces.replace(/\s+/g, "");
-                                        ibanValidator = new PaymillIban();
+                    ibanWithoutSpaces = pmQuery('#' + this.paymillSelectedPaymentName + '_account_iban').val();
+                    ibanWithoutSpaces = ibanWithoutSpaces.replace(/\s+/g, "");
+                    ibanValidator = new PaymillIban();
 					var valid = pmQuery('#' + this.paymillSelectedPaymentName + '_holdername').val() !== ''
-							&& ibanValidator.validate(pmQuery('#' + this.paymillSelectedPaymentName + '_iban').val())
-							&& (pmQuery('#' + this.paymillSelectedPaymentName + '_bic').val().length === 8
-                                                            || pmQuery('#' + this.paymillSelectedPaymentName + '_bic').val().length === 11);
+							&& ibanValidator.validate(pmQuery('#' + this.paymillSelectedPaymentName + '_account_iban').val())
+							&& (pmQuery('#' + this.paymillSelectedPaymentName + '_bankcode_bic').val().length === 8
+                                                            || pmQuery('#' + this.paymillSelectedPaymentName + '_bankcode_bic').val().length === 11);
 
 					if (!valid) {
 						return false;
@@ -188,7 +188,7 @@ Paymill.prototype.paymillSubmitForm = function()
 					this.debug("Generating Token");
 					paymill.createToken({
 						iban: ibanWithoutSpaces,
-						bic: pmQuery('#' + this.paymillSelectedPaymentName + '_bic').val(),
+						bic: pmQuery('#' + this.paymillSelectedPaymentName + '_bankcode_bic').val(),
 						accountholder: pmQuery('#' + this.paymillSelectedPaymentName + '_holdername').val()
 					}, paymillResponseHandler);
 				}
@@ -266,32 +266,16 @@ Paymill.prototype.unsetElvValidationRules = function()
 			},
 			''
 		),
-		'paymill-validate-dd-iban': new Validator(
-			'paymill-validate-dd-iban',
+		'paymill-validate-dd-account-iban': new Validator(
+			'paymill-validate-dd-account-iban',
 			'',
 			function(v) {
 				return true;
 			},
 			''
 		),
-		'paymill-validate-dd-bic': new Validator(
-			'paymill-validate-dd-bic',
-			'',
-			function(v) {
-				return true;
-			},
-			''
-		),
-		'paymill-validate-dd-account': new Validator(
-			'paymill-validate-dd-account',
-			'',
-			function(v) {
-				return true;
-			},
-			''
-		),
-		'paymill-validate-dd-bankcode': new Validator(
-			'paymill-validate-dd-bankcode',
+		'paymill-validate-dd-bankcode-bic': new Validator(
+			'paymill-validate-dd-bankcode-bic',
 			'',
 			function(v) {
 				return true;
@@ -368,36 +352,26 @@ Paymill.prototype.setElvValidationRules = function()
 			},
 			''
 		),
-		'paymill-validate-dd-iban': new Validator(
-			'paymill-validate-dd-iban',
-			this.getValueIfExist('.paymill-payment-error-iban-elv'),
+		'paymill-validate-dd-account-iban': new Validator(
+			'paymill-validate-dd-account-iban',
+			this.getValueIfExist(paymillElv.isSepa() ? '.paymill-payment-error-iban-elv' : '.paymill-payment-error-number-elv'),
 			function(v) {
-                                iban = new PaymillIban();
-				return iban.validate(v);
+                if(paymillElv.isSepa()) {
+                    iban = new PaymillIban();
+                    return iban.validate(v);
+                }
+                return paymill.validateAccountNumber(v);
 			},
 			''
 		),
-		'paymill-validate-dd-bic': new Validator(
-			'paymill-validate-dd-bic',
-			this.getValueIfExist('.paymill-payment-error-bic-elv'),
+		'paymill-validate-dd-bankcode-bic': new Validator(
+			'paymill-validate-dd-bankcode-bic',
+			this.getValueIfExist(paymillElv.isSepa() ? '.paymill-payment-error-bic-elv' : '.paymill-payment-error-bankcode'),
 			function(v) {
-				return v.length === 8 || v.length === 11;
-			},
-			''
-		),
-		'paymill-validate-dd-account': new Validator(
-			'paymill-validate-dd-account',
-			this.getValueIfExist('.paymill-payment-error-number-elv'),
-			function(v) {
-				return paymill.validateAccountNumber(v);
-			},
-			''
-		),
-		'paymill-validate-dd-bankcode': new Validator(
-			'paymill-validate-dd-bankcode',
-			this.getValueIfExist('.paymill-payment-error-bankcode'),
-			function(v) {
-				return paymill.validateBankCode(v);
+                if(paymillElv.isSepa()) {
+                    return v.length === 8 || v.length === 11;
+                }
+                return paymill.validateBankCode(v);
 			},
 			''
 		)
@@ -482,20 +456,6 @@ Paymill.prototype.addPaymillEvents = function()
 		that.unsetCcValidationRules();
 	}
 
-	pmQuery('#' + this.paymillCode + '_iban').keyup(function() {
-		var iban = pmQuery('#' + that.paymillCode + '_iban').val();
-		if (!iban.match(/^DE/)) {
-			var newVal = "DE";
-			if (iban.match(/^.{2}(.*)/)) {
-				newVal += iban.match(/^.{2}(.*)/)[1];
-			}
-
-			pmQuery('#' + that.paymillCode + '_iban').val(newVal);
-		}
-	});
-
-	pmQuery('#' + this.paymillCode + '_iban').trigger('keyup');
-
 	if (!this.eventFlag) {
 
 		pmQuery('#' + this.paymillCode + '_holdername').live('input', function() {
@@ -503,22 +463,12 @@ Paymill.prototype.addPaymillEvents = function()
 			pmQuery('.paymill-info-fastCheckout-elv').val('false');
 		});
 
-		pmQuery('#' + this.paymillCode + '_account').live('input', function() {
+		pmQuery('#' + this.paymillCode + '_account_iban').live('input', function() {
 			that.setElvValidationRules();
 			pmQuery('.paymill-info-fastCheckout-elv').val('false');
 		});
 
-		pmQuery('#' + this.paymillCode + '_bankcode').live('input', function() {
-			that.setElvValidationRules();
-			pmQuery('.paymill-info-fastCheckout-elv').val('false');
-		});
-
-		pmQuery('#' + this.paymillCode + '_iban').live('input', function() {
-			that.setElvValidationRules();
-			pmQuery('.paymill-info-fastCheckout-elv').val('false');
-		});
-
-		pmQuery('#' + this.paymillCode + '_bic').live('input', function() {
+		pmQuery('#' + this.paymillCode + '_bankcode_bic').live('input', function() {
 			that.setElvValidationRules();
 			pmQuery('.paymill-info-fastCheckout-elv').val('false');
 		});
@@ -572,23 +522,11 @@ Paymill.prototype.addPaymillEvents = function()
 			that.paymillSubmitForm();
 		});
 
-		pmQuery('#' + this.paymillCode + '_holdername').live('input', function() {
+		pmQuery('#' + this.paymillCode + '_account_iban').live('input', function() {
 			that.paymillSubmitForm();
 		});
 
-		pmQuery('#' + this.paymillCode + '_account').live('input', function() {
-			that.paymillSubmitForm();
-		});
-
-		pmQuery('#' + this.paymillCode + '_bankcode').live('input', function() {
-			that.paymillSubmitForm();
-		});
-
-		pmQuery('#' + this.paymillCode + '_iban').live('input', function() {
-			that.paymillSubmitForm();
-		});
-
-		pmQuery('#' + this.paymillCode + '_bic').live('input', function() {
+		pmQuery('#' + this.paymillCode + '_bankcode_bic').live('input', function() {
 			that.paymillSubmitForm();
 		});
 
@@ -655,9 +593,18 @@ paymillResponseHandler = function(error, result)
 }
 
 /**
-    If array is empty, all creditcards are shown in Brand Detection
+ *  If array is empty, all creditcards are shown in Brand Detection
  */
 Paymill.prototype.setBrandCreditcards = function(creditcards)
 {
     this.creditcards = creditcards;
+}
+
+/**
+ * If value starts with 2 letters, it will be considered as sepa
+ */
+Paymill.prototype.isSepa = function()
+{
+    var reg = new RegExp(/^\D{2}/);
+    return reg.test(pmQuery('#' + this.paymillCode + '_account_iban').val());
 }

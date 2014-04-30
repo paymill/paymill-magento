@@ -9,39 +9,23 @@
             <input value="<?php echo $this->getPaymentEntry($_code, 'holder'); ?>" type="text" id="<?php echo $_code ?>_holdername" class="input-text paymill-validate-dd-holdername required-entry"/>
         </div>
     </li>
-    <?php if (!Mage::getStoreConfig('payment/' . $_code . '/sepa', Mage::app()->getStore()->getStoreId())): ?>
     <li>
-        <label for="<?php echo $_code ?>_account" class="required"><em>*</em><?php echo $this->__("paymill_account") ?></label>
+        <label for="<?php echo $_code ?>_account_iban" class="required"><em>*</em><?php echo $this->__("paymill_iban") ?> / <?php echo $this->__("paymill_account") ?></label>
         <div class="input-box">
-            <input value="<?php echo $this->getPaymentEntry($_code, 'account'); ?>" type="text" id="<?php echo $_code ?>_account" class="input-text paymill-validate-dd-account required-entry"/>
+            <input value="<?php echo $this->getPaymentEntry($_code, 'account'); ?>" type="text" id="<?php echo $_code ?>_account_iban" class="input-text paymill-validate-dd-account-iban required-entry"/>
         </div>
     </li>
     <li>
-        <label for="<?php echo $_code ?>_bankcode" class="required"><em>*</em><?php echo $this->__("paymill_bankcode") ?></label>
+        <label for="<?php echo $_code ?>_bankcode_bic" class="required"><em>*</em><?php echo $this->__("paymill_bic") ?> / <?php echo $this->__("paymill_bankcode") ?></label>
         <div class="input-box">
-            <input value="<?php echo $this->getPaymentEntry($_code, 'code'); ?>" type="text" id="<?php echo $_code ?>_bankcode" class="input-text paymill-validate-dd-bankcode required-entry"/>
+            <input value="<?php echo $this->getPaymentEntry($_code, 'code'); ?>" type="text" id="<?php echo $_code ?>_bankcode_bic" class="input-text paymill-validate-dd-bankcode-bic required-entry"/>
         </div>
     </li>
-    <?php else: ?>
-    <li>
-        <label for="<?php echo $_code ?>_iban" class="required"><em>*</em><?php echo $this->__("paymill_iban") ?></label>
-        <div class="input-box">
-            <input value="<?php echo $this->getPaymentEntry($_code, 'iban'); ?>" type="text" id="<?php echo $_code ?>_iban" class="input-text paymill-validate-dd-iban required-entry"/>
-        </div>
-    </li>
-    <li>
-        <label for="<?php echo $_code ?>_bic" class="required"><em>*</em><?php echo $this->__("paymill_bic") ?></label>
-        <div class="input-box">
-            <input value="<?php echo $this->getPaymentEntry($_code, 'bic'); ?>" type="text" id="<?php echo $_code ?>_bic" class="input-text paymill-validate-dd-bic required-entry"/>
-        </div>
-    </li>
-    <?php endif; ?>
     <li>
         <input class="paymill-payment-token-elv paymill-validate-elv-token" name="payment[paymill-payment-token-elv]" id="payment[paymill-payment-token-elv]" type="hidden" />
         <input class="paymill-option-debug-elv" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode(); ?>" />
         <input class="paymill-info-public_key-elv" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey(); ?>" />
         <input class="paymill-info-fastCheckout-elv" type="hidden" value="<?php echo $this->isNormalCheckout($_code); ?>" />
-        <input class="paymill-info-sepa-elv" type="hidden" value="<?php echo $this->isSepa(); ?>" />
         <input class="paymill-payment-token-log-elv" type="hidden" value="<?php echo  $this->getUrl('paymill/token/log', array('_secure'=>true));  ?>"/>
         <input class="paymill-payment-error-number-elv" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_elv"); ?>" />
         <input class="paymill-payment-error-holder-elv" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_elv"); ?>" />

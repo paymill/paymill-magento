@@ -29,9 +29,4 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormDirectdebit extends Paymill_
         parent::_construct();
         $this->setTemplate('paymill/payment/form/directdebit.phtml');
     }
-    
-    public function isSepa()
-    {
-        return Mage::getStoreConfig('payment/paymill_directdebit/sepa', Mage::app()->getStore()->getStoreId()) ? 'true' : 'false';
-    }
 }
