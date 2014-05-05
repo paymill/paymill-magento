@@ -54,7 +54,7 @@
     background-position: right center !important;
 }
 
-.paymill-card-number-unionpay
+.paymill-card-number-china-unionpay
 {
     background-image: url('../../images/paymill/icon_32x20_unionpay.png') !important;
     background-repeat: no-repeat !important;
@@ -85,6 +85,13 @@
 .paymill-card-number-carta-si
 {
     background-image: url('../../images/paymill/icon_32x20_carte-bleue.png') !important;
+    background-repeat: no-repeat !important;
+    background-position: right center !important;
+}
+
+.paymill-card-number-dankort
+{
+    background-image: url('../../images/paymill/icon_32x20_dankort.png') !important;
     background-repeat: no-repeat !important;
     background-position: right center !important;
 }

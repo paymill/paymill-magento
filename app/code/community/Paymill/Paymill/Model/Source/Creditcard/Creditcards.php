@@ -10,11 +10,11 @@ class Paymill_Paymill_Model_Source_Creditcard_Creditcards
     {
         $creditcards = array(
             array(
-                'label' => Mage::helper('core')->__('VISA'),
+                'label' => Mage::helper('core')->__('Visa'),
                 'value' => 'visa'
             ),
             array(
-                'label' => Mage::helper('core')->__('Mastercard'),
+                'label' => Mage::helper('core')->__('MasterCard'),
                 'value' => 'mastercard'
             ),
             array(
@@ -22,7 +22,7 @@ class Paymill_Paymill_Model_Source_Creditcard_Creditcards
                 'value' => 'amex'
             ),
             array(
-                'label' => Mage::helper('core')->__('Carta Si'),
+                'label' => Mage::helper('core')->__('CartaSi'),
                 'value' => 'carta-si'
             ),
             array(
@@ -30,8 +30,8 @@ class Paymill_Paymill_Model_Source_Creditcard_Creditcards
                 'value' => 'carte-bleue'
             ),
             array(
-                'label' => Mage::helper('core')->__('Dinersclub'),
-                'value' => 'dinersclub'
+                'label' => Mage::helper('core')->__('Diners Club'),
+                'value' => 'diners-club'
             ),
             array(
                 'label' => Mage::helper('core')->__('JCB'),
@@ -42,8 +42,16 @@ class Paymill_Paymill_Model_Source_Creditcard_Creditcards
                 'value' => 'maestro'
             ),
             array(
-                'label' => Mage::helper('core')->__('Unionpay'),
-                'value' => 'unionpay'
+                'label' => Mage::helper('core')->__('China UnionPay'),
+                'value' => 'china-unionpay'
+            ),
+            array(
+                'label' => Mage::helper('core')->__('Discover Card'),
+                'value' => 'discover'
+            ),
+            array(
+                'label' => Mage::helper('core')->__('Dankort'),
+                'value' => 'dankort'
             )
         );
         return $creditcards;
