@@ -56,14 +56,14 @@
 
 .paymill-card-number-china-unionpay
 {
-    background-image: url('../../images/paymill/icon_32x20_unionpay.png') !important;
+    background-image: url('../../images/paymill/icon_32x20_china-unionpay.png') !important;
     background-repeat: no-repeat !important;
     background-position: right center !important;
 }
 
 .paymill-card-number-diners-club
 {
-    background-image: url('../../images/paymill/icon_32x20_dinersclub.png') !important;
+    background-image: url('../../images/paymill/icon_32x20_diners-club.png') !important;
     background-repeat: no-repeat !important;
     background-position: right center !important;
 }
@@ -84,7 +84,7 @@
 
 .paymill-card-number-carta-si
 {
-    background-image: url('../../images/paymill/icon_32x20_carte-bleue.png') !important;
+    background-image: url('../../images/paymill/icon_32x20_carta-si.png') !important;
     background-repeat: no-repeat !important;
     background-position: right center !important;
 }
