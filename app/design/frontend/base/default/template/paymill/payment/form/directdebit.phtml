@@ -1,4 +1,5 @@
 <?php $_code = $this->getMethodCode(); ?>
+<?php $fastCheckoutData = $this->getPaymentEntryElv($_code); ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
     <li>
         <p class="paymill-payment-errors alert-error" style="display:none;"></p>
@@ -12,13 +13,13 @@
     <li>
         <label for="<?php echo $_code ?>_account_iban" class="required"><em>*</em><?php echo $this->__("paymill_iban") ?> / <?php echo $this->__("paymill_account") ?></label>
         <div class="input-box">
-            <input value="<?php echo $this->getPaymentEntry($_code, 'account'); ?>" type="text" id="<?php echo $_code ?>_account_iban" class="input-text paymill-validate-dd-account-iban required-entry"/>
+            <input value="<?php echo $fastCheckoutData[0]; ?>" type="text" id="<?php echo $_code ?>_account_iban" class="input-text paymill-validate-dd-account-iban required-entry"/>
         </div>
     </li>
     <li>
         <label for="<?php echo $_code ?>_bankcode_bic" class="required"><em>*</em><?php echo $this->__("paymill_bic") ?> / <?php echo $this->__("paymill_bankcode") ?></label>
         <div class="input-box">
-            <input value="<?php echo $this->getPaymentEntry($_code, 'code'); ?>" type="text" id="<?php echo $_code ?>_bankcode_bic" class="input-text paymill-validate-dd-bankcode-bic required-entry"/>
+            <input value="<?php echo $fastCheckoutData[1]; ?>" type="text" id="<?php echo $_code ?>_bankcode_bic" class="input-text paymill-validate-dd-bankcode-bic required-entry"/>
         </div>
     </li>
     <li>
