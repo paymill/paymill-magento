@@ -255,7 +255,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
 
         $this->_existingClientHandling($clientId);
         
-        If ($success) {
+        if ($success) {
             //Save Transaction Data
             $transactionHelper = Mage::helper("paymill/transactionHelper");
             
