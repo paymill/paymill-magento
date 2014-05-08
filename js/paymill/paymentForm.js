@@ -547,7 +547,6 @@ paymillResponseHandler = function(error, result)
 	paymillObj = new Paymill();
 	paymillObj.setCodes();
 	if (error) {
-		pmQuery('#paymill_creditcard_cvc').val('');
 		var message = 'unknown_error';
 		var key = error.apierror;
 		if(paymillObj.getValueIfExist('.PAYMILL_' + key + '-' + paymillObj.getPaymillCode()) !== ''){
@@ -569,7 +568,9 @@ paymillResponseHandler = function(error, result)
 		);
 
 		Object.extend(Validation.methods, nv);
-
+        var paymillValidator = new Validation(pmQuery('#paymill_creditcard_cvc').get(0).form.id);
+        paymillValidator.validate();
+        pmQuery('#paymill_creditcard_cvc').val('');
 		paymillObj.logError(error);
 
 		paymillObj.debug(error.apierror);
