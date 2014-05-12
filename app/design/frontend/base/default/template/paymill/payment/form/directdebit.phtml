@@ -30,7 +30,9 @@
         <input class="paymill-payment-token-log-elv" type="hidden" value="<?php echo  $this->getUrl('paymill/token/log', array('_secure'=>true));  ?>"/>
         <input class="paymill-payment-error-number-elv" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_elv"); ?>" />
         <input class="paymill-payment-error-holder-elv" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_elv"); ?>" />
+        <input class="paymill-payment-error-number-iban-elv" type="hidden" value="<?php echo $this->__("paymill_feedback_error_directdebit_number_iban"); ?>" />
         <input class="paymill-payment-error-bankcode" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_bankcode"); ?>" />
+        <input class="paymill-payment-error-bankcode-bic-elv" type="hidden" value="<?php echo $this->__("paymill_feedback_error_directdebit_bankcode_bic"); ?>" />
         <input class="paymill-payment-error-elv-token" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_token"); ?>"/>
         <input class="PAYMILL_internal_server_error-elv" type="hidden" value="<?php echo $this->__("PAYMILL_internal_server_error"); ?>"/>
         <input class="PAYMILL_invalid_public_key-elv" type="hidden" value="<?php echo $this->__("PAYMILL_invalid_public_key"); ?>"/>

@@ -354,7 +354,7 @@ Paymill.prototype.setElvValidationRules = function()
 		),
 		'paymill-validate-dd-account-iban': new Validator(
 			'paymill-validate-dd-account-iban',
-			this.getValueIfExist(paymillElv.isSepa() ? '.paymill-payment-error-iban-elv' : '.paymill-payment-error-number-elv'),
+			this.getValueIfExist('.paymill-payment-error-number-iban-elv'),
 			function(v) {
                 if(paymillElv.isSepa()) {
                     iban = new PaymillIban();
@@ -366,7 +366,7 @@ Paymill.prototype.setElvValidationRules = function()
 		),
 		'paymill-validate-dd-bankcode-bic': new Validator(
 			'paymill-validate-dd-bankcode-bic',
-			this.getValueIfExist(paymillElv.isSepa() ? '.paymill-payment-error-bic-elv' : '.paymill-payment-error-bankcode'),
+			this.getValueIfExist('.paymill-payment-error-bankcode-bic-elv'),
 			function(v) {
                 if(paymillElv.isSepa()) {
                     return v.length === 8 || v.length === 11;

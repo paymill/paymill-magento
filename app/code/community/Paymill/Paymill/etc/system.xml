@@ -95,7 +95,7 @@
                             <show_in_store>1</show_in_store>
                         </active>
                         <specificcreditcard translate="label">
-                            <label>Pi Specific Creditcard</label>
+                            <label>paymill_accepted_creditcards</label>
                             <frontend_type>multiselect</frontend_type>
                             <sort_order>210</sort_order>
                             <source_model>paymill/source_creditcard_creditcards</source_model>
