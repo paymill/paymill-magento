@@ -74,6 +74,7 @@ class Services_Paymill_PaymentProcessor
      */
     private function _createClient()
     {
+        $this->_initiatePhpWrapperClasses();
         if (isset($this->_clientId)) {
             $this->_log("Client using: " . $this->_clientId);
         } else {
@@ -99,6 +100,7 @@ class Services_Paymill_PaymentProcessor
      */
     private function _createPayment()
     {
+        $this->_initiatePhpWrapperClasses();
         if (isset($this->_paymentId)) {
             $this->_log("Payment using: " . $this->_paymentId);
         } else {
@@ -123,6 +125,7 @@ class Services_Paymill_PaymentProcessor
      */
     private function _createTransaction()
     {
+        $this->_initiatePhpWrapperClasses();
         $parameter = array(
             'amount' => $this->_amount,
             'currency' => $this->_currency,
@@ -548,6 +551,7 @@ class Services_Paymill_PaymentProcessor
      */
     public function setClientId($clientId = null)
     {
+        $this->_initiatePhpWrapperClasses();
         if ($this->isIdValid($clientId, $this->_clientsObject)) {
             $this->_clientId = $clientId;
         }
@@ -559,6 +563,7 @@ class Services_Paymill_PaymentProcessor
      */
     public function setPaymentId($paymentId = null)
     {
+        $this->_initiatePhpWrapperClasses();
         if ($this->isIdValid($paymentId, $this->_paymentsObject)) {
             $this->_paymentId = $paymentId;
         }
