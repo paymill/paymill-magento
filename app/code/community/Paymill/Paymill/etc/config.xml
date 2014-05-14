@@ -90,6 +90,7 @@
 
             <paymill_directdebit>
                 <active>0</active>
+                <prenotification>7</prenotification>
                 <currency>EUR,USD</currency>
                 <model>paymill/method_methodModelDirectdebit</model>
                 <order_status>pending</order_status>

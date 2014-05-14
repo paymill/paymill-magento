@@ -114,4 +114,12 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
         return $this->_getBackendOption("paymill_creditcard", "preAuth_active");
     }
 
+    /**
+     * Returns the value of the "prenotification" config from the Backend as a string
+     * @return string
+     */
+    public function getPrenotificationDays()
+    {
+        return $this->_getBackendOption("paymill_directdebit", "prenotification");
+    }
 }

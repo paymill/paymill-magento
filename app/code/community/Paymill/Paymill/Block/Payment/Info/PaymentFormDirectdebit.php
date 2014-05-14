@@ -55,6 +55,7 @@ class Paymill_Paymill_Block_Payment_Info_PaymentFormDirectdebit extends Mage_Pay
 
         $data = array();
         $data['paymillTransactionId'] = $this->getInfo()->getAdditionalInformation('paymillTransactionId');
+        $data['paymillPrenotificationDate'] = $this->getInfo()->getAdditionalInformation('paymillPrenotificationDate');
         $data['imgUrl'] = Mage::helper('paymill')->getImagePath() . "icon_paymill.png";
 
         return $transport->setData(array_merge($data, $transport->getData()));

@@ -48,6 +48,8 @@ class Paymill_Paymill_Helper_TransactionHelper extends Mage_Core_Helper_Abstract
     {
         $object->setAdditionalInformation('paymillTransactionId', $transactionModel->getTransactionId());
         $object->setAdditionalInformation('paymillPreAuthFlag', $transactionModel->isPreAuthorization());
+        $object->setAdditionalInformation('paymillPrenotificationDate', $this->getPrenotificationDate($object->getOrder()));
+
         Mage::helper('paymill/loggingHelper')->log("Saved Transaction Data.", "Order " . $object->getIncrementId() .
                 $object->getReservedOrderId(), var_export($object->getAdditionalInformation(), true));
 
@@ -92,6 +94,21 @@ class Paymill_Paymill_Helper_TransactionHelper extends Mage_Core_Helper_Abstract
         $transactionModel->setTransactionId($transactionId);
         $transactionModel->setPreAuthorizationFlag($isPreAuthenticated);
         return $transactionModel;
+    }
+
+    /**
+     * Calculates Date with the setted Prenotification Days and formats it
+     * @param Mage_Sales_Model_Order $order
+     * @return string
+     */
+    private function getPrenotificationDate(Mage_Sales_Model_Order $order)
+    {
+        $dateTime = new DateTime($order->getCreatedAt());
+        $dateTime->modify('+' . Mage::helper('paymill/optionHelper')->getPrenotificationDays() . ' day');
+        $date = Mage::app()->getLocale()->storeDate($order->getStore(), Varien_Date::toTimestamp($dateTime->format('Y-m-d H:i:s')), true);
+        $date = Mage::helper('core')->formatDate($date, 'short', false);
+
+        return $date;
     }
 
 }

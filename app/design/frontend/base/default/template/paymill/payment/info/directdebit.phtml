@@ -2,5 +2,8 @@
     <tr>
         <td><?php echo $this->htmlEscape($this->getMethod()->getTitle()) ?></td>
     </tr>
+    <tr>
+        <td><?php echo $this->__('paymill_prenotification_text') . " " . $this->getInfo()->getAdditionalInformation('paymillPrenotificationDate'); ?></td>
+    </tr>
 </table>
 <?php echo $this->getChildHtml() ?>
