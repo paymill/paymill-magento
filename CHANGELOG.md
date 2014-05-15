@@ -1,3 +1,10 @@
+## v3.6.6
+ * changed CVC field design to Magento CVC design with "What is this" Link and Popup
+ * added credit card logos, which can be selected to be shown in the checkout
+ * changed ELV/SEPA to one form
+ * added Prenotification for SEPA
+ * updated PHP Wrapper
+
 ## v3.6.5
  * added BIC Validation (Lengthcheck)
  * added IBAN Validation
