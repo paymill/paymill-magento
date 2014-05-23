@@ -329,11 +329,11 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     /**
      * Handle online refunds and trigger the refund at paymill side
      * 
-     * @param \Varien_Object $payment
+     * @param Varien_Object $payment
      * @param float $amount
-     * @return \Paymill_Paymill_Model_Method_MethodModelAbstract
+     * @return Paymill_Paymill_Model_Method_MethodModelAbstract
      */
-    public function refund(\Varien_Object $payment, $amount)
+    public function refund(Varien_Object $payment, $amount)
     {
         parent::refund($payment, $amount);
         $order = $payment->getOrder();
