@@ -111,7 +111,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function getCurrency($quote)
     {
-        return $quote->getBaseCurrencyCode();
+        return $quote->getQuoteCurrencyCode();
     }
 
     /**
