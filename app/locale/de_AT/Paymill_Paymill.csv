@@ -126,3 +126,5 @@ paymill_feedback_error_directdebit_number_iban,"Bitte geben Sie eine gültige IB
 paymill_feedback_error_directdebit_bankcode_bic,"Bitte geben Sie eine gültige BIC/Bankleitzahl an."
 paymill_prenotification,"Tage bis zum Einzug"
 paymill_prenotification_text,"Die Lastschrift wird zu dem folgenden Termin eingezogen:"
+paymill_show_creditcards,"Anzeige von Kreditkarten Logos"
+paymill_select_creditcards,"Selektiere Kreditkarten Logos"

@@ -126,3 +126,5 @@ paymill_feedback_error_directdebit_number_iban,"Please enter a valid IBAN/direct
 paymill_feedback_error_directdebit_bankcode_bic,"Please enter a valid BIC/direct debit bank code"
 paymill_prenotification,"Days until the debit"
 paymill_prenotification_text,"The direct debit is drawn to the following date:"
+paymill_show_creditcards,"Show creditcard logos"
+paymill_select_creditcards,"Select creditcard logos"
