@@ -105,10 +105,13 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     /**
      * Returns the currency compliant to ISO 4217 (3 char code)
      * @return string 3 Character long currency code
+     *
+     * @param Mage_Sales_Model_Quote $quote
+     * @return string
      */
-    public function getCurrency()
+    public function getCurrency($quote)
     {
-        return Mage::app()->getStore()->getCurrentCurrencyCode();
+        return $quote->getBaseCurrencyCode();
     }
 
     /**
@@ -182,7 +185,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         $params = array();
         $params['token'] = $token;
         $params['amount'] = (int) $this->getAmount();
-        $params['currency'] = $this->getCurrency();
+        $params['currency'] = $this->getCurrency($quote);
         $params['payment'] = $this->getPaymentType($paymentCode); // The chosen payment (cc | elv)
         $params['name'] = Mage::helper("paymill/customerHelper")->getCustomerName($quote);
         $params['email'] = Mage::helper("paymill/customerHelper")->getCustomerEmail($quote);
