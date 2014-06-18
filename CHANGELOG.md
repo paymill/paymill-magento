@@ -1,8 +1,24 @@
+## v3.6.7
+ * Updated the feature for showing the credit card logos. Now it is possible to use the old behaviour by setting "Show Credit Card Logos" to No.
+ * fixed a bug, where the invoice had an other currency then the order.
+ * fixed design issue with the credit card logos in Magento 1.9
+
 ## v3.6.6
  * changed CVC field design to Magento CVC design with "What is this" Link and Popup
- * added credit card logos, which can be selected to be shown in the checkout
- * changed ELV/SEPA to one form
- * added Prenotification for SEPA
+ * added an option which allows the following credit cards logos to be shown checkout:
+	- Visa
+	- MasterCard
+	- American Express
+	- CartaSi
+	- Carte Bleue
+	- Diners Club
+	- JCB
+	- Maestro
+	- China UnionPay
+	- Discover Card
+	- Dankort
+ * The two payment forms ELV and SEPA were merged to one form.
+ * added Prenotification for SEPA (Day of Debit will be shown on the invoice and on the order confirmation mail)
  * updated PHP Wrapper
 
 ## v3.6.5
