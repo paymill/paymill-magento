@@ -97,7 +97,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         if ($object == null) {
             $object = Mage::getSingleton('checkout/session')->getQuote();
         }
-        $decimalTotal = $object->getGrandTotal();
+        $decimalTotal = $object->getBaseGrandTotal();
         $amountTotal = $decimalTotal * 100;
         return round($amountTotal);
     }
@@ -111,7 +111,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      */
     public function getCurrency($quote)
     {
-        return $quote->getQuoteCurrencyCode();
+        return $quote->getBaseCurrencyCode();
     }
 
     /**

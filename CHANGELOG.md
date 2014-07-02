@@ -1,3 +1,6 @@
+## v3.6.8
+ * The payment will now done with the Base Currency and Base Grand Total
+
 ## v3.6.7
  * Updated the feature for showing the credit card logos. Now it is possible to use the old behaviour by setting "Show Credit Card Logos" to No.
  * fixed a bug, where the invoice had an other currency then the order.

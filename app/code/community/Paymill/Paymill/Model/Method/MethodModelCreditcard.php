@@ -62,7 +62,7 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
 
             $params = array();
             $params['amount'] = (int) (string) ($amount * 100);
-            $params['currency'] = $order->getOrderCurrencyCode();
+            $params['currency'] = $order->getBaseCurrencyCode();
             $params['description'] = Mage::helper('paymill/paymentHelper')->getDescription($order);
             $params['source'] = Mage::helper('paymill')->getSourceString();
 
