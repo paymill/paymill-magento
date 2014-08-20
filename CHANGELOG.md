@@ -1,3 +1,7 @@
+## v3.6.9
+ * fix for source field (for internal paymill shop identification)
+ * description text cut off after 128 signs
+
 ## v3.6.8
  * The payment will now done with the Base Currency and Base Grand Total
 
