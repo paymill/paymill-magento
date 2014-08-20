@@ -189,10 +189,12 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         $params['payment'] = $this->getPaymentType($paymentCode); // The chosen payment (cc | elv)
         $params['name'] = Mage::helper("paymill/customerHelper")->getCustomerName($quote);
         $params['email'] = Mage::helper("paymill/customerHelper")->getCustomerEmail($quote);
-        $params['description'] = $this->getDescription($quote);
-        $params['source'] = Mage::helper('paymill')->getSourceString();
-
-        return new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
+        $params['description'] = substr($this->getDescription($quote), 0, 128);
+        
+        $paymentProcessor = new Services_Paymill_PaymentProcessor($privateKey, $apiUrl, $libBase, $params, Mage::helper('paymill/loggingHelper'));
+        $paymentProcessor->setSource(Mage::helper('paymill')->getSourceString());
+        
+        return $paymentProcessor;
     }
 
 }
