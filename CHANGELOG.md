@@ -1,3 +1,6 @@
+## v3.7.0
+ * better name for set/addText block in layout.xml and and change setText to addText
+
 ## v3.6.9
  * fix for source field (for internal paymill shop identification)
  * description text cut off after 128 signs

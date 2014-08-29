@@ -9,8 +9,8 @@ and open the template in the editor.
             <action method="addCss">
                 <stylesheet>css/paymill/logo.css</stylesheet>
             </action>
-            <block type="core/text" name="google.cdn.jquery">
-                <action method="setText">
+            <block type="core/text" name="paymill_head">
+                <action method="addText">
                     <text>
                         <![CDATA[
                             <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
