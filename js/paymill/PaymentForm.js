@@ -25,7 +25,7 @@ Paymill.prototype.setPaymillCode = function(code)
  */
 Paymill.prototype.setCodes = function()
 {
-    this.paymillCc = 'paymill_creditcard';
+    this.paymillCc  = 'paymill_creditcard';
     this.paymillElv = 'paymill_directdebit';
 }
 
@@ -78,7 +78,7 @@ Paymill.prototype.debug = function(message)
 Paymill.prototype.paymillShowCardIcon = function()
 {
     var detector = new PaymillBrandDetection();
-    var brand = detector.detect(pmQuery('#' + this.paymillCode + '_number').val());
+    var brand = detector.detect(this.getValueIfExist('#' + this.paymillCode + '_number'));
     brand = brand.toLowerCase();
     pmQuery('#' + this.paymillCode + '_number')[0].className = pmQuery('#' + this.paymillCode + '_number')[0].className.replace(/paymill-card-number-.*/g, '');
     if (brand !== 'unknown') {
@@ -114,7 +114,7 @@ Paymill.prototype.getValueIfExist = function(selector)
  */
 Paymill.prototype.paymillSubmitForm = function()
 {
-    PAYMILL_PUBLIC_KEY = pmQuery('.paymill-info-public_key-' + this.getPaymillCode()).val();
+    PAYMILL_PUBLIC_KEY = this.getValueIfExist('.paymill-info-public_key-' + this.getPaymillCode());
     this.paymillSelectedPaymentName = pmQuery("input[name='payment[method]']:checked").val();
 
     if (!window.PAYMILL_LOADING !== "undefined" && window.PAYMILL_LOADING) {
@@ -123,12 +123,12 @@ Paymill.prototype.paymillSubmitForm = function()
 
     switch (this.paymillSelectedPaymentName) {
         case this.paymillCc:
-            paymill.config('3ds_cancel_label', pmQuery('.paymill_3ds_cancel').val());
+            paymill.config('3ds_cancel_label', this.getValueIfExist('.paymill_3ds_cancel'));
             if (pmQuery('.paymill-info-fastCheckout-cc').val() === 'false') {
-                var valid = (paymill.validateCvc(pmQuery('#' + this.paymillSelectedPaymentName + '_cvc').val()) || paymill.cardType(pmQuery('#' + this.paymillSelectedPaymentName + '_number').val()).toLowerCase() === 'maestro')
-                        && paymill.validateHolder(pmQuery('#' + this.paymillSelectedPaymentName + '_holdername').val())
-                        && paymill.validateExpiry(pmQuery('#' + this.paymillSelectedPaymentName + '_expiry_month').val(), pmQuery('#' + this.paymillSelectedPaymentName + '_expiry_year').val())
-                        && paymill.validateCardNumber(pmQuery('#' + this.paymillSelectedPaymentName + '_number').val());
+                var valid = (paymill.validateCvc(this.getValueIfExist('#' + this.paymillSelectedPaymentName + '_cvc')) || paymill.cardType(this.getValueIfExist('#' + this.paymillSelectedPaymentName + '_number')).toLowerCase() === 'maestro')
+                        && paymill.validateHolder(this.getValueIfExist('#' + this.paymillSelectedPaymentName + '_holdername'))
+                        && paymill.validateExpiry(this.getValueIfExist('#' + this.paymillSelectedPaymentName + '_expiry_month'), this.getValueIfExist('#' + this.paymillSelectedPaymentName + '_expiry_year'))
+                        && paymill.validateCardNumber(this.getValueIfExist('#' + this.paymillSelectedPaymentName + '_number'));
 
                 if (!valid) {
                     return false;
@@ -136,20 +136,20 @@ Paymill.prototype.paymillSubmitForm = function()
 
                 var cvc = '000';
 
-                if (pmQuery('#' + this.paymillSelectedPaymentName + '_cvc').val() !== '') {
-                    cvc = pmQuery('#' + this.paymillSelectedPaymentName + '_cvc').val();
+                if (this.getValueIfExist('#' + this.paymillSelectedPaymentName + '_cvc') !== '') {
+                    cvc = this.getValueIfExist('#' + this.paymillSelectedPaymentName + '_cvc');
                 }
 
                 window.PAYMILL_LOADING = true;
                 this.debug("Generating Token");
                 paymill.createToken({
                     amount_int: parseInt(this.getTokenAmount()),
-                    currency: pmQuery('.paymill-payment-currency-' + this.getPaymillCode()).val(), // ISO 4217 e.g. "EUR"
-                    number: pmQuery('#' + this.paymillSelectedPaymentName + '_number').val(),
-                    exp_month: pmQuery('#' + this.paymillSelectedPaymentName + '_expiry_month').val(),
-                    exp_year: pmQuery('#' + this.paymillSelectedPaymentName + '_expiry_year').val(),
+                    currency: this.getValueIfExist('.paymill-payment-currency-' + this.getPaymillCode()), // ISO 4217 e.g. "EUR"
+                    number: this.getValueIfExist('#' + this.paymillSelectedPaymentName + '_number'),
+                    exp_month: this.getValueIfExist('#' + this.paymillSelectedPaymentName + '_expiry_month'),
+                    exp_year: this.getValueIfExist('#' + this.paymillSelectedPaymentName + '_expiry_year'),
                     cvc: cvc,
-                    cardholder: pmQuery('#' + this.paymillSelectedPaymentName + '_holdername').val()
+                    cardholder: this.getValueIfExist('#' + this.paymillSelectedPaymentName + '_holdername')
                 }, paymillResponseHandler);
             }
             break;

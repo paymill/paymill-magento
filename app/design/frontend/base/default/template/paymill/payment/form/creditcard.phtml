@@ -88,11 +88,7 @@
 
 <script type="text/javascript">
     //<![CDATA[
-    paymillCc = new Paymill();
-    paymillCc.setPaymillCode('<?php echo $_code; ?>');
-    paymillCc.setCodes();
-    paymillCc.addPaymillEvents();
-    <?php echo $this->getCreditCardLogosBrand();?>
-    paymillCc.setBrandCreditcards(paymillCcBrands);
+        paymillCreditcard = new Paymill('<?php echo $_code; ?>');
+        paymillCreditcard.setValidationRules();
     //]]>
 </script>
