@@ -38,7 +38,7 @@
         <label for="<?php echo $_code ?>_cvc" class="required"><em>*</em><?php echo $this->__('Card Verification Number') ?></label>
         <div class="input-box">
             <div class="v-fix">
-                <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv paymill-validate-cc-cvc" id="<?php echo $_code ?>_cvc" name="payment[cc_cid]" value="<?php echo $this->getPaymentEntry($_code, 'cvc'); ?>" />
+                <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv paymill-validate-cc-cvc" id="<?php echo $_code ?>_cvc" value="<?php echo $this->getPaymentEntry($_code, 'cvc'); ?>" />
             </div>
             <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
         </div>
@@ -90,5 +90,8 @@
     //<![CDATA[
         paymillCreditcard = new Paymill('<?php echo $_code; ?>');
         paymillCreditcard.setValidationRules();
+        paymillCreditcard.setEventListener();
+        <?php echo $this->getCreditCardLogosBrand(); ?>
+        paymillCreditcard.setCreditcards(paymillCcBrands);
     //]]>
 </script>

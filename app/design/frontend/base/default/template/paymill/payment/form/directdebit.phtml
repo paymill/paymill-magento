@@ -64,9 +64,8 @@
 </ul>
 <script type="text/javascript">
     //<![CDATA[
-    paymillElv = new Paymill();
-    paymillElv.setPaymillCode('<?php echo $_code; ?>');
-    paymillElv.setCodes();
-    paymillElv.addPaymillEvents();
+    paymillElv = new Paymill('<?php echo $_code; ?>');
+    paymillElv.setValidationRules();
+    paymillElv.setEventListener();
     //]]>
 </script>
