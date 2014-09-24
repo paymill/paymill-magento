@@ -7,28 +7,30 @@ Elv.prototype.validate = function()
 {
     var valid = true;
     
-    if (this.helper.getElementValue('#paymill_directdebit_holdername') === '') {
-        valid = false;
-    }
-        
-    if (this.isSepa()) {
-        ibanValidator = new PaymillIban();
-        
-        if (!ibanValidator.validate(this.helper.getElementValue('#paymill_directdebit_account_iban'))) {
+    if (this.helper.getElementValue('.paymill-info-fastCheckout-elv') === 'false') {
+        if (this.helper.getElementValue('#paymill_directdebit_holdername') === '') {
             valid = false;
         }
-        
-        if (this.helper.getElementValue('#paymill_directdebit_bankcode_bic').length !== 8 
-                || this.helper.getElementValue('#paymill_directdebit_bankcode_bic').length !== 11) {
-            valid = false;
-        }
-    } else {
-        if (!paymill.validateAccountNumber(this.helper.getElementValue('#paymill_directdebit_account_iban'))) {
-            valid = false;
-        }
-        
-        if (!paymill.validateBankCode(this.helper.getElementValue('#paymill_directdebit_bankcode_bic'))) {
-            valid = false;
+
+        if (this.isSepa()) {
+            ibanValidator = new PaymillIban();
+
+            if (!ibanValidator.validate(this.helper.getElementValue('#paymill_directdebit_account_iban'))) {
+                valid = false;
+            }
+
+            if (this.helper.getElementValue('#paymill_directdebit_bankcode_bic').length !== 8 
+                    || this.helper.getElementValue('#paymill_directdebit_bankcode_bic').length !== 11) {
+                valid = false;
+            }
+        } else {
+            if (!paymill.validateAccountNumber(this.helper.getElementValue('#paymill_directdebit_account_iban'))) {
+                valid = false;
+            }
+
+            if (!paymill.validateBankCode(this.helper.getElementValue('#paymill_directdebit_bankcode_bic'))) {
+                valid = false;
+            }
         }
     }
             
@@ -65,6 +67,7 @@ Elv.prototype.unsetValidationRules = function()
 
 Elv.prototype.setValidationRules = function ()
 {
+    var that = this;
     Object.extend(Validation.methods, {
         'paymill-validate-dd-holdername': new Validator(
             'paymill-validate-dd-holdername',
@@ -77,7 +80,7 @@ Elv.prototype.setValidationRules = function ()
             'paymill-validate-dd-account-iban',
             this.helper.getElementValue('.paymill-payment-error-number-iban-elv'),
             function(value) {
-                if (this.isSepa()) {
+                if (that.isSepa()) {
                     iban = new PaymillIban();
                     return iban.validate(value);
                 }
@@ -88,7 +91,7 @@ Elv.prototype.setValidationRules = function ()
             'paymill-validate-dd-bankcode-bic',
             this.helper.getElementValue('.paymill-payment-error-bankcode-bic-elv'),
             function(value) {
-                if (this.isSepa()) {
+                if (that.isSepa()) {
                     return value.length === 8 || value.length === 11;
                 }
                 
