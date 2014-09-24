@@ -1,3 +1,6 @@
+## v3.8.0
+ * rewrite js to remove jQuery usage and only use the magento native Prototype library
+
 ## v3.7.0
  * better name for set/addText block in layout.xml and and change setText to addText
 
