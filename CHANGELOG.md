@@ -1,5 +1,6 @@
 ## v3.8.0
  * rewrite js to remove jQuery usage and only use the magento native Prototype library
+ * allow partial amount capture with partial invoice creation, but only one capture per pre authorisation is allowd
 
 ## v3.7.0
  * better name for set/addText block in layout.xml and and change setText to addText
