@@ -55,7 +55,7 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
         if (array_key_exists('paymillPreauthId', $data) && !empty($data['paymillPreauthId'])) {
 
             $params = array();
-            $params['amount'] = (int) (string) ($amount * 100);
+            $params['amount'] = (int) (string) (Mage::helper("paymill/paymentHelper")->getAmount($payment->getOrder()) * 100);
             $params['currency'] = $payment->getOrder()->getBaseCurrencyCode();
             $params['description'] = Mage::helper('paymill/paymentHelper')->getDescription($payment->getOrder());
             $params['source'] = Mage::helper('paymill')->getSourceString();

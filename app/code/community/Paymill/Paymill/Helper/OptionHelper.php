@@ -78,6 +78,11 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
     {
         return $this->_getGeneralOption("show_label");
     }
+    
+    public function isBaseCurrency()
+    {
+        return $this->_getGeneralOption("base_or_order_currency") === 'base_currency';
+    }
 
     /**
      * Returns the value of the given backend option. 
