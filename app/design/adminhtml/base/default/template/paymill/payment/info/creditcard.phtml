@@ -6,9 +6,16 @@
         <tr>
             <td><?php echo $this->htmlEscape($this->getMethod()->getTitle()) ?></td>
         </tr>
+        <?php if (array_key_exists('paymillPreauthId', $_specificInfo)): ?>
+        <tr>
+            <td><?php echo $this->escapeHtml("Preauth Id: " . $_specificInfo['paymillPreauthId']); ?></td>
+        </tr>
+        <?php endif; ?>
+        <?php if (array_key_exists('paymillTransactionId', $_specificInfo)): ?>
         <tr>
             <td><?php echo $this->escapeHtml("Transaction Id: " . $_specificInfo['paymillTransactionId']); ?></td>
         </tr>
+        <?php endif; ?>
     </table>
 <?php endif; ?>
-<?php echo $this->getChildHtml() ?>
+<?php echo $this->getChildHtml(); ?>

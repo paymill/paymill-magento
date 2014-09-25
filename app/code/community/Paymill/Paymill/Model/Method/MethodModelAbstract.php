@@ -53,7 +53,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      *
      * @var boolean
      */
-    protected $_canCapturePartial = false;
+    protected $_canCapturePartial = true;
 
     /**
      * Can this method use for checkout
@@ -96,7 +96,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      * 
      * @var boolean
      */
-    protected $_preAuthFlag;
+    protected $_preauthFlag;
     
     /**
      * Can use for internal payments
@@ -205,10 +205,10 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
 
         if (Mage::helper('paymill/optionHelper')->isPreAuthorizing() && $this->_code === "paymill_creditcard") {
             Mage::helper('paymill/loggingHelper')->log("Starting payment process as preAuth");
-            $this->_preAuthFlag = true;
+            $this->_preauthFlag = true;
         } else {
             Mage::helper('paymill/loggingHelper')->log("Starting payment process as debit");
-            $this->_preAuthFlag = false;
+            $this->_preauthFlag = false;
             
         }
         
@@ -225,7 +225,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     }
 
     /**
-     * Deals with payment processing when debit mode is active
+     * Processing the payment or preauth
      * @return booelan Indicator of success
      */
     public function payment(Varien_Object $payment, $amount)
@@ -251,21 +251,22 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
             }
         }
         
-        $success = $paymentProcessor->processPayment(!$this->_preAuthFlag);
+        $success = $paymentProcessor->processPayment(!$this->_preauthFlag);
 
         $this->_existingClientHandling($clientId);
         
         if ($success) {
-            //Save Transaction Data
-            $transactionHelper = Mage::helper("paymill/transactionHelper");
             
-            $id = $paymentProcessor->getTransactionId();
-            if ($this->_preAuthFlag) {
-                $id = $paymentProcessor->getPreauthId();
+            if ($this->_preauthFlag) {
+                $payment->setAdditionalInformation('paymillPreauthId', $paymentProcessor->getPreauthId());
+            } else {
+                $payment->setAdditionalInformation('paymillTransactionId', $paymentProcessor->getTransactionId());
             }
-            
-            $transactionModel = $transactionHelper->createTransactionModel($id, $this->_preAuthFlag);
-            $transactionHelper->setAdditionalInformation($payment, $transactionModel);
+
+            $payment->setAdditionalInformation(
+                'paymillPrenotificationDate', 
+                $this->_getPrenotificationDate($payment->getOrder())
+            );
             
             //Allways update the client
             $clientId = $paymentProcessor->getClientId();
@@ -283,6 +284,24 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         $this->_errorCode = $paymentProcessor->getErrorCode();
 
         return false;
+    }
+    
+    /**
+     * Calculates Date with the setted Prenotification Days and formats it
+     * @param Mage_Sales_Model_Order $order
+     * @return string
+     */
+    private function _getPrenotificationDate($order)
+    {
+        $dateTime = new DateTime($order->getCreatedAt());
+        $dateTime->modify('+' . Mage::helper('paymill/optionHelper')->getPrenotificationDays() . ' day');
+        $date = Mage::app()->getLocale()->storeDate(
+            $order->getStore(), 
+            Varien_Date::toTimestamp($dateTime->format('Y-m-d H:i:s')),
+            true
+        );
+        
+        return Mage::helper('core')->formatDate($date, 'short', false);
     }
     
     /**
@@ -357,6 +376,6 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
     public function processInvoice($invoice, $payment)
     {
         parent::processInvoice($invoice, $payment);
-        $invoice->setTransactionId(Mage::helper('paymill/transactionHelper')->getTransactionId($payment->getOrder()));
+        $invoice->setTransactionId($payment->getAdditionalInformation('paymillTransactionId'));
     }
 }

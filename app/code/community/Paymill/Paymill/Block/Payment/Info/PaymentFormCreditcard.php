@@ -48,14 +48,11 @@ class Paymill_Paymill_Block_Payment_Info_PaymentFormCreditcard extends Mage_Paym
      */
     protected function _prepareSpecificInformation($transport = null)
     {
-        if (null !== $this->_paymentSpecificInformation) {
-            return $this->_paymentSpecificInformation;
-        }
         $transport = parent::_prepareSpecificInformation($transport);
 
-        $data = array();
-        $data['paymillTransactionId'] = $this->getInfo()->getAdditionalInformation('paymillTransactionId');
+        $data = $this->getInfo()->getAdditionalInformation();
         $data['imgUrl'] = Mage::helper('paymill')->getImagePath() . "icon_paymill.png";
+        
 
         return $transport->setData(array_merge($data, $transport->getData()));
     }

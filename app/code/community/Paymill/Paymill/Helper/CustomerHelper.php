@@ -61,7 +61,8 @@ class Paymill_Paymill_Helper_CustomerHelper extends Mage_Core_Helper_Abstract
     public function getClientData()
     {
         $clients = new Services_Paymill_Clients(
-                Mage::helper('paymill/optionHelper')->getPrivateKey(), Mage::helper('paymill')->getApiUrl()
+            Mage::helper('paymill/optionHelper')->getPrivateKey(), 
+            Mage::helper('paymill')->getApiUrl()
         );
 
         $clientId = Mage::helper("paymill/fastCheckoutHelper")->getClientId();
