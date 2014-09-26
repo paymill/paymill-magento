@@ -40,22 +40,15 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
      * @var string
      */
     protected $_infoBlockType = 'paymill/payment_info_paymentFormCreditcard';
-
-    /**
-     * Gets called when a capture gets triggered (default on invoice generation)
-     * 
-     * @throws Exception
-     */
-    public function capture(Varien_Object $payment, $amount)
+    
+    public function processInvoice($invoice, $payment)
     {
-        parent::capture($payment, $amount);
-
         $data = $payment->getAdditionalInformation();
         
         if (array_key_exists('paymillPreauthId', $data) && !empty($data['paymillPreauthId'])) {
 
             $params = array();
-            $params['amount'] = (int) (string) (Mage::helper("paymill/paymentHelper")->getAmount($payment->getOrder()) * 100);
+            $params['amount'] = (int) (string) (Mage::helper("paymill/paymentHelper")->getAmount($invoice) * 100);
             $params['currency'] = $payment->getOrder()->getBaseCurrencyCode();
             $params['description'] = Mage::helper('paymill/paymentHelper')->getDescription($payment->getOrder());
             $params['source'] = Mage::helper('paymill')->getSourceString();
@@ -78,6 +71,8 @@ class Paymill_Paymill_Model_Method_MethodModelCreditcard extends Paymill_Paymill
 
             $payment->setAdditionalInformation('paymillTransactionId', $paymentProcessor->getTransactionId());
         }
+        
+        parent::processInvoice($invoice, $payment);
     }
 
 }

@@ -345,29 +345,21 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         return $methods[$this->_code];
     }
 
-    /**
-     * Handle online refunds and trigger the refund at paymill side
-     * 
-     * @param Varien_Object $payment
-     * @param float $amount
-     * @return Paymill_Paymill_Model_Method_MethodModelAbstract
-     */
-    public function refund(Varien_Object $payment, $amount)
+    public function processCreditmemo($creditmemo, $payment)
     {
-        parent::refund($payment, $amount);
+        parent::processCreditmemo($creditmemo, $payment);
         $order = $payment->getOrder();
         if ($order->getPayment()->getMethod() === 'paymill_creditcard' || $order->getPayment()->getMethod() === 'paymill_directdebit') {
             $amount = (int) ((string) ($amount * 100));
             Mage::helper('paymill/loggingHelper')->log("Trying to Refund.", var_export($order->getIncrementId(), true));
             
-            if (!Mage::helper('paymill/refundHelper')->createRefund($order)) {
+            if (!Mage::helper('paymill/refundHelper')->createRefund($creditmemo)) {
                 Mage::throwException('Refund failed.');
             }
         }
-        
-        return $this;
     }
-    
+
+
     /**
      * Set invoice transaction id
      * 

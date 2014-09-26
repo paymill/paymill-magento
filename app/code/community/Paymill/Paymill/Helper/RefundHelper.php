@@ -51,7 +51,7 @@ class Paymill_Paymill_Helper_RefundHelper extends Mage_Core_Helper_Abstract
 
     /**
      * Creates a refund from the ordernumber passed as an argument
-     * @param Mage_Sales_Model_Order $order
+     * @param Mage_Sales_Model_Order_Refund $order
      * @return boolean Indicator of success
      */
     public function createRefund($order)
@@ -71,7 +71,7 @@ class Paymill_Paymill_Helper_RefundHelper extends Mage_Core_Helper_Abstract
         $params = array(
             'transactionId' => $order->getPayment()->getAdditionalInformation('paymillTransactionId'),
             'source' => Mage::helper('paymill')->getSourceString(),
-            'params' => array('amount' => Mage::helper("paymill/paymentHelper")->getAmount($order))
+            'params' => array('amount' => (int) ((string) (Mage::helper("paymill/paymentHelper")->getAmount($order) * 100)))
         );
         
         try {
