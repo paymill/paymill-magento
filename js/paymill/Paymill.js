@@ -1,4 +1,5 @@
 var PAYMILL_PUBLIC_KEY = null;
+var paymillButton = false;
 
 function Paymill(methodCode)
 {
@@ -18,7 +19,9 @@ function Paymill(methodCode)
 Paymill.prototype.validate = function()
 {
     this.debug("Start form validation");
-    return this.methodInstance.validate();
+    var valid = this.methodInstance.validate();
+    this.debug(valid);
+    return valid;
 };
 
 Paymill.prototype.generateToken = function()
@@ -34,6 +37,15 @@ Paymill.prototype.generateToken = function()
     }
 };
 
+Paymill.prototype.generateTokenOnSubmit = function()
+{
+    if (this.helper.getElementValue('.paymill-info-fastCheckout-' + this.helper.getShortCode()) === 'true') {
+        payment.save();
+    } else {
+        this.generateToken();
+    }
+};
+
 Paymill.prototype.setValidationRules = function()
 {
     this.methodInstance.setValidationRules();
@@ -44,7 +56,7 @@ Paymill.prototype.logError = function(data)
     var that = this;
     new Ajax.Request(this.helper.getElementValue('.paymill-payment-token-log-' + this.helper.getShortCode()), {
       method: 'post',
-      parameters: {error: data},
+      parameters: data,
       onSuccess: function(response) {
           that.debug('Logging done.');
       }, onFailure: function() {
@@ -60,9 +72,9 @@ Paymill.prototype.debug = function(message)
     }
 };
 
-Paymill.prototype.setEventListener = function()
+Paymill.prototype.setEventListener = function(selector)
 {
-    this.methodInstance.setEventListener();
+    this.methodInstance.setEventListener(selector);
 };
 
 Paymill.prototype.setCreditcards = function(creditcards)
@@ -72,8 +84,6 @@ Paymill.prototype.setCreditcards = function(creditcards)
 
 tokenCallback = function(error, result)
 {
-    window.PAYMILL_LOADING = false;
-
     var paymill = new Paymill('default');
 
     paymill.debug("Enter paymillResponseHandler");
@@ -93,7 +103,7 @@ tokenCallback = function(error, result)
         // Appending error
         rules['paymill-validate-' + paymill.helper.getShortCode() + '-token'] = new Validator(
             'paymill-validate-' + paymill.helper.getShortCode() + '-token',
-            paymill.helper.getElementValue('.paymill-payment-error-' + paymill.helper.getShortCode() + '-token') + message,
+            paymill.helper.getElementValue('.paymill-payment-error-' + paymill.helper.getShortCode() + '-token') + ' ' + message,
             function(value) {
                 return false;
             },
@@ -105,6 +115,8 @@ tokenCallback = function(error, result)
         paymill.debug(error.apierror);
         paymill.debug(error.message);
         paymill.debug("Paymill Response Handler triggered: Error.");
+        Object.extend(Validation.methods, rules);
+        new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate();
     } else {
         rules['paymill-validate-' + paymill.helper.getShortCode() + '-token'] = new Validator(
             'paymill-validate-' + paymill.helper.getShortCode() + '-token',
@@ -115,10 +127,17 @@ tokenCallback = function(error, result)
             ''
         );
 
+        Object.extend(Validation.methods, rules);
+
         paymill.debug("Saving Token in Form: " + result.token);
         paymill.helper.setElementValue('.paymill-payment-token-' + paymill.helper.getShortCode(), result.token);
+        if (paymillButton) {
+            payment.save();
+        } else {
+            new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate();
+        }
     }
     
-    Object.extend(Validation.methods, rules);
-    new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate();
+    
+    
 }

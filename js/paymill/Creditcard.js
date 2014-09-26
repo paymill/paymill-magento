@@ -184,7 +184,7 @@ Creditcard.prototype.paymillShowCardIcon = function()
     }
 };
 
-Creditcard.prototype.setEventListener = function()
+Creditcard.prototype.setEventListener = function(selector)
 {
     var that = this;
     
@@ -195,32 +195,65 @@ Creditcard.prototype.setEventListener = function()
     Event.observe('paymill_creditcard_number','keyup', function() {
         that.setValidationRules();
         that.helper.setElementValue('.paymill-info-fastCheckout-cc', 'false');
-        paymillCreditcard.generateToken();
+        if (!$$(selector)[0]) {
+            paymillCreditcard.generateToken();
+        }
     });
 
     Event.observe('paymill_creditcard_cvc', 'keyup', function() {
         that.setValidationRules();
         that.helper.setElementValue('.paymill-info-fastCheckout-cc', 'false');
-        paymillCreditcard.generateToken(); 
+        if (!$$(selector)[0]) {
+            paymillCreditcard.generateToken();
+        }
     });
 
     Event.observe('paymill_creditcard_expiry_month', 'change', function() {
         that.setValidationRules();
         that.helper.setElementValue('.paymill-info-fastCheckout-cc', 'false');
-        paymillCreditcard.generateToken();
+        if (!$$(selector)[0]) {
+            paymillCreditcard.generateToken();
+        }
     });
 
     Event.observe('paymill_creditcard_expiry_year', 'change', function() {
         that.setValidationRules();
         that.helper.setElementValue('.paymill-info-fastCheckout-cc', 'false');
-        paymillCreditcard.generateToken();
+        if (!$$(selector)[0]) {
+            paymillCreditcard.generateToken();
+        }
     });
 
     Event.observe('paymill_creditcard_holdername', 'keyup', function() {
         that.setValidationRules();
         that.helper.setElementValue('.paymill-info-fastCheckout-cc', 'false');
-        paymillCreditcard.generateToken();
+        if (!$$(selector)[0]) {
+            paymillCreditcard.generateToken();
+        }
     });
+    
+    if ($$(selector)[0]) {
+        paymillButton = $$(selector)[0];
+        
+        for (var i = 0; i < $$('input:[name="payment[method]"]').length; i++) {
+            $$('input:[name="payment[method]"]')[i].observe('change', function() {
+                if (that.helper.getMethodCode() === 'paymill_creditcard') {
+                    paymillButton.removeAttribute("onclick");
+                    paymillButton.stopObserving('click');
+                    paymillButton.setAttribute("onclick", 'paymillCreditcard.generateTokenOnSubmit()');
+                } else {
+                    paymillButton.setAttribute("onclick", 'payment.save()');
+                    paymillButton.observe('click', payment.save);
+                }
+            });
+        }
+        
+        if (that.helper.getMethodCode() === 'paymill_creditcard') {
+            paymillButton.removeAttribute("onclick");
+            paymillButton.setAttribute("onclick", 'paymillCreditcard.generateTokenOnSubmit()');
+        }
+
+    }
     
     Event.observe('paymill_creditcard_number', 'keyup', function() {
         that.paymillShowCardIcon();

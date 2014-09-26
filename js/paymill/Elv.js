@@ -131,7 +131,7 @@ Elv.prototype.isSepa = function()
     return reg.test(this.helper.getElementValue('#paymill_directdebit_account_iban'));
 };
 
-Elv.prototype.setEventListener = function()
+Elv.prototype.setEventListener = function(selector)
 {
     var that = this;
     
@@ -142,18 +142,47 @@ Elv.prototype.setEventListener = function()
     Event.observe('paymill_directdebit_holdername', 'keyup', function() {
         that.setValidationRules();
         that.helper.setElementValue('.paymill-info-fastCheckout-elv', 'false');
-        paymillElv.generateToken();
+        if (!$$(selector)[0]) {
+            paymillElv.generateToken();
+        }
     });
 
     Event.observe('paymill_directdebit_account_iban', 'keyup', function() {
         that.setValidationRules();
         that.helper.setElementValue('.paymill-info-fastCheckout-elv', 'false');
-        paymillElv.generateToken();
+        if (!$$(selector)[0]) {
+            paymillElv.generateToken();
+        }
     });
 
     Event.observe('paymill_directdebit_bankcode_bic', 'keyup', function() {
         that.setValidationRules();
         that.helper.setElementValue('.paymill-info-fastCheckout-elv', 'false');
-        paymillElv.generateToken();
+        if (!$$(selector)[0]) {
+            paymillElv.generateToken();
+        }
     });
+    
+    if ($$(selector)[0]) {
+        paymillButton = $$(selector)[0];
+        
+        for (var i = 0; i < $$('input:[name="payment[method]"]').length; i++) {
+            $$('input:[name="payment[method]"]')[i].observe('change', function() {
+                if (that.helper.getMethodCode() === 'paymill_directdebit') {
+                    paymillButton.removeAttribute("onclick");
+                    paymillButton.stopObserving('click');
+                    paymillButton.setAttribute("onclick", 'paymillElv.generateTokenOnSubmit()');
+                } else {
+                    paymillButton.setAttribute("onclick", 'payment.save()');
+                    paymillButton.observe('click', payment.save);
+                }
+            });
+        }
+        
+        if (that.helper.getMethodCode() === 'paymill_directdebit') {
+            paymillButton.removeAttribute("onclick");
+            paymillButton.setAttribute("onclick", 'paymillElv.generateTokenOnSubmit()');
+        }
+
+    }
 };

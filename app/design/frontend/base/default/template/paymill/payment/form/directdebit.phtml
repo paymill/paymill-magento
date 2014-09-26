@@ -66,6 +66,6 @@
     //<![CDATA[
     paymillElv = new Paymill('<?php echo $_code; ?>');
     paymillElv.setValidationRules();
-    paymillElv.setEventListener();
+    paymillElv.setEventListener('<?php echo Mage::helper('paymill/optionHelper')->getTokenSelector(); ?>');
     //]]>
 </script>

@@ -90,7 +90,7 @@
     //<![CDATA[
         paymillCreditcard = new Paymill('<?php echo $_code; ?>');
         paymillCreditcard.setValidationRules();
-        paymillCreditcard.setEventListener();
+        paymillCreditcard.setEventListener('<?php echo Mage::helper('paymill/optionHelper')->getTokenSelector(); ?>');
         <?php echo $this->getCreditCardLogosBrand(); ?>
         paymillCreditcard.setCreditcards(paymillCcBrands);
     //]]>

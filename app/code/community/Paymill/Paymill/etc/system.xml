@@ -76,6 +76,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </base_currency>
+                        <token_creation_identifier_id>
+                            <label>paymill_token_creation_identifier_id</label>
+                            <sort_order>10</sort_order>
+                            <tooltip>paymill_token_creation_identifier_id_tooltip</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </token_creation_identifier_id>
                     </fields>
                 </paymill>
 
