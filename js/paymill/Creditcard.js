@@ -177,10 +177,6 @@ Creditcard.prototype.paymillShowCardIcon = function()
     brand = brand.toLowerCase();
     $$('#paymill_creditcard_number')[0].className = $$('#paymill_creditcard_number')[0].className.replace(/paymill-card-number-.*/g, '');
     if (brand !== 'unknown') {
-        if (this.creditcards.length > 0 && $$.inArray(brand, this.creditcards) === -1) {
-            return;
-        }
-        
         $$('#paymill_creditcard_number')[0].addClassName("paymill-card-number-" + brand);
         if (!detector.validate(this.helper.getElementValue('#paymill_creditcard_number'))) {
             $$('#paymill_creditcard_number')[0].addClassName("paymill-card-number-grayscale");

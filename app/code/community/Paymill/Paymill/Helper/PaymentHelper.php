@@ -111,14 +111,18 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
      * Returns the currency compliant to ISO 4217 (3 char code)
      * @return string 3 Character long currency code
      *
-     * @param Mage_Sales_Model_Quote $quote
+     * @param Mage_Sales_Model_Quote|Mage_Sales_Model_Order|Mage_Sales_Model_Order_Invoice|Mage_Sales_Model_Order_Creditmemo $object
      * @return string
      */
-    public function getCurrency($quote)
+    public function getCurrency($object)
     {
-        $currency = $quote->getBaseCurrencyCode();
+        $currency = $object->getBaseCurrencyCode();
         if (!Mage::helper('paymill/optionHelper')->isBaseCurrency()) {
-            $currency = $quote->getCurrencyCode();
+            if ($object instanceof Mage_Sales_Model_Quote) {
+                $currency = $object->getQuoteCurrencyCode();
+            } else {
+                $currency = $object->getOrderCurrencyCode();
+            }
         }
         
         return $currency;
