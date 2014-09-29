@@ -20,7 +20,7 @@ Elv.prototype.validate = function()
             }
 
             if (this.helper.getElementValue('#paymill_directdebit_bankcode_bic').length !== 8 
-                    || this.helper.getElementValue('#paymill_directdebit_bankcode_bic').length !== 11) {
+                    && this.helper.getElementValue('#paymill_directdebit_bankcode_bic').length !== 11) {
                 valid = false;
             }
         } else {

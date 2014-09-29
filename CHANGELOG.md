@@ -2,6 +2,7 @@
  * switch for base and order currency
  * rewrite js to remove jQuery usage and only use the magento native Prototype library
  * allow partial amount capture with partial invoice creation, but only one capture per pre authorisation is allowd
+ * allow to configure a prototype selector for the token creation
 
 ## v3.7.0
  * better name for set/addText block in layout.xml and and change setText to addText
