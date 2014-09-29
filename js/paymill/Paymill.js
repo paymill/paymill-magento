@@ -1,5 +1,6 @@
 var PAYMILL_PUBLIC_KEY = null;
 var paymillButton = false;
+var onClickContent = false;
 
 function Paymill(methodCode)
 {
@@ -131,8 +132,8 @@ tokenCallback = function(error, result)
 
         paymill.debug("Saving Token in Form: " + result.token);
         paymill.helper.setElementValue('.paymill-payment-token-' + paymill.helper.getShortCode(), result.token);
-        if (paymillButton) {
-            payment.save();
+        if (paymillButton && onClickContent) {
+            eval(onClickContent);
         } else {
             new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate();
         }

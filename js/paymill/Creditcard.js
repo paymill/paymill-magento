@@ -234,25 +234,25 @@ Creditcard.prototype.setEventListener = function(selector)
     
     if ($$(selector)[0]) {
         paymillButton = $$(selector)[0];
-        
+        onClickContent = paymillButton.getAttribute('onclick');
         for (var i = 0; i < $$('input:[name="payment[method]"]').length; i++) {
             $$('input:[name="payment[method]"]')[i].observe('change', function() {
+                paymillButton.removeAttribute('onclick');
+                paymillButton.stopObserving('click');
                 if (that.helper.getMethodCode() === 'paymill_creditcard') {
-                    paymillButton.removeAttribute("onclick");
-                    paymillButton.stopObserving('click');
-                    paymillButton.setAttribute("onclick", 'paymillCreditcard.generateTokenOnSubmit()');
+                    paymillButton.setAttribute('onclick', 'paymillCreditcard.generateTokenOnSubmit()');
                 } else {
-                    paymillButton.setAttribute("onclick", 'payment.save()');
-                    paymillButton.observe('click', payment.save);
+                    paymillButton.setAttribute('onclick', onClickContent);
                 }
             });
         }
         
         if (that.helper.getMethodCode() === 'paymill_creditcard') {
-            paymillButton.removeAttribute("onclick");
-            paymillButton.setAttribute("onclick", 'paymillCreditcard.generateTokenOnSubmit()');
+            paymillButton.stopObserving('click');
+            paymillButton.removeAttribute('onclick');
+            paymillButton.setAttribute('onclick', 'paymillCreditcard.generateTokenOnSubmit()');
         }
-
+        
     }
     
     Event.observe('paymill_creditcard_number', 'keyup', function() {
