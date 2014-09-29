@@ -1,6 +1,7 @@
 var PAYMILL_PUBLIC_KEY = null;
 var paymillButton = false;
 var onClickContent = false;
+var onClickBounded = false;
 
 function Paymill(methodCode)
 {
@@ -44,7 +45,9 @@ Paymill.prototype.generateTokenOnSubmit = function()
     if (this.helper.getElementValue('.paymill-info-fastCheckout-' + this.helper.getShortCode()) !== 'true') {
         this.generateToken();
     } else {
-        eval(onClickContent);
+        onClickBounded.each(function(wrapper){
+            wrapper.handler.call();
+        });
     }
 };
 
@@ -84,6 +87,7 @@ Paymill.prototype.setEventListener = function(selector)
         paymillButton = $$(selector)[0];
         if (!onClickContent) {
             onClickContent = paymillButton.getAttribute('onclick');
+            onClickBounded = paymillButton.getStorage().get('prototype_event_registry').get('click');
         }
         
         for (var i = 0; i < $$('input:[name="payment[method]"]').length; i++) {
@@ -96,6 +100,9 @@ Paymill.prototype.setEventListener = function(selector)
                     paymillButton.setAttribute('onclick', 'paymillCreditcard.generateTokenOnSubmit()');
                 } else {
                     paymillButton.setAttribute('onclick', onClickContent);
+                    onClickBounded.each(function(wrapper){
+                        paymillButton.observe('click', wrapper.handler);
+                    });
                 }
             });
         }
@@ -169,7 +176,9 @@ tokenCallback = function(error, result)
         paymill.debug("Saving Token in Form: " + result.token);
         paymill.helper.setElementValue('.paymill-payment-token-' + paymill.helper.getShortCode(), result.token);
         if (paymillButton && onClickContent) {
-            eval(onClickContent);
+            onClickBounded.each(function(wrapper){
+                wrapper.handler.call();
+            });
         } else {
             new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate();
         }
