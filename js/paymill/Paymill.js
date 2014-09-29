@@ -27,6 +27,7 @@ Paymill.prototype.validate = function()
 
 Paymill.prototype.generateToken = function()
 {
+    new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate();
     if (this.validate()) {
         var data = this.methodInstance.getTokenParameter();
         this.debug("Generating Token");
@@ -40,10 +41,10 @@ Paymill.prototype.generateToken = function()
 
 Paymill.prototype.generateTokenOnSubmit = function()
 {
-    if (this.helper.getElementValue('.paymill-info-fastCheckout-' + this.helper.getShortCode()) === 'true') {
-        payment.save();
-    } else {
+    if (this.helper.getElementValue('.paymill-info-fastCheckout-' + this.helper.getShortCode()) !== 'true') {
         this.generateToken();
+    } else {
+        eval(onClickContent);
     }
 };
 
@@ -75,7 +76,42 @@ Paymill.prototype.debug = function(message)
 
 Paymill.prototype.setEventListener = function(selector)
 {
+    var that = this;
+    
     this.methodInstance.setEventListener(selector);
+    
+    if ($$(selector)[0]) {
+        paymillButton = $$(selector)[0];
+        if (!onClickContent) {
+            onClickContent = paymillButton.getAttribute('onclick');
+        }
+        
+        for (var i = 0; i < $$('input:[name="payment[method]"]').length; i++) {
+            $$('input:[name="payment[method]"]')[i].observe('change', function() {
+                paymillButton.removeAttribute('onclick');
+                paymillButton.stopObserving('click');
+                if (that.helper.getMethodCode() === 'paymill_directdebit') {
+                    paymillButton.setAttribute('onclick', 'paymillElv.generateTokenOnSubmit()');
+                } else if(that.helper.getMethodCode() === 'paymill_creditcard') {
+                    paymillButton.setAttribute('onclick', 'paymillCreditcard.generateTokenOnSubmit()');
+                } else {
+                    paymillButton.setAttribute('onclick', onClickContent);
+                }
+            });
+        }
+        
+        if (that.helper.getMethodCode() === 'paymill_directdebit') {
+            paymillButton.stopObserving('click');
+            paymillButton.removeAttribute('onclick');
+            paymillButton.setAttribute('onclick', 'paymillElv.generateTokenOnSubmit()');
+        }
+        
+        if (that.helper.getMethodCode() === 'paymill_creditcard') {
+            paymillButton.stopObserving('click');
+            paymillButton.removeAttribute('onclick');
+            paymillButton.setAttribute('onclick', 'paymillCreditcard.generateTokenOnSubmit()');
+        }
+    }
 };
 
 Paymill.prototype.setCreditcards = function(creditcards)
