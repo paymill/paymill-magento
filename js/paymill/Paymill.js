@@ -27,8 +27,8 @@ Paymill.prototype.validate = function()
 
 Paymill.prototype.generateToken = function()
 {
-    new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate();
     if (this.validate()) {
+        new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate();
         var data = this.methodInstance.getTokenParameter();
         this.debug("Generating Token");
         this.debug(data);
