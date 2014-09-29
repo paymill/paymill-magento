@@ -350,10 +350,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         parent::processCreditmemo($creditmemo, $payment);
         $order = $payment->getOrder();
         if ($order->getPayment()->getMethod() === 'paymill_creditcard' || $order->getPayment()->getMethod() === 'paymill_directdebit') {
-            $amount = (int) ((string) ($amount * 100));
-            Mage::helper('paymill/loggingHelper')->log("Trying to Refund.", var_export($order->getIncrementId(), true));
-            
-            if (!Mage::helper('paymill/refundHelper')->createRefund($creditmemo)) {
+            if (!Mage::helper('paymill/refundHelper')->createRefund($creditmemo, $payment)) {
                 Mage::throwException('Refund failed.');
             }
         }

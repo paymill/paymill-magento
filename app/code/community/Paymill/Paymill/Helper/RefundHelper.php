@@ -54,7 +54,7 @@ class Paymill_Paymill_Helper_RefundHelper extends Mage_Core_Helper_Abstract
      * @param Mage_Sales_Model_Order_Refund $creditmemo
      * @return boolean Indicator of success
      */
-    public function createRefund($creditmemo)
+    public function createRefund($creditmemo, $payment)
     {
         //Gather Data
         try {
@@ -69,10 +69,12 @@ class Paymill_Paymill_Helper_RefundHelper extends Mage_Core_Helper_Abstract
 
         //Create Refund
         $params = array(
-            'transactionId' => $creditmemo->getPayment()->getAdditionalInformation('paymillTransactionId'),
+            'transactionId' => $payment->getAdditionalInformation('paymillTransactionId'),
             'source' => Mage::helper('paymill')->getSourceString(),
-            'params' => array('amount' => (int) ((string) (Mage::helper("paymill/paymentHelper")->getAmount($creditmemo) * 100)))
+            'params' => array('amount' => (int) Mage::helper("paymill/paymentHelper")->getAmount($creditmemo))
         );
+        
+        Mage::helper('paymill/loggingHelper')->log("Try to refund.", var_export($params, true));
         
         try {
             $refund = $refundsObject->create($params);

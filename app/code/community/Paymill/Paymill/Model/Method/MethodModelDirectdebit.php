@@ -41,5 +41,4 @@ class Paymill_Paymill_Model_Method_MethodModelDirectdebit extends Paymill_Paymil
      * @var string
      */
     protected $_infoBlockType = 'paymill/payment_info_paymentFormDirectdebit';
-
 }
