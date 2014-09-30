@@ -43,8 +43,9 @@ Paymill.prototype.generateToken = function()
 Paymill.prototype.generateTokenOnSubmit = function()
 {
     if (this.helper.getElementValue('.paymill-info-fastCheckout-' + this.helper.getShortCode()) !== 'true') {
-        new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate();
-        this.generateToken();
+        if (new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate()) {
+            this.generateToken();
+        }
     }
 };
 
