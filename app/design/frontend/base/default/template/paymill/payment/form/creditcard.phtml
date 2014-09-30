@@ -88,12 +88,10 @@
 
 <script type="text/javascript">
     //<![CDATA[
-        window.onload = function() {
-            paymillCreditcard = new Paymill('<?php echo $_code; ?>');
-            paymillCreditcard.setValidationRules();
-            paymillCreditcard.setEventListener('<?php echo Mage::helper('paymill/optionHelper')->getTokenSelector(); ?>');
-            <?php echo $this->getCreditCardLogosBrand(); ?>
-            paymillCreditcard.setCreditcards(paymillCcBrands);
-        }
+        paymillCreditcard = new Paymill('<?php echo $_code; ?>');
+        paymillCreditcard.setValidationRules();
+        paymillCreditcard.setEventListener('<?php echo Mage::helper('paymill/optionHelper')->getTokenSelector(); ?>');
+        <?php echo $this->getCreditCardLogosBrand(); ?>
+        paymillCreditcard.setCreditcards(paymillCcBrands);
     //]]>
 </script>

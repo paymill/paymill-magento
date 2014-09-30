@@ -197,6 +197,8 @@ Creditcard.prototype.setEventListener = function(selector)
         that.helper.setElementValue('.paymill-info-fastCheckout-cc', 'false');
         if (!$$(selector)[0]) {
             paymillCreditcard.generateToken();
+        } else {
+            paymillElv.setOnClickHandler(selector);
         }
     });
 
@@ -205,6 +207,8 @@ Creditcard.prototype.setEventListener = function(selector)
         that.helper.setElementValue('.paymill-info-fastCheckout-cc', 'false');
         if (!$$(selector)[0]) {
             paymillCreditcard.generateToken();
+        } else {
+            paymillElv.setOnClickHandler(selector);
         }
     });
 
@@ -213,6 +217,8 @@ Creditcard.prototype.setEventListener = function(selector)
         that.helper.setElementValue('.paymill-info-fastCheckout-cc', 'false');
         if (!$$(selector)[0]) {
             paymillCreditcard.generateToken();
+        } else {
+            paymillElv.setOnClickHandler(selector);
         }
     });
 
@@ -221,6 +227,8 @@ Creditcard.prototype.setEventListener = function(selector)
         that.helper.setElementValue('.paymill-info-fastCheckout-cc', 'false');
         if (!$$(selector)[0]) {
             paymillCreditcard.generateToken();
+        } else {
+            paymillElv.setOnClickHandler(selector);
         }
     });
 
@@ -229,6 +237,8 @@ Creditcard.prototype.setEventListener = function(selector)
         that.helper.setElementValue('.paymill-info-fastCheckout-cc', 'false');
         if (!$$(selector)[0]) {
             paymillCreditcard.generateToken();
+        } else {
+            paymillElv.setOnClickHandler(selector);
         }
     });
     

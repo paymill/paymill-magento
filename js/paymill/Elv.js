@@ -144,6 +144,8 @@ Elv.prototype.setEventListener = function(selector)
         that.helper.setElementValue('.paymill-info-fastCheckout-elv', 'false');
         if (!$$(selector)[0]) {
             paymillElv.generateToken();
+        } else {
+            paymillElv.setOnClickHandler(selector);
         }
     });
 
@@ -152,6 +154,8 @@ Elv.prototype.setEventListener = function(selector)
         that.helper.setElementValue('.paymill-info-fastCheckout-elv', 'false');
         if (!$$(selector)[0]) {
             paymillElv.generateToken();
+        } else {
+            paymillElv.setOnClickHandler(selector);
         }
     });
 
@@ -160,6 +164,8 @@ Elv.prototype.setEventListener = function(selector)
         that.helper.setElementValue('.paymill-info-fastCheckout-elv', 'false');
         if (!$$(selector)[0]) {
             paymillElv.generateToken();
+        } else {
+            paymillElv.setOnClickHandler(selector);
         }
     });
 };

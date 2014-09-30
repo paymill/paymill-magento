@@ -43,11 +43,8 @@ Paymill.prototype.generateToken = function()
 Paymill.prototype.generateTokenOnSubmit = function()
 {
     if (this.helper.getElementValue('.paymill-info-fastCheckout-' + this.helper.getShortCode()) !== 'true') {
+        new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate();
         this.generateToken();
-    } else {
-        onClickBounded.each(function(wrapper){
-            wrapper.handler.call();
-        });
     }
 };
 
@@ -79,19 +76,26 @@ Paymill.prototype.debug = function(message)
 
 Paymill.prototype.setEventListener = function(selector)
 {
-    var that = this;
-    
     this.methodInstance.setEventListener(selector);
+    this.setOnClickHandler();
+    
+};
+
+Paymill.prototype.setOnClickHandler = function(selector)
+{
+    var that = this;
     
     if ($$(selector)[0]) {
         paymillButton = $$(selector)[0];
         if (!onClickContent) {
             onClickContent = paymillButton.getAttribute('onclick');
-            onClickBounded = paymillButton.getStorage().get('prototype_event_registry').get('click');
+            if (paymillButton.getStorage()._object.prototype_event_registry) {
+                onClickBounded = paymillButton.getStorage()._object.prototype_event_registry._object.click;
+            }   
         }
-        
-        for (var i = 0; i < $$('input:[name="payment[method]"]').length; i++) {
-            $$('input:[name="payment[method]"]')[i].observe('change', function() {
+
+        $$('input:[name="payment[method]"]').forEach(function(element) {
+            element.observe('change', function() {
                 paymillButton.removeAttribute('onclick');
                 paymillButton.stopObserving('click');
                 if (that.helper.getMethodCode() === 'paymill_directdebit') {
@@ -100,26 +104,28 @@ Paymill.prototype.setEventListener = function(selector)
                     paymillButton.setAttribute('onclick', 'paymillCreditcard.generateTokenOnSubmit()');
                 } else {
                     paymillButton.setAttribute('onclick', onClickContent);
-                    onClickBounded.each(function(wrapper){
-                        paymillButton.observe('click', wrapper.handler);
-                    });
+                    if (onClickBounded) {
+                        onClickBounded.forEach(function (handler) {
+                            paymillButton.observe('click', handler);  
+                        });
+                    }
                 }
             });
-        }
-        
+        });
+
         if (that.helper.getMethodCode() === 'paymill_directdebit') {
             paymillButton.stopObserving('click');
             paymillButton.removeAttribute('onclick');
             paymillButton.setAttribute('onclick', 'paymillElv.generateTokenOnSubmit()');
         }
-        
+
         if (that.helper.getMethodCode() === 'paymill_creditcard') {
             paymillButton.stopObserving('click');
             paymillButton.removeAttribute('onclick');
             paymillButton.setAttribute('onclick', 'paymillCreditcard.generateTokenOnSubmit()');
         }
     }
-};
+}
 
 Paymill.prototype.setCreditcards = function(creditcards)
 {
@@ -175,15 +181,31 @@ tokenCallback = function(error, result)
 
         paymill.debug("Saving Token in Form: " + result.token);
         paymill.helper.setElementValue('.paymill-payment-token-' + paymill.helper.getShortCode(), result.token);
-        if (paymillButton && onClickContent) {
-            onClickBounded.each(function(wrapper){
-                wrapper.handler.call();
-            });
-        } else {
-            new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate();
+        if (paymillButton) {
+            paymillButton.removeAttribute('onclick');
+            paymillButton.stopObserving('click');
+            paymillButton.setAttribute('onclick', onClickContent);
+            if (onClickBounded) {
+                onClickBounded.forEach(function (handler) {
+                    paymillButton.observe('click', handler);  
+                });
+            }
+
+            paymillButton.click();
         }
     }
     
     
     
 }
+
+Element.addMethods({
+   closest: function closest (element, cssRule) {
+      var $element = $(element);
+      // Return if we don't find an element to work with.
+      if(!$element) {
+         return;
+      }
+      return $element.match(cssRule) ? $element : $element.up(cssRule);
+   }
+});
