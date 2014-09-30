@@ -79,6 +79,9 @@
     <default>
         <!-- 'payment' configuration section (tab) -->
         <payment>
+            <paymill>
+                <base_currency>1</base_currency>
+            </paymill>
             <paymill_creditcard>
                 <active>0</active>
                 <currency>EUR,USD</currency>
