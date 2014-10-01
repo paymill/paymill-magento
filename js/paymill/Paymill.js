@@ -126,7 +126,7 @@ Paymill.prototype.setOnClickHandler = function(selector)
             paymillButton.setAttribute('onclick', 'paymillCreditcard.generateTokenOnSubmit()');
         }
     }
-}
+};
 
 Paymill.prototype.setCreditcards = function(creditcards)
 {
@@ -198,15 +198,4 @@ tokenCallback = function(error, result)
     
     
     
-}
-
-Element.addMethods({
-   closest: function closest (element, cssRule) {
-      var $element = $(element);
-      // Return if we don't find an element to work with.
-      if(!$element) {
-         return;
-      }
-      return $element.match(cssRule) ? $element : $element.up(cssRule);
-   }
-});
+};
