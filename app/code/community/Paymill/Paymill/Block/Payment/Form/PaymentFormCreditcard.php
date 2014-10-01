@@ -104,7 +104,7 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Paymill_P
                     $card
                 );
                 $this->creditCardLogosBrand .= sprintf(
-                    'paymillCcBrands.push("%s");',
+                     "\n" . 'paymillCcBrands.push("%s");',
                     $card
                 );
             }
