@@ -123,7 +123,7 @@ Elv.prototype.getTokenParameter = function()
     }
     
     return data;
-}
+};
 
 Elv.prototype.isSepa = function()
 {
