@@ -1,7 +1,6 @@
 ## v3.8.0
  * switch for base and order currency
  * rewrite js to remove jQuery usage and only use the magento native Prototype library
- * allow partial amount capture with partial invoice creation, but only one capture per pre authorisation is allowd
  * allow to configure a prototype selector for the token creation
 
 ## v3.7.0

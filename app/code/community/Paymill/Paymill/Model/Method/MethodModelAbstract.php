@@ -53,7 +53,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      *
      * @var boolean
      */
-    protected $_canCapturePartial = true;
+    protected $_canCapturePartial = false;
 
     /**
      * Can this method use for checkout
