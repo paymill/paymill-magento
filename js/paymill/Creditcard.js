@@ -202,7 +202,7 @@ Creditcard.prototype.setEventListener = function(selector)
         if (!$$(selector)[0]) {
             paymillCreditcard.generateToken();
         } else {
-            paymillElv.setOnClickHandler(selector);
+            paymillCreditcard.setOnClickHandler(selector);
         }
     });
 
@@ -212,7 +212,7 @@ Creditcard.prototype.setEventListener = function(selector)
         if (!$$(selector)[0]) {
             paymillCreditcard.generateToken();
         } else {
-            paymillElv.setOnClickHandler(selector);
+            paymillCreditcard.setOnClickHandler(selector);
         }
     });
 
@@ -222,7 +222,7 @@ Creditcard.prototype.setEventListener = function(selector)
         if (!$$(selector)[0]) {
             paymillCreditcard.generateToken();
         } else {
-            paymillElv.setOnClickHandler(selector);
+            paymillCreditcard.setOnClickHandler(selector);
         }
     });
 
@@ -232,7 +232,7 @@ Creditcard.prototype.setEventListener = function(selector)
         if (!$$(selector)[0]) {
             paymillCreditcard.generateToken();
         } else {
-            paymillElv.setOnClickHandler(selector);
+            paymillCreditcard.setOnClickHandler(selector);
         }
     });
 
@@ -242,7 +242,7 @@ Creditcard.prototype.setEventListener = function(selector)
         if (!$$(selector)[0]) {
             paymillCreditcard.generateToken();
         } else {
-            paymillElv.setOnClickHandler(selector);
+            paymillCreditcard.setOnClickHandler(selector);
         }
     });
     

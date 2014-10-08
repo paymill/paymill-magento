@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Paymill_Paymill>
-            <version>3.8.0</version>
+            <version>3.8.1</version>
         </Paymill_Paymill>
     </modules>
 

@@ -1,3 +1,6 @@
+## v3.8.1
+ * hotfix token creation creditcard with prototype selector
+
 ## v3.8.0
  * switch for base and order currency
  * rewrite js to remove jQuery usage and only use the magento native Prototype library
