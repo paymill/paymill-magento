@@ -36,25 +36,7 @@ class Paymill_Paymill_Model_Observer
             if (array_key_exists('paymillPreauthId', $data) && !empty($data['paymillPreauthId'])) {
                 Mage::helper('paymill/loggingHelper')->log("Debug", "No Invoice generated, since the transaction is flagged as preauth");
             } else {
-                if ($order->canInvoice()) {
-                    $invoice = $order->prepareInvoice();
-
-                    $invoice->register();
-                    Mage::getModel('core/resource_transaction')
-                       ->addObject($invoice)
-                       ->addObject($invoice->getOrder())
-                       ->save();
-                    
-                    $invoice->setTransactionId($data['paymillTransactionId']);
-                    
-                    $invoice->pay()->save();
-                    
-                    $invoice->sendEmail(Mage::getStoreConfig('payment/paymill_creditcard/send_invoice_mail', Mage::app()->getStore()->getStoreId()), '');
-                } else {
-                    foreach ($order->getInvoiceCollection() as $invoice) {
-                        $invoice->pay()->save();
-                    }
-                }
+                Mage::helper('paymill/paymentHelper')->payInvoice($order, $data['paymillTransactionId']);
             }
         }
     }

@@ -91,8 +91,8 @@ class Paymill_Paymill_Block_Adminhtml_Hook_Grid extends Mage_Adminhtml_Block_Wid
      */
     protected function _getHookCollection()
     {
-        //$data = $this->_callConfigRequest();
         $data = Mage::helper("paymill/hookHelper")->getAllHooks();
+        
         if ($data) {
             $collection = new Varien_Data_Collection(); 
             foreach ($data as $value) {
@@ -100,7 +100,7 @@ class Paymill_Paymill_Block_Adminhtml_Hook_Grid extends Mage_Adminhtml_Block_Wid
                 $obj->addData(array(
                     'id' => $value['id'], 
                     'url' => $value['url'],
-                    'live' => $value['live'] ? 'live' : 'test',
+                    'live' => $value['livemode'] ? 'live' : 'test',
                     'event_types' => implode(', ', $value['event_types'])
                 ));
                 
@@ -111,16 +111,6 @@ class Paymill_Paymill_Block_Adminhtml_Hook_Grid extends Mage_Adminhtml_Block_Wid
         }
         
         return null;
-    }
-    
-    /**
-     * Gets Row Url
-     *
-     * @return string
-     */
-    public function getRowUrl($row)
-    {
-        return $this->getUrl('*/*/view', array('id' => $row->getId()));
     }
     
     /**

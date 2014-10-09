@@ -180,6 +180,29 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
 
         return $orderId;
     }
+    
+    public function payInvoice(Mage_Sales_Model_Order $order, $transactionId)
+    {
+        if ($order->canInvoice()) {
+            $invoice = $order->prepareInvoice();
+
+            $invoice->register();
+            Mage::getModel('core/resource_transaction')
+               ->addObject($invoice)
+               ->addObject($invoice->getOrder())
+               ->save();
+
+            $invoice->setTransactionId($transactionId);
+
+            $invoice->pay()->save();
+
+            $invoice->sendEmail(Mage::getStoreConfig('payment/paymill_creditcard/send_invoice_mail', Mage::app()->getStore()->getStoreId()), '');
+        } else {
+            foreach ($order->getInvoiceCollection() as $invoice) {
+                $invoice->pay()->save();
+            }
+        }
+    }
 
     /**
      * Returns an instance of the paymentProcessor class.

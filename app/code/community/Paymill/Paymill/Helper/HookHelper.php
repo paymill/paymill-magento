@@ -30,7 +30,7 @@ class Paymill_Paymill_Helper_HookHelper extends Mage_Core_Helper_Abstract
     private function _initHooks()
     { 
         $this->_hooks = new Services_Paymill_Webhooks(
-            Mage::helper('paymill/optionHelper')->getPrivateKey(), 
+            trim(Mage::helper('paymill/optionHelper')->getPrivateKey()), 
             Mage::helper('paymill')->getApiUrl()
         );
         
