@@ -10,6 +10,11 @@
                     <sort_order>10</sort_order>
                     <action>paymill/adminhtml_log</action>
                 </paymill_log>
+                <paymill_hook translate="title" module="paymill">
+                    <title>paymill_hook</title>
+                    <sort_order>10</sort_order>
+                    <action>paymill/adminhtml_hook</action>
+                </paymill_hook>
             </children>
         </logs>
     </menu>

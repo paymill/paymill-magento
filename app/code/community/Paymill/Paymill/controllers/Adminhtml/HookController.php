@@ -18,17 +18,17 @@
  * @copyright Copyright (c) 2013 PAYMILL GmbH (https://paymill.com/en-gb/) 
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)  
  */
-class Paymill_Paymill_Adminhtml_LogController extends Mage_Adminhtml_Controller_Action
+class Paymill_Paymill_Adminhtml_HookController extends Mage_Adminhtml_Controller_Action
 {
 
     /**
-     * Initialize logs view
+     * Initialize hooks view
      * 
-     * @return Paymill_Paymill_Adminhtml_LogController
+     * @return Paymill_Paymill_Adminhtml_HookController
      */
     protected function _initAction()
     {
-        $this->loadLayout()->_setActiveMenu('log/paymill_log');
+        $this->loadLayout()->_setActiveMenu('hooks/paymill_hook');
         return $this;
     }
 
@@ -37,49 +37,51 @@ class Paymill_Paymill_Adminhtml_LogController extends Mage_Adminhtml_Controller_
      */
     public function indexAction()
     {
-        // Let's call our initAction method which will set some basic params for each action
-        $this->_initAction()
-                ->renderLayout();
+        $this->_initAction()->renderLayout();
     }
     
-    /**
-     * View single xml request or response
-     */
-    public function viewAction()
+    public function newAction()
     {
-        $id = $this->getRequest()->getParam('id');
-        $model = Mage::getModel('paymill/log')->load($id);
-        if ($model->getId()) {
-            Mage::register('paymill_log_entry', $model);
-            $this->_initAction();
-            $this->_addContent($this->getLayout()->createBlock('paymill/adminhtml_log_view'));
-            $this->renderLayout();
-        } else {
-            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('paymill')->__('Item does not exist'));
-            $this->_redirect('*/*/');
-        }
+        $this->_initAction();
+        
+        $this->_addContent($this->getLayout()->createBlock('paymill/adminhtml_hook_edit'));
+        $this->renderLayout();
     }
     
+    public function saveAction()
+    {
+        $post = $this->getRequest()->getPost();
+        if (is_array($post) && array_key_exists('hook_url', $post) && array_key_exists('hook_types', $post)) {
+            Mage::helper("paymill/hookHelper")->createHook(array(
+                'url' => $post['hook_url'],
+                'event_types' => $post['hook_types']
+            ));
+        }
+        
+        $this->_redirect('*/*/index');
+    }
+
     /**
      * Normal Magento delete mass action for selected entries
      */
     public function massDeleteAction()
     {
-        $logIds = $this->getRequest()->getParam('log_id');
+        $hookIds = $this->getRequest()->getParam('hook_id');
 
-        if (!is_array($logIds)) {
+        if (!is_array($hookIds)) {
             Mage::getSingleton('adminhtml/session')->addError(Mage::helper('paymill')->__('paymill_error_text_no_entry_selected'));
         } else {
             try {
-                foreach ($logIds as $logId) {
-                    Mage::getModel('paymill/log')->load($logId)->delete();
+                foreach ($hookIds as $hookId) {
+                    Mage::helper("paymill/hookHelper")->deleteHook($hookId);
                 }
-
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('paymill')->__("paymill_log_action_success"));
+                
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('paymill')->__("paymill_hook_action_success"));
             } catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             }
         }
+        
         $this->_redirect('*/*/index');
     }
 

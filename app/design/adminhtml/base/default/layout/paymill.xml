@@ -9,4 +9,13 @@
         <update handle="formkey"/>
         <block type="paymill/adminhtml_log_grid" name="adminhtml_log.grid" output="toHtml" />
     </paymill_adminhtml_log_grid> 
+    <paymill_adminhtml_hook_index>
+        <reference name="content">
+            <block type="paymill/adminhtml_hook" name="adminhtml_hook.grid.container" />
+        </reference>
+    </paymill_adminhtml_hook_index>
+    <paymill_adminhtml_hook_grid>
+        <update handle="formkey"/>
+        <block type="paymill/adminhtml_hook_grid" name="adminhtml_hook.grid" output="toHtml" />
+    </paymill_adminhtml_hook_grid> 
 </layout>
