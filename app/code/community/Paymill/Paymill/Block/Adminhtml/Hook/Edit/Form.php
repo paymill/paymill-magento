@@ -24,7 +24,7 @@ class Paymill_Paymill_Block_Adminhtml_Hook_Edit_Form extends Mage_Adminhtml_Bloc
     {
         $form = new Varien_Data_Form();
 
-        $fieldset = $form->addFieldset('base_fieldset', array('legend' => Mage::helper('paymill')->__('Hook Data')));
+        $fieldset = $form->addFieldset('base_fieldset', array('legend' => Mage::helper('paymill')->__('hook_data')));
 
         $fieldset->addField('hook_url', 'text', array(
             'name'  => 'hook_url',

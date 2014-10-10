@@ -28,7 +28,7 @@ class Paymill_Paymill_Block_Adminhtml_Hook extends Mage_Adminhtml_Block_Widget_G
     {
         $this->_blockGroup = 'paymill';
         $this->_controller = 'adminhtml_hook';
-        $this->_headerText = Mage::helper('paymill')->__('paymill_hook');
+        $this->_headerText = Mage::helper('paymill')->__('Webhooks');
         parent::__construct();
     }
 

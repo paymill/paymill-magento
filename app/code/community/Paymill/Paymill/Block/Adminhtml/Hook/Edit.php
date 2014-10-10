@@ -26,7 +26,7 @@ class Paymill_Paymill_Block_Adminhtml_Hook_Edit extends Mage_Adminhtml_Block_Wid
 
         $this->_controller = 'adminhtml_hook';
         $this->_blockGroup = 'paymill';
-        $this->_updateButton('save', 'label', Mage::helper('paymill')->__('Save Hook'));
+        $this->_updateButton('save', 'label', Mage::helper('paymill')->__('save_hook'));
         $this->_removeButton('delete');
         $this->_removeButton('back');
     }
