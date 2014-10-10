@@ -29,11 +29,11 @@ Paymill.prototype.validate = function()
 Paymill.prototype.generateToken = function()
 {
     if (this.validate()) {
-		if (that.helper.getMethodCode() === 'paymill_creditcard') {
+		if (this.helper.getMethodCode() === 'paymill_creditcard') {
 			new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate();
 		}
 		
-		if (that.helper.getMethodCode() === 'paymill_directdebit') {
+		if (this.helper.getMethodCode() === 'paymill_directdebit') {
 			new Validation($$('#paymill_directdebit_holdername')[0].form.id).validate();
 		}
 		
@@ -50,13 +50,13 @@ Paymill.prototype.generateToken = function()
 Paymill.prototype.generateTokenOnSubmit = function()
 {
     if (this.helper.getElementValue('.paymill-info-fastCheckout-' + this.helper.getShortCode()) !== 'true') {
-		if (that.helper.getMethodCode() === 'paymill_creditcard') {
+		if (this.helper.getMethodCode() === 'paymill_creditcard') {
 			if (new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate()) {
 				this.generateToken();
 			}
 		}
 		
-		if (that.helper.getMethodCode() === 'paymill_directdebit') {
+		if (this.helper.getMethodCode() === 'paymill_directdebit') {
 			if (new Validation($$('#paymill_directdebit_holdername')[0].form.id).validate()) {
 				this.generateToken();
 			}
