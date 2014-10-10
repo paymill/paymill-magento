@@ -29,6 +29,14 @@ To install the extension merge the contents of this cloned repository with your 
 
 Afterwards go to System > Configuration > Payment Methods and configure the PAYMILL payment methods you intend to use by inserting your PAYMILL test or live keys in the PAYMILL Basic Settings.
 
+## Webhooks
+To configure webhooks you have to open the webhook section in your magento admin, go to Paymill => Paymill Hooks => Add New
+The url field should be prefilled. You can select between 3 event types (refund.succeeded, transaction.succeeded, chargeback.executed). Mulitiple selection possible.
+
+For the transaction.succeeded a invoice and a order comment  will be created when the webhook arrives. For example after manuel a capture in the paymill cockpit.
+For refund.succeeded with the full order amount a creditmemo and a order comment weill be created. For partial amounts only a order comment is added.
+For chargeback.executed a order comment and a creditmemo will be created.
+
 ## In case of errors
 
 In case of any errors turn on the debug mode and logging in the PAYMILL Basic Settings. Open the javascript console in your browser and check what's being logged during the checkout process. To access the logged information not printed in the console please refer to the PAYMILL Log in the admin backend.
