@@ -200,7 +200,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
             
             $invoice->save();
 
-            $invoice->sendEmail(Mage::getStoreConfig('payment/paymill_creditcard/send_invoice_mail', Mage::app()->getStore()->getStoreId()), '');
+            $invoice->sendEmail(Mage::getStoreConfig('payment/paymill_creditcard/send_invoice_mail', Mage::app()->getStore()->getStoreId()), '');            
         } else {
             foreach ($order->getInvoiceCollection() as $invoice) {
                 $invoice->pay()->save();

@@ -85,8 +85,6 @@ class Paymill_Paymill_HookController extends Mage_Core_Controller_Front_Action
             
             $transactionId = $data['event']['event_resource']['id'];
             
-            Mage::log(substr($transactionId, 0, 4));
-            
             if (substr($transactionId, 0, 4) !== 'tran') {
                 $transactionId = $data['event']['event_resource']['transaction']['id'];
             }
@@ -110,7 +108,11 @@ class Paymill_Paymill_HookController extends Mage_Core_Controller_Front_Action
     {
         $description = '';
         
-        if (array_key_exists('transaction', $data)) {
+        if (array_key_exists('description', $data)) {
+            $description = $data['description'];
+        }
+        
+        if (empty($description) && array_key_exists('transaction', $data)) {
             $description = $data['transaction']['description'];
         }
         
