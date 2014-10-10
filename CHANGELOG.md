@@ -1,3 +1,6 @@
+## v3.9.0
+ * add webhook support for the following events (refund.succeeded, transaction.succeeded, chargeback.executed)
+
 ## v3.8.1
  * hotfix token creation creditcard with prototype selector
 
