@@ -20,12 +20,15 @@
  */
 class Paymill_Paymill_HookController extends Mage_Core_Controller_Front_Action
 {    
+    private $_eventType = '';
+    
     public function executeAction()
     {
         $data = json_decode($this->getRequest()->getRawBody(), true);
         if ($data && $this->_validateRequest($data)) {
             $eventResource = $data['event']['event_resource'];
-            switch ($data['event']['event_type']) {
+            $this->_eventType = $data['event']['event_type'];
+            switch ($this->_eventType) {
                 case 'transaction.succeeded':
                     $this->_transactionSucceededAction($eventResource);
                 break;
@@ -46,6 +49,10 @@ class Paymill_Paymill_HookController extends Mage_Core_Controller_Front_Action
         if ((int) Mage::helper('paymill/paymentHelper')->getAmount($order) === (int) $data['amount']) {
             Mage::helper('paymill/paymentHelper')->invoice($order, $data['id']);
         }
+        
+        $order->addStatusHistoryComment(
+            $this->_eventType . ' event executed. ' . $data['amount'] / 100 . ' ' .  $data['currency'] . ' captured.'
+        )->save();
     }
     
     private function _refundSucceededAction(array $data)
@@ -55,12 +62,20 @@ class Paymill_Paymill_HookController extends Mage_Core_Controller_Front_Action
         if ((int) Mage::helper('paymill/paymentHelper')->getAmount($order) === (int) $data['amount']) {
             Mage::helper('paymill/refundHelper')->creditmemo($order, $data['id']);
         }
+        
+        $order->addStatusHistoryComment(
+            $this->_eventType . ' event executed. ' . $data['amount'] / 100 . ' ' .  $data['transaction']['currency'] . ' refunded.'
+        )->save();
     }
     
     private function _chargebackExecutedAction(array $data)
     {
         $order = $this->getOrder($data['transaction']);
         Mage::helper('paymill/refundHelper')->creditmemo($order, $data['id']);
+        
+        $order->addStatusHistoryComment(
+            $this->_eventType . ' event executed. ' . $data['amount'] / 100 . ' ' .  $data['transaction']['currency'] . ' chargeback received.'
+        )->save();
     }
     
     private function _validateRequest($data)
