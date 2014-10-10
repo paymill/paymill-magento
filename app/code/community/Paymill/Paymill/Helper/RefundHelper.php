@@ -86,5 +86,26 @@ class Paymill_Paymill_Helper_RefundHelper extends Mage_Core_Helper_Abstract
         //Validate Refund and return feedback
         return $this->validateRefund($refund);
     }
+    
+    public function creditmemo(Mage_Sales_Model_Order $order, $refundId)
+    {        
+        if ($order->canCreditmemo()) {
 
+            $service = Mage::getModel('sales/service_order', $order);
+            $creditmemo = $service->prepareCreditmemo();
+            
+            $creditmemo->setOfflineRequested(true);
+            
+            $creditmemo->register();
+            
+            Mage::getModel('core/resource_transaction')
+               ->addObject($creditmemo)
+               ->addObject($creditmemo->getOrder())
+               ->save();
+            
+            $creditmemo->setTransactionId($refundId);
+            
+            $creditmemo->save();
+        }
+    }
 }

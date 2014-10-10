@@ -27,13 +27,13 @@ class Paymill_Paymill_HookController extends Mage_Core_Controller_Front_Action
             $eventResource = $data['event']['event_resource'];
             switch ($data['event']['event_type']) {
                 case 'transaction.succeeded':
-                    $this->_transactionSucceededAction($eventResource['preauthorization']);
+                    $this->_transactionSucceededAction($eventResource);
                 break;
                 case 'refund.succeeded':
-                    $this->_refundSucceededAction($eventResource['transaction']);
+                    $this->_refundSucceededAction($eventResource);
                 break;
                 case 'chargeback.executed':
-                    $this->_chargebackExecutedAction($eventResource['transaction']);
+                    $this->_chargebackExecutedAction($eventResource);
                 break;
             }
         }
@@ -44,18 +44,23 @@ class Paymill_Paymill_HookController extends Mage_Core_Controller_Front_Action
         $order = $this->getOrder($data);
         
         if ((int) Mage::helper('paymill/paymentHelper')->getAmount($order) === (int) $data['amount']) {
-            Mage::helper('paymill/paymentHelper')->payInvoice($order, $data['id']);
+            Mage::helper('paymill/paymentHelper')->invoice($order, $data['id']);
         }
     }
     
     private function _refundSucceededAction(array $data)
     {
+        $order = $this->getOrder($data['transaction']);
         
+        if ((int) Mage::helper('paymill/paymentHelper')->getAmount($order) === (int) $data['amount']) {
+            Mage::helper('paymill/refundHelper')->creditmemo($order, $data['id']);
+        }
     }
     
     private function _chargebackExecutedAction(array $data)
     {
-        
+        $order = $this->getOrder($data['transaction']);
+        Mage::helper('paymill/refundHelper')->creditmemo($order, $data['id']);
     }
     
     private function _validateRequest($data)
@@ -65,7 +70,9 @@ class Paymill_Paymill_HookController extends Mage_Core_Controller_Front_Action
             
             $transactionId = $data['event']['event_resource']['id'];
             
-            if (substr($transactionId, 1, 4) !== 'tran') {
+            Mage::log(substr($transactionId, 0, 4));
+            
+            if (substr($transactionId, 0, 4) !== 'tran') {
                 $transactionId = $data['event']['event_resource']['transaction']['id'];
             }
             
@@ -86,6 +93,16 @@ class Paymill_Paymill_HookController extends Mage_Core_Controller_Front_Action
     
     private function getOrder(array $data)
     {
-        return Mage::getModel('sales/order')->loadByIncrementId(substr($data['description'], 1, 9));
+        $description = '';
+        
+        if (array_key_exists('transaction', $data)) {
+            $description = $data['transaction']['description'];
+        }
+        
+        if (empty($description) && array_key_exists('preauthorization', $data)) {
+            $description = $data['preauthorization']['description'];
+        }
+                
+        return Mage::getModel('sales/order')->loadByIncrementId(substr($description, 0, 9));
     }
 }

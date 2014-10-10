@@ -99,7 +99,7 @@ class Paymill_Paymill_Block_Adminhtml_Hook_Grid extends Mage_Adminhtml_Block_Wid
                 $obj = new Varien_Object();
                 $obj->addData(array(
                     'id' => $value['id'], 
-                    'url' => $value['url'],
+                    'target' => !array_key_exists('url', $value) ? $value['email'] : $value['url'],
                     'live' => $value['livemode'] ? 'live' : 'test',
                     'event_types' => implode(', ', $value['event_types'])
                 ));
@@ -130,9 +130,9 @@ class Paymill_Paymill_Block_Adminhtml_Hook_Grid extends Mage_Adminhtml_Block_Wid
             'index' => 'event_types',
         ));
         
-        $this->addColumn('url', array(
-            'header' => Mage::helper('paymill')->__('paymill_backend_hook_url'),
-            'index' => 'url',
+        $this->addColumn('target', array(
+            'header' => Mage::helper('paymill')->__('paymill_backend_hook_target'),
+            'index' => 'target',
         ));
         
         $this->addColumn('live', array(
