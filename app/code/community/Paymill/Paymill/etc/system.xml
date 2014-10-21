@@ -242,7 +242,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
-                                <hook_create_invoice_active>0</hook_create_invoice_active>
+                                <hook_create_invoice_active>1</hook_create_invoice_active>
                             </depends>
                         </send_hook_invoice_mail>
                     </fields>
@@ -370,7 +370,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends>
-                                <hook_create_invoice_active>0</hook_create_invoice_active>
+                                <hook_create_invoice_active>1</hook_create_invoice_active>
                             </depends>
                         </send_hook_invoice_mail>
                     </fields>
