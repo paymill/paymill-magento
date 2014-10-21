@@ -55,7 +55,7 @@ class Paymill_Paymill_HookController extends Mage_Core_Controller_Front_Action
                 $order, 
                 $data['id'],
                 Mage::getStoreConfig(
-                    'payment/' . $order->getPayment()->getMethodInstance()->getCode() . '/send_invoice_mail', 
+                    'payment/' . $order->getPayment()->getMethodInstance()->getCode() . '/send_hook_invoice_mail', 
                     Mage::app()->getStore()->getStoreId()
                 )
             );
