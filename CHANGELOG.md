@@ -1,3 +1,6 @@
+## v3.9.1
+ * make invoice creation for webhooks "transaction.succeeded" event configurable
+
 ## v3.9.0
  * add webhook support for the following events (refund.succeeded, transaction.succeeded, chargeback.executed)
 

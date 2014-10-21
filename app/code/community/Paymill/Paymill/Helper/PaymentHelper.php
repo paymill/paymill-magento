@@ -181,7 +181,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
         return $orderId;
     }
     
-    public function invoice(Mage_Sales_Model_Order $order, $transactionId)
+    public function invoice(Mage_Sales_Model_Order $order, $transactionId, $mail)
     {
         if ($order->canInvoice()) {
             $invoice = $order->prepareInvoice();
@@ -200,7 +200,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
             
             $invoice->save();
 
-            $invoice->sendEmail(Mage::getStoreConfig('payment/paymill_creditcard/send_invoice_mail', Mage::app()->getStore()->getStoreId()), '');            
+            $invoice->sendEmail($mail, '');            
         } else {
             foreach ($order->getInvoiceCollection() as $invoice) {
                 $invoice->pay()->save();

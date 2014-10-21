@@ -11,7 +11,7 @@
                     <sort_order>700</sort_order>
                     <fields>
                         <version>
-                            <label>v3.9.0</label>
+                            <label>v3.9.1</label>
                             <sort_order>1</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <frontend_type>label</frontend_type>
@@ -66,7 +66,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </logging_active>
-                        <version>
+                        <expert_settings>
                             <label>paymill_expert_settings</label>
                             <sort_order>9</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
@@ -74,7 +74,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </version>
+                        </expert_settings>
                         <base_currency>
                             <label>paymill_base_or_order_currency</label>
                             <tooltip>paymill_paymill_base_or_order_currency_tooltip</tooltip>
@@ -105,7 +105,7 @@
                     <sort_order>800</sort_order>
                     <fields>
                         <version>
-                            <label>v3.9.0</label>
+                            <label>v3.9.1</label>
                             <sort_order>100</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <frontend_type>label</frontend_type>
@@ -210,11 +210,41 @@
                         <sort_order translate="label">
                             <label>paymill_opt_Sort</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>400</sort_order>
+                            <sort_order>381</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </sort_order>
+                        <hook_settings>
+                            <label>paymill_hook_settings</label>
+                            <sort_order>385</sort_order>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <frontend_type>label</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </hook_settings>
+                        <hook_create_invoice_active translate="label">
+                            <label>paymill_hook_create_invoice_active</label>
+                            <sort_order>390</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </hook_create_invoice_active>
+                        <send_hook_invoice_mail translate="label">
+                            <label>paymill_hook_send_invoice_mail</label>
+                            <sort_order>395</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <hook_create_invoice_active>0</hook_create_invoice_active>
+                            </depends>
+                        </send_hook_invoice_mail>
                     </fields>
                 </paymill_creditcard>
 
@@ -226,7 +256,7 @@
                     <sort_order>800</sort_order>
                     <fields>
                         <version>
-                            <label>v3.9.0</label>
+                            <label>v3.9.1</label>
                             <sort_order>100</sort_order>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <frontend_type>label</frontend_type>
@@ -297,14 +327,52 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </checkout_desc>
+                        <checkout_desc translate="label">
+                            <label>paymill_checkout_desc</label>
+                            <sort_order>380</sort_order>
+                            <frontend_type>textarea</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </checkout_desc>
                         <sort_order translate="label">
                             <label>paymill_opt_Sort</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>400</sort_order>
+                            <sort_order>381</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </sort_order>
+                        <hook_settings>
+                            <label>paymill_hook_settings</label>
+                            <sort_order>385</sort_order>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <frontend_type>label</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </hook_settings>
+                        <hook_create_invoice_active translate="label">
+                            <label>paymill_hook_create_invoice_active</label>
+                            <sort_order>390</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </hook_create_invoice_active>
+                        <send_hook_invoice_mail translate="label">
+                            <label>paymill_hook_send_invoice_mail</label>
+                            <sort_order>395</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <hook_create_invoice_active>0</hook_create_invoice_active>
+                            </depends>
+                        </send_hook_invoice_mail>
                     </fields>
                 </paymill_directdebit>
             </groups>
