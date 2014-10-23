@@ -119,16 +119,16 @@ class Paymill_Paymill_HookController extends Mage_Core_Controller_Front_Action
     {
         $description = '';
         
-        if (array_key_exists('description', $data)) {
-            $description = $data['description'];
+        if (empty($description) && array_key_exists('preauthorization', $data)) {
+            $description = $data['preauthorization']['description'];
         }
         
         if (empty($description) && array_key_exists('transaction', $data)) {
             $description = $data['transaction']['description'];
         }
         
-        if (empty($description) && array_key_exists('preauthorization', $data)) {
-            $description = $data['preauthorization']['description'];
+        if (empty($description) && array_key_exists('description', $data)) {
+            $description = $data['description'];
         }
                 
         return Mage::getModel('sales/order')->loadByIncrementId(substr($description, 0, 9));
