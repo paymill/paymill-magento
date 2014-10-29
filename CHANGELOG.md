@@ -1,3 +1,6 @@
+## v3.9.2
+ * add a javascript fallback for Array.forEach to support the token selector feature also for IE 8
+
 ## v3.9.1
  * make invoice creation for webhooks "transaction.succeeded" event configurable
 
