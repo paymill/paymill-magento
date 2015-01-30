@@ -1,3 +1,6 @@
+## v3.9.3
+ * remove usage of Varien_Date::toTimestamp() to avoid incompatibility to Magento 1.5.x.x
+
 ## v3.9.2
  * add a javascript fallback for Array.forEach to support the token selector feature also for IE 8
 

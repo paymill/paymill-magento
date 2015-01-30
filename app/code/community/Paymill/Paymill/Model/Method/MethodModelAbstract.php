@@ -297,7 +297,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         $dateTime->modify('+' . (int) Mage::helper('paymill/optionHelper')->getPrenotificationDays() . ' day');
         $date = Mage::app()->getLocale()->storeDate(
             $order->getStore(), 
-            Varien_Date::toTimestamp($dateTime->format('Y-m-d H:i:s')),
+            $dateTime->getTimestamp(),
             true
         );
         
