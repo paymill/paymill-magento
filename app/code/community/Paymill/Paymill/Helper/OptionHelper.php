@@ -140,4 +140,13 @@ class Paymill_Paymill_Helper_OptionHelper extends Mage_Core_Helper_Abstract
     {
         return $this->_getBackendOption("paymill_directdebit", "prenotification");
     }
+
+    /**
+     * Returns the value of the "Payment Form" config from the Backend as a string
+     * @return string
+     */
+    public function getPci()
+    {
+        return $this->_getBackendOption("paymill_creditcard", "pci");
+    }
 }

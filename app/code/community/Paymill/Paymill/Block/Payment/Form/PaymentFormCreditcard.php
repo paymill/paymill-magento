@@ -43,8 +43,11 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Paymill_P
         parent::_construct();
 
         $this->setPaymillCcLogos();
-
-        $this->setTemplate('paymill/payment/form/creditcard.phtml');
+        if(Mage::helper('paymill/optionHelper')->getPci() === 'SAQ A-EP') {
+            $this->setTemplate('paymill/payment/form/creditcard.phtml');
+        } else {
+            $this->setTemplate('paymill/payment/form/creditcard_form.phtml');
+        }
     }
 
     /**
