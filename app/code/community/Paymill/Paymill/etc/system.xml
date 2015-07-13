@@ -114,7 +114,7 @@
                             <show_in_store>1</show_in_store>
                         </version>
                         <pci translate="label">
-                            <label>Payment form</label>
+                            <label>paymill_payment_form</label>
                             <frontend_type>select</frontend_type>
                             <sort_order>110</sort_order>
                             <source_model>paymill/source_creditcard_pci</source_model>
