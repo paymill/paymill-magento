@@ -58,17 +58,36 @@ Paymill.prototype.generateToken = function()
 Paymill.prototype.generateTokenOnSubmit = function()
 {
     if (this.helper.getElementValue('.paymill-info-fastCheckout-' + this.helper.getShortCode()) !== 'true') {
-		if (this.helper.getMethodCode() === 'paymill_creditcard') {
-			if (new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate()) {
-				this.generateToken();
-			}
-		}
-		
-		if (this.helper.getMethodCode() === 'paymill_directdebit') {
-			if (new Validation($$('#paymill_directdebit_holdername')[0].form.id).validate()) {
-				this.generateToken();
-			}
-		}
+
+        if (this.helper.getMethodCode() === 'paymill_creditcard') {
+            if(this.helper.getElementValue('.paymill-info-pci-' + this.helper.getShortCode()) === 'SAQ A') {
+                var data = this.methodInstance.getFrameTokenParameter();
+                this.debug("Generating Token");
+                this.debug(data);
+                paymill.createTokenViaFrame(data, tokenCallback);
+            } else if (new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate()) {
+                this.generateToken();
+            }
+        }
+
+        if (this.helper.getMethodCode() === 'paymill_directdebit') {
+            if (new Validation($$('#paymill_directdebit_holdername')[0].form.id).validate()) {
+                this.generateToken();
+            }
+        }
+    } else {
+        if (paymillButton) {
+            paymillButton.removeAttribute('onclick');
+            paymillButton.stopObserving('click');
+            paymillButton.setAttribute('onclick', onClickContent);
+            if (onClickBounded) {
+                onClickBounded.forEach(function (handler) {
+                    paymillButton.observe('click', handler);
+                });
+            }
+
+            paymillButton.click();
+        }
     }
 };
 
@@ -108,9 +127,20 @@ Paymill.prototype.setEventListener = function(selector)
 Paymill.prototype.setOnClickHandler = function(selector)
 {
     var that = this;
-    
+
     if ($$(selector)[0]) {
         paymillButton = $$(selector)[0];
+    } else if($$('#onestepcheckout-place-order')[0]) {
+        paymillButton = $$('#onestepcheckout-place-order')[0];
+    } else if($$('#firecheckout-form button[onclick*="checkout.save()"]')[0]) {
+        paymillButton = $$('#firecheckout-form button[onclick*="checkout.save()"]')[0];
+    } else if($$('#onestepcheckout-form')[0]) {
+        paymillButton = $$('#onestepcheckout-form button[onclick*="review.save()"]')[0];
+    } else {
+        paymillButton = $$('button[onclick*="payment.save()"]')[0];
+    }
+
+    if (paymillButton) {
         if (!onClickContent) {
             onClickContent = paymillButton.getAttribute('onclick');
             if (paymillButton.getStorage()._object.prototype_event_registry) {
@@ -174,6 +204,7 @@ tokenCallback = function(error, result)
             message = error.message;
         }
 
+
         // Appending error
         rules['paymill-validate-' + paymill.helper.getShortCode() + '-token'] = new Validator(
             'paymill-validate-' + paymill.helper.getShortCode() + '-token',
@@ -190,7 +221,7 @@ tokenCallback = function(error, result)
         paymill.debug(error.message);
         paymill.debug("Paymill Response Handler triggered: Error.");
         Object.extend(Validation.methods, rules);
-        new Validation($$('#paymill_creditcard_cvc')[0].form.id).validate();
+        new Validation($$('.paymill-payment-token-' + paymill.helper.getShortCode())[0].form.id).validate();
     } else {
         rules['paymill-validate-' + paymill.helper.getShortCode() + '-token'] = new Validator(
             'paymill-validate-' + paymill.helper.getShortCode() + '-token',

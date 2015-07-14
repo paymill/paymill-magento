@@ -3,4 +3,27 @@
     <li>
         <?php echo $this->getCreditCardLogosDisplay();?>
     </li>
+    <li>
+        <div id='paymillContainer'></div>
+        <input class="paymill-payment-token-cc paymill-validate-cc-token" name="payment[paymill-payment-token-cc]" id="payment[paymill-payment-token-cc]" type="hidden" />
+        <input class="paymill-payment-token-url-cc" type="hidden" value="<?php echo  $this->getUrl('paymill/token/total', array('_secure'=>true));  ?>"/>
+        <input class="paymill-payment-token-log-cc" type="hidden" value="<?php echo  $this->getUrl('paymill/token/log', array('_secure'=>true));  ?>"/>
+        <input class="paymill-info-public_key-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey(); ?>"/>
+        <input class="paymill-option-debug-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode(); ?>"/>
+        <input class="paymill-info-pci-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPci($_code); ?>"/>
+        <input class="paymill-info-fastCheckout-cc" type="hidden" value="<?php echo $this->isNormalCheckout($_code); ?>"/>
+        <input class="paymill-payment-currency-cc" type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getCurrency(Mage::getSingleton('checkout/session')->getQuote()); ?>"/>
+    </li>
+    <?php if (!is_null(Mage::getStoreConfig('payment/paymill_creditcard/checkout_desc', Mage::app()->getStore()->getStoreId()))): ?>
+        <li>
+            <?php echo Mage::getStoreConfig('payment/paymill_creditcard/checkout_desc', Mage::app()->getStore()->getStoreId()); ?>
+        </li>
+    <?php endif; ?>
 </ul>
+<script type="text/javascript">
+    //<![CDATA[
+    paymillCreditcard = new Paymill('<?php echo $_code; ?>');
+    paymill.embedFrame('paymillContainer', {lang: '<?php echo $this->__('paymill_lang') ?>'}, PaymillFrameResponseHandler);
+    paymillTokenSelector = '<?php echo Mage::helper('paymill/optionHelper')->getTokenSelector(); ?>';
+    //]]>
+</script>

@@ -78,6 +78,7 @@
         <input class="PAYMILL_field_invalid_bic-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_bic"); ?>"/>
         <input class="PAYMILL_field_invalid_country-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_country"); ?>"/>
         <input class="PAYMILL_field_invalid_bank_data-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_bank_data"); ?>"/>
+        <input class="paymill-info-pci-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPci($_code); ?>"/>
     </li>
     <?php if (!is_null(Mage::getStoreConfig('payment/paymill_creditcard/checkout_desc', Mage::app()->getStore()->getStoreId()))): ?>
     <li>

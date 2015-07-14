@@ -28,7 +28,7 @@ class Paymill_Paymill_Model_Source_Creditcard_Pci
         $pciMode = array(
             array(
                 'label' => Mage::helper('core')->__('PayFrame (min. PCI SAQ A)'),
-                'value' => 'SAQ'
+                'value' => 'SAQ A'
             ),
             array(
                 'label' => Mage::helper('core')->__('direct integration (min. PCI SAQ A-EP)'),

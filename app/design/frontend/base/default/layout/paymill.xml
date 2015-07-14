@@ -13,7 +13,7 @@ and open the template in the editor.
                 <action method="addText">
                     <text>
                         <![CDATA[
-                            <script type="text/javascript" src="https://bridge.paymill.com/"></script>
+                            <script type="text/javascript" src="https://bridge.paymill.com/dss3"></script>
                         ]]>
                     </text>
                 </action>

@@ -143,6 +143,17 @@ Creditcard.prototype.getTokenParameter = function()
     };
 };
 
+Creditcard.prototype.getFrameTokenParameter = function()
+{
+    PAYMILL_PUBLIC_KEY = this.helper.getElementValue('.paymill-info-public_key-cc');
+
+    return {
+        amount_int: parseInt(this.getTokenAmount()),
+        currency: this.helper.getElementValue('.paymill-payment-currency-cc')
+    };
+};
+
+
 Creditcard.prototype.getTokenAmount = function()
 {
     var that = this;
@@ -256,3 +267,13 @@ Creditcard.prototype.setCreditcards = function(creditcards)
 {
     this.creditcards = creditcards;
 };
+
+PaymillFrameResponseHandler = function(error)
+{
+    if (error) {
+        paymillCreditcard.debug("iFrame load failed with " + error.apierror + error.message);
+    } else {
+        paymillCreditcard.debug("iFrame successfully loaded");
+        paymillCreditcard.setOnClickHandler(paymillTokenSelector);
+    }
+}
