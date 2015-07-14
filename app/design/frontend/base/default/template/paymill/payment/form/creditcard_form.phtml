@@ -11,7 +11,7 @@
         <input class="paymill-info-public_key-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey(); ?>"/>
         <input class="paymill-option-debug-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode(); ?>"/>
         <input class="paymill-info-pci-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPci($_code); ?>"/>
-        <input class="paymill-info-fastCheckout-cc" type="hidden" value="<?php echo $this->isNormalCheckout($_code); ?>"/>
+        <input class="paymill-info-fastCheckout-cc" type="hidden" value="<?php echo $this->isFastCheckout($_code); ?>"/>
         <input class="paymill-payment-currency-cc" type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getCurrency(Mage::getSingleton('checkout/session')->getQuote()); ?>"/>
     </li>
     <?php if (!is_null(Mage::getStoreConfig('payment/paymill_creditcard/checkout_desc', Mage::app()->getStore()->getStoreId()))): ?>

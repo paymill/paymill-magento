@@ -51,7 +51,7 @@
         <input class="paymill-payment-currency-cc" type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getCurrency(Mage::getSingleton('checkout/session')->getQuote()); ?>"/>
         <input class="paymill-option-debug-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode(); ?>"/>
         <input class="paymill-info-public_key-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey(); ?>"/>
-        <input class="paymill-info-fastCheckout-cc" type="hidden" value="<?php echo $this->isNormalCheckout($_code); ?>"/>
+        <input class="paymill-info-fastCheckout-cc" type="hidden" value="<?php echo $this->isFastCheckout($_code); ?>"/>
         <input class="paymill-payment-error-number" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_number_cc");?>"/>
         <input class="paymill-payment-error-holder" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_holder_cc"); ?>"/>
         <input class="paymill-payment-error-expdate" type="hidden" value="<?php echo $this->__("paymill_error_text_invalid_expdate"); ?>"/>
