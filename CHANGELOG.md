@@ -1,3 +1,6 @@
+## v4.0.0
+ * Integration of PayFrame to enable use of SAQ A for easier PCI DSS 3.0 compliance.
+
 ## v3.9.3
  * remove usage of Varien_Date::toTimestamp() to avoid incompatibility to Magento 1.5.x.x
 
