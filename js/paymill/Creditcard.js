@@ -268,6 +268,13 @@ Creditcard.prototype.setCreditcards = function(creditcards)
     this.creditcards = creditcards;
 };
 
+Creditcard.prototype.openPaymillFrame = function(lang)
+{
+    $$('#paymillFastCheckoutDiv')[0].parentNode.removeChild($$('#paymillFastCheckoutDiv')[0]);
+    paymill.embedFrame('paymillContainer', {lang: lang}, PaymillFrameResponseHandler);
+    this.helper.setElementValue('.paymill-info-fastCheckout-cc', 'false');
+};
+
 PaymillFrameResponseHandler = function(error)
 {
     if (error) {
@@ -277,3 +284,4 @@ PaymillFrameResponseHandler = function(error)
         paymillCreditcard.setOnClickHandler(paymillTokenSelector);
     }
 }
+
