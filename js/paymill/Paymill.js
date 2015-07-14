@@ -128,16 +128,20 @@ Paymill.prototype.setOnClickHandler = function(selector)
 {
     var that = this;
 
-    if ($$(selector)[0]) {
-        paymillButton = $$(selector)[0];
-    } else if($$('#onestepcheckout-place-order')[0]) {
-        paymillButton = $$('#onestepcheckout-place-order')[0];
-    } else if($$('#firecheckout-form button[onclick*="checkout.save()"]')[0]) {
-        paymillButton = $$('#firecheckout-form button[onclick*="checkout.save()"]')[0];
-    } else if($$('#onestepcheckout-form')[0]) {
-        paymillButton = $$('#onestepcheckout-form button[onclick*="review.save()"]')[0];
+    if(this.helper.getMethodCode() === 'paymill_creditcard' && this.helper.getElementValue('.paymill-info-pci-' + this.helper.getShortCode()) === 'SAQ A') {
+        if ($$(selector)[0]) {
+            paymillButton = $$(selector)[0];
+        } else if($$('#onestepcheckout-place-order')[0]) {
+            paymillButton = $$('#onestepcheckout-place-order')[0];
+        } else if($$('#firecheckout-form button[onclick*="checkout.save()"]')[0]) {
+            paymillButton = $$('#firecheckout-form button[onclick*="checkout.save()"]')[0];
+        } else if($$('#onestepcheckout-form')[0]) {
+            paymillButton = $$('#onestepcheckout-form button[onclick*="review.save()"]')[0];
+        } else {
+            paymillButton = $$('button[onclick*="payment.save()"]')[0];
+        }
     } else {
-        paymillButton = $$('button[onclick*="payment.save()"]')[0];
+        paymillButton = $$(selector)[0];
     }
 
     if (paymillButton) {
