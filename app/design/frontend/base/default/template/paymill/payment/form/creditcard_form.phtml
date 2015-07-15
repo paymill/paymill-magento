@@ -3,7 +3,7 @@
     <li>
         <?php echo $this->getCreditCardLogosDisplay();?>
     </li>
-    <?php if($this->isFastCheckout($_code)):?>
+    <?php if($this->isFastCheckout($_code) === 'true'):?>
     <div id="paymillFastCheckoutDiv">
         <?php
         if($this->getPaymentEntry($_code, 'card_holder') != ''): ?>
@@ -63,7 +63,7 @@
     //<![CDATA[
     paymillCreditcard = new Paymill('<?php echo $_code; ?>');
 
-    <?php if(!$this->isFastCheckout($_code)): ?>
+    <?php if($this->isFastCheckout($_code) === 'false'): ?>
     paymill.embedFrame('paymillContainer', {lang: '<?php echo $this->__('paymill_lang') ?>'}, PaymillFrameResponseHandler);
     <?php endif; ?>
 
