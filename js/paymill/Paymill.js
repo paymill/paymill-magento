@@ -231,7 +231,9 @@ tokenCallback = function(error, result)
         paymill.debug(error.message);
         paymill.debug("Paymill Response Handler triggered: Error.");
         Object.extend(Validation.methods, rules);
-        new Validation($$('.paymill-payment-token-' + paymill.helper.getShortCode())[0].form.id).validate();
+        if(!paymillUseButtonForFrame) {
+            new Validation($$('.paymill-payment-token-' + paymill.helper.getShortCode())[0].form.id).validate();
+        }
     } else {
         rules['paymill-validate-' + paymill.helper.getShortCode() + '-token'] = new Validator(
             'paymill-validate-' + paymill.helper.getShortCode() + '-token',
