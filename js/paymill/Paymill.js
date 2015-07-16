@@ -132,20 +132,22 @@ Paymill.prototype.setOnClickHandler = function(selector)
 {
     var that = this;
 
-    if ($$(selector)[0]) {
-        paymillButton = $$(selector)[0];
-        paymillUseButton = true;
-    } else if(typeof(paymillPci) !== 'undefined' && paymillPci === 'SAQ A') {
-        if($$('#onestepcheckout-place-order')[0]) {
-            paymillButton = $$('#onestepcheckout-place-order')[0];
-        } else if($$('#firecheckout-form button[onclick*="checkout.save()"]')[0]) {
-            paymillButton = $$('#firecheckout-form button[onclick*="checkout.save()"]')[0];
-        } else if($$('#onestepcheckout-form')[0]) {
-            paymillButton = $$('#onestepcheckout-form button[onclick*="review.save()"]')[0];
-        } else {
-            paymillButton = $$('button[onclick*="payment.save()"]')[0];
+    if(!paymillButton) {
+        if ($$(selector)[0]) {
+            paymillButton = $$(selector)[0];
+            paymillUseButton = true;
+        } else if(typeof(paymillPci) !== 'undefined' && paymillPci === 'SAQ A') {
+            if($$('#onestepcheckout-place-order')[0]) {
+                paymillButton = $$('#onestepcheckout-place-order')[0];
+            } else if($$('#firecheckout-form button[onclick*="checkout.save()"]')[0]) {
+                paymillButton = $$('#firecheckout-form button[onclick*="checkout.save()"]')[0];
+            } else if($$('#onestepcheckout-form')[0]) {
+                paymillButton = $$('#onestepcheckout-form button[onclick*="review.save()"]')[0];
+            } else {
+                paymillButton = $$('button[onclick*="payment.save()"]')[0];
+            }
+            paymillUseButtonForFrame = true;
         }
-        paymillUseButtonForFrame = true;
     }
 
     if (paymillButton) {
