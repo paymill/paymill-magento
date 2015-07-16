@@ -68,5 +68,6 @@
     <?php endif; ?>
 
     paymillTokenSelector = '<?php echo Mage::helper('paymill/optionHelper')->getTokenSelector(); ?>';
+    paymillPci = '<?php echo Mage::helper('paymill/optionHelper')->getPci($_code); ?>';
     //]]>
 </script>

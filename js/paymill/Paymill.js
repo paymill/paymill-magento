@@ -10,6 +10,8 @@ var PAYMILL_PUBLIC_KEY = null;
 var paymillButton = false;
 var onClickContent = false;
 var onClickBounded = false;
+var paymillUseButton = false;
+var paymillUseButtonForFrame = false;
 
 function Paymill(methodCode)
 {
@@ -76,7 +78,9 @@ Paymill.prototype.generateTokenOnSubmit = function()
             }
         }
     } else {
-        if (paymillButton) {
+        paymillDebitUseButton = this.helper.getMethodCode() === 'paymill_directdebit' && paymillUseButton;
+        paymillCcUseButton = this.helper.getMethodCode() === 'paymill_creditcard' && (paymillUseButton || paymillUseButtonForFrame);
+        if(paymillButton && (paymillDebitUseButton || paymillCcUseButton)) {
             paymillButton.removeAttribute('onclick');
             paymillButton.stopObserving('click');
             paymillButton.setAttribute('onclick', onClickContent);
@@ -128,10 +132,11 @@ Paymill.prototype.setOnClickHandler = function(selector)
 {
     var that = this;
 
-    if(this.helper.getMethodCode() === 'paymill_creditcard' && this.helper.getElementValue('.paymill-info-pci-' + this.helper.getShortCode()) === 'SAQ A') {
-        if ($$(selector)[0]) {
-            paymillButton = $$(selector)[0];
-        } else if($$('#onestepcheckout-place-order')[0]) {
+    if ($$(selector)[0]) {
+        paymillButton = $$(selector)[0];
+        paymillUseButton = true;
+    } else if(typeof(paymillPci) !== 'undefined' && paymillPci === 'SAQ A') {
+        if($$('#onestepcheckout-place-order')[0]) {
             paymillButton = $$('#onestepcheckout-place-order')[0];
         } else if($$('#firecheckout-form button[onclick*="checkout.save()"]')[0]) {
             paymillButton = $$('#firecheckout-form button[onclick*="checkout.save()"]')[0];
@@ -140,8 +145,7 @@ Paymill.prototype.setOnClickHandler = function(selector)
         } else {
             paymillButton = $$('button[onclick*="payment.save()"]')[0];
         }
-    } else {
-        paymillButton = $$(selector)[0];
+        paymillUseButtonForFrame = true;
     }
 
     if (paymillButton) {
@@ -156,9 +160,9 @@ Paymill.prototype.setOnClickHandler = function(selector)
             element.observe('change', function() {
                 paymillButton.removeAttribute('onclick');
                 paymillButton.stopObserving('click');
-                if (that.helper.getMethodCode() === 'paymill_directdebit') {
+                if (that.helper.getMethodCode() === 'paymill_directdebit' && paymillUseButton) {
                     paymillButton.setAttribute('onclick', 'paymillElv.generateTokenOnSubmit()');
-                } else if(that.helper.getMethodCode() === 'paymill_creditcard') {
+                } else if(that.helper.getMethodCode() === 'paymill_creditcard' && (paymillUseButton || paymillUseButtonForFrame)) {
                     paymillButton.setAttribute('onclick', 'paymillCreditcard.generateTokenOnSubmit()');
                 } else {
                     paymillButton.setAttribute('onclick', onClickContent);
@@ -171,13 +175,13 @@ Paymill.prototype.setOnClickHandler = function(selector)
             });
         });
 
-        if (that.helper.getMethodCode() === 'paymill_directdebit') {
+        if (that.helper.getMethodCode() === 'paymill_directdebit'  && paymillUseButton) {
             paymillButton.stopObserving('click');
             paymillButton.removeAttribute('onclick');
             paymillButton.setAttribute('onclick', 'paymillElv.generateTokenOnSubmit()');
         }
 
-        if (that.helper.getMethodCode() === 'paymill_creditcard') {
+        if (that.helper.getMethodCode() === 'paymill_creditcard' && (paymillUseButton || paymillUseButtonForFrame)) {
             paymillButton.stopObserving('click');
             paymillButton.removeAttribute('onclick');
             paymillButton.setAttribute('onclick', 'paymillCreditcard.generateTokenOnSubmit()');
@@ -240,20 +244,20 @@ tokenCallback = function(error, result)
 
         paymill.debug("Saving Token in Form: " + result.token);
         paymill.helper.setElementValue('.paymill-payment-token-' + paymill.helper.getShortCode(), result.token);
-        if (paymillButton) {
+
+        paymillDebitUseButton = paymill.helper.getMethodCode() === 'paymill_directdebit' && paymillUseButton;
+        paymillCcUseButton = paymill.helper.getMethodCode() === 'paymill_creditcard' && (paymillUseButton || paymillUseButtonForFrame);
+        if(paymillButton && (paymillDebitUseButton || paymillCcUseButton)) {
             paymillButton.removeAttribute('onclick');
             paymillButton.stopObserving('click');
             paymillButton.setAttribute('onclick', onClickContent);
             if (onClickBounded) {
                 onClickBounded.forEach(function (handler) {
-                    paymillButton.observe('click', handler);  
+                    paymillButton.observe('click', handler);
                 });
             }
 
             paymillButton.click();
         }
     }
-    
-    
-    
 };
