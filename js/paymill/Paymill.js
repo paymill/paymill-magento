@@ -91,6 +91,15 @@ Paymill.prototype.generateTokenOnSubmit = function()
             }
 
             paymillButton.click();
+            paymillButton.removeAttribute('onclick');
+            paymillButton.stopObserving('click');
+            if (this.helper.getMethodCode() === 'paymill_directdebit') {
+                paymillButton.setAttribute('onclick', 'paymillElv.generateTokenOnSubmit()');
+            }
+
+            if (this.helper.getMethodCode() === 'paymill_creditcard') {
+                paymillButton.setAttribute('onclick', 'paymillCreditcard.generateTokenOnSubmit()');
+            }
         }
     }
 };
@@ -262,6 +271,18 @@ tokenCallback = function(error, result)
             }
 
             paymillButton.click();
+
+            paymillButton.stopObserving('click');
+            paymillButton.removeAttribute('onclick');
+
+            if (paymill.helper.getMethodCode() === 'paymill_directdebit') {
+                paymillButton.setAttribute('onclick', 'paymillElv.generateTokenOnSubmit()');
+            }
+
+            if (paymill.helper.getMethodCode() === 'paymill_creditcard') {
+                paymillButton.setAttribute('onclick', 'paymillCreditcard.generateTokenOnSubmit()');
+            }
         }
+
     }
 };
