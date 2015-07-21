@@ -37,12 +37,13 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormAbstract extends Mage_Paymen
     }
     
     /**
-     * Returns a boolean deciding if the template is going to be displayed of not
+     * Returns a boolean if checkout is fastcheckout or not
      * @param String $code payment code
      * @return boolean
      */
-    public function isNormalCheckout($code)
+    public function isFastCheckout($code)
     {
-        return is_null(Mage::helper('paymill/fastCheckoutHelper')->getPaymentData($code)) ? 'false' : 'true';
+        $paymentData = Mage::helper('paymill/fastCheckoutHelper')->getPaymentData($code);
+        return empty($paymentData) ? 'false' : 'true';
     }
 }

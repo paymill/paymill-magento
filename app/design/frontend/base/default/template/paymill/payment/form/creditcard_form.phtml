@@ -1,0 +1,73 @@
+<?php $_code = $this->getMethodCode(); ?>
+<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+    <li>
+        <?php echo $this->getCreditCardLogosDisplay();?>
+    </li>
+    <?php if($this->isFastCheckout($_code) === 'true'):?>
+    <div id="paymillFastCheckoutDiv">
+        <?php
+        if($this->getPaymentEntry($_code, 'card_holder') != ''): ?>
+        <li>
+            <label><?php echo $this->__("paymill_Holder"); ?>:</label>
+            <div class="input-box">
+                <?php echo $this->getPaymentEntry($_code, 'card_holder'); ?>
+            </div>
+        </li>
+        <?php endif; ?>
+        <li>
+            <label><?php echo $this->__("paymill_Number"); ?>:</label>
+            <div class="input-box">
+                <?php echo $this->getPaymentEntry($_code, 'cc_number'); ?>
+            </div>
+        </li>
+        <li>
+            <label><?php echo $this->__("paymill_Date") ?>:</label>
+            <div class="input-box">
+                <?php echo $this->getPaymentEntry($_code, 'expire_month') . "/" . $this->getPaymentEntry($_code, 'expire_year'); ?>
+            </div>
+        </li>
+        <li>
+            <label><?php echo $this->__('Card Verification Number'); ?></label>
+            <div class="input-box">
+                <?php echo $this->getPaymentEntry($_code, 'cvc'); ?>
+            </div>
+        </li>
+        <li>
+            <label></label>
+            <div class="input-box">
+                <button type="button" onclick="paymillCreditcard.methodInstance.openPaymillFrame('de');"><?php echo $this->__("paymill_change"); ?></button>
+            </div>
+        </li>
+    </div>
+    <?php endif; ?>
+    <li>
+        <div id='paymillContainer'>
+
+        </div>
+        <input class="paymill-payment-token-cc paymill-validate-cc-token" name="payment[paymill-payment-token-cc]" id="payment[paymill-payment-token-cc]" type="hidden" />
+        <input class="paymill-payment-token-url-cc" type="hidden" value="<?php echo  $this->getUrl('paymill/token/total', array('_secure'=>true));  ?>"/>
+        <input class="paymill-payment-token-log-cc" type="hidden" value="<?php echo  $this->getUrl('paymill/token/log', array('_secure'=>true));  ?>"/>
+        <input class="paymill-info-public_key-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey(); ?>"/>
+        <input class="paymill-option-debug-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode(); ?>"/>
+        <input class="paymill-info-pci-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPci($_code); ?>"/>
+        <input class="paymill-info-fastCheckout-cc" type="hidden" value="<?php echo $this->isFastCheckout($_code); ?>"/>
+        <input class="paymill-payment-currency-cc" type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getCurrency(Mage::getSingleton('checkout/session')->getQuote()); ?>"/>
+    </li>
+    <?php if (!is_null(Mage::getStoreConfig('payment/paymill_creditcard/checkout_desc', Mage::app()->getStore()->getStoreId()))): ?>
+        <li>
+            <?php echo Mage::getStoreConfig('payment/paymill_creditcard/checkout_desc', Mage::app()->getStore()->getStoreId()); ?>
+        </li>
+    <?php endif; ?>
+</ul>
+<script type="text/javascript">
+    //<![CDATA[
+    paymillCreditcard = new Paymill('<?php echo $_code; ?>');
+
+    <?php if($this->isFastCheckout($_code) === 'false'): ?>
+    paymill.embedFrame('paymillContainer', {lang: '<?php echo $this->__('paymill_lang') ?>'}, PaymillFrameResponseHandler);
+    <?php endif; ?>
+
+    paymillTokenSelector = '<?php echo Mage::helper('paymill/optionHelper')->getTokenSelector(); ?>';
+    paymillPci = '<?php echo Mage::helper('paymill/optionHelper')->getPci($_code); ?>';
+    //]]>
+</script>
