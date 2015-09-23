@@ -133,7 +133,7 @@ Paymill.prototype.debug = function(message)
 Paymill.prototype.setEventListener = function(selector)
 {
     this.methodInstance.setEventListener(selector);
-    this.setOnClickHandler();
+    this.setOnClickHandler(selector);
     
 };
 
