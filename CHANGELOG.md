@@ -1,3 +1,6 @@
+## v4.0.1
+ * improve payment method selection in the javascript
+
 ## v4.0.0
  * Integration of PayFrame to enable use of SAQ A for easier PCI DSS 3.0 compliance.
 
