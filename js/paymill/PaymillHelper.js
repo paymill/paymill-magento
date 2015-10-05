@@ -27,11 +27,8 @@ PaymillHelper.prototype.getShortCode = function()
         paymill_directdebit: 'elv'
     };
 
-    $$('input:checked[type="radio"][name="payment[method]"]').pluck('value');
-
-
-    if ($$('input:checked[type="radio"][name="payment[method]"]').pluck('value')) {
-        return methods[$$('input:checked[type="radio"][name="payment[method]"]').pluck('value')];
+    if (payment.currentMethod in methods) {
+        return methods[payment.currentMethod];
     }
 
     return 'other';
@@ -39,9 +36,5 @@ PaymillHelper.prototype.getShortCode = function()
 
 PaymillHelper.prototype.getMethodCode = function()
 {
-    if ($$('input:checked[type="radio"][name="payment[method]"]').pluck('value')) {
-        return $$('input:checked[type="radio"][name="payment[method]"]').pluck('value')[0];
-    }
-
-    return 'other';
+    return payment.currentMethod;
 };
