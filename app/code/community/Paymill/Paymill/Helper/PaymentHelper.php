@@ -80,7 +80,7 @@ class Paymill_Paymill_Helper_PaymentHelper extends Mage_Core_Helper_Abstract
     {
         $message = 'General undefined response.';
         if (array_key_exists($code, $this->_responseCodes)) {
-            $message = $this->_responseCodes[$code];
+            $message = $this->__($this->_responseCodes[$code]);
         }
         
         return $message;
