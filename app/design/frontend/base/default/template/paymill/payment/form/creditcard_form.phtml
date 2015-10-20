@@ -61,13 +61,13 @@
 </ul>
 <script type="text/javascript">
     //<![CDATA[
-    paymillCreditcard = new Paymill('<?php echo $_code; ?>');
+    var paymillCreditcard = new Paymill('<?php echo $_code; ?>');
 
     <?php if($this->isFastCheckout($_code) === 'false'): ?>
     paymill.embedFrame('paymillContainer', {lang: '<?php echo $this->__('paymill_lang') ?>'}, PaymillFrameResponseHandler);
     <?php endif; ?>
 
-    paymillTokenSelector = '<?php echo Mage::helper('paymill/optionHelper')->getTokenSelector(); ?>';
-    paymillPci = '<?php echo Mage::helper('paymill/optionHelper')->getPci($_code); ?>';
+    var paymillTokenSelector = '<?php echo Mage::helper('paymill/optionHelper')->getTokenSelector(); ?>';
+    var paymillPci = '<?php echo Mage::helper('paymill/optionHelper')->getPci($_code); ?>';
     //]]>
 </script>
