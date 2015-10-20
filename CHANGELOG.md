@@ -1,3 +1,7 @@
+## v4.0.2
+ * add paymill api errors to translation engine
+ * initialize paymillPci js variable for both creditcard cases
+
 ## v4.0.1
  * improve payment method selection in the javascript
 
