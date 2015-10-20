@@ -64,7 +64,7 @@
 </ul>
 <script type="text/javascript">
     //<![CDATA[
-    var paymillElv = new Paymill('<?php echo $_code; ?>');
+    paymillElv = new Paymill('<?php echo $_code; ?>');
     paymillElv.setValidationRules();
     paymillElv.setEventListener('<?php echo Mage::helper('paymill/optionHelper')->getTokenSelector(); ?>');
     //]]>
