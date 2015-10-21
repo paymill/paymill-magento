@@ -89,6 +89,7 @@
                 <order_status>processing</order_status>
                 <title>paymill_credit_card</title>
                 <payment_action>authorize</payment_action>
+                <pci>SAQ A</pci>
             </paymill_creditcard>
 
             <paymill_directdebit>
