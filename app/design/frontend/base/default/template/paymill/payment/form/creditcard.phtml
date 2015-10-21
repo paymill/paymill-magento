@@ -94,5 +94,6 @@
         paymillCreditcard.setEventListener('<?php echo Mage::helper('paymill/optionHelper')->getTokenSelector(); ?>');
         <?php echo $this->getCreditCardLogosBrand(); ?>
         paymillCreditcard.setCreditcards(paymillCcBrands);
+        paymillPci = '<?php echo Mage::helper('paymill/optionHelper')->getPci($_code); ?>';
     //]]>
 </script>
