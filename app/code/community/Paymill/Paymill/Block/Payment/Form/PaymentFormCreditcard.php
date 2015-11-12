@@ -99,7 +99,8 @@ class Paymill_Paymill_Block_Payment_Form_PaymentFormCreditcard extends Paymill_P
         $cards = explode(',', Mage::getStoreConfig('payment/paymill_creditcard/specificcreditcard'));
         $this->creditCardLogosDisplay = '';
         $this->creditCardLogosBrand = 'var paymillCcBrands = new Array();';
-        if(Mage::getStoreConfig('payment/paymill_creditcard/showspecificcreditcard')) {
+
+        if(!empty($cards)) {
             foreach($cards as $card) {
                 $this->creditCardLogosDisplay .= sprintf(
                     '<img style="display: inline" src="%s" alt="%s"/>',
