@@ -1,3 +1,7 @@
+## v4.0.3
+ * fix SUPEE-6788 related admin controller issue
+ * add role managment for paymill log and webhook managment
+
 ## v4.0.2
  * add paymill api errors to translation engine
  * initialize paymillPci js variable for both creditcard cases
