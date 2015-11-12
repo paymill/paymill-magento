@@ -121,6 +121,16 @@
                 </Paymill_Paymill>
             </modules>
         </translate>
+        
+        <routers>
+            <paymill>
+                <use>standard</use>
+                <args>
+                    <module>Paymill_Paymill</module>
+                    <frontName>paymill</frontName>
+                </args>
+            </paymill>
+        </routers>
     </frontend>
 
     <adminhtml>
@@ -148,16 +158,16 @@
             </paymill_search>
         </global_search>
     </adminhtml>
-
+    
     <admin>
         <routers>
-            <paymill>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Paymill_Paymill</module>
-                    <frontName>paymill</frontName>
+                    <modules>
+                        <paymill after="Mage_Adminhtml">Paymill_Paymill_Adminhtml</paymill>
+                    </modules>
                 </args>
-            </paymill>
+            </adminhtml>
         </routers>
     </admin>
 
