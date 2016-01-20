@@ -7,7 +7,7 @@ PAYMILL extension for Magento compatible with: 1.5, 1.6, 1.6.1, 1.6.2.0, 1.7, 1.
 
 ## Your Advantages
 * PCI DSS compatibility
-* Payment means: Credit Card (Visa, Visa Electron, Mastercard, Maestro, Diners, Discover, JCB, AMEX, China Union Pay), Direct Debit (ELV)
+* Payment means: Credit Card (Visa, Visa Electron, Mastercard, Maestro, Diners, Discover, JCB, AMEX), Direct Debit (ELV)
 * Invoice generation on successful direct transactions with the payment means described above
 * Refunds get created automatically on usage of the Magento creditmemo routine in you shop backend
 * Optional configuration for authorization and manual capture with credit card payments
