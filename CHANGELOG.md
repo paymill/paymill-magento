@@ -1,3 +1,9 @@
+## v4.0.4
+ * Added modman file for composer
+ * Added wsdl.xml to allow setting `paymill-payment-token-cc` value through SOAP v2 call using `shoppingCartPaymentMethod`
+ * Updated support list in README.md
+ * Changed default layout handle to specific checkout layout handles to avoid loading files on every request
+
 ## v4.0.3
  * fix SUPEE-6788 related admin controller issue
  * add role managment for paymill log and webhook managment

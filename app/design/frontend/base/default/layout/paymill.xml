@@ -4,7 +4,7 @@ To change this template, choose Tools | Templates
 and open the template in the editor.
 -->
 <layout version="0.1.0">
-    <default>
+    <paymill_static_files>
         <reference name="head">
             <action method="addCss">
                 <stylesheet>css/paymill/logo.css</stylesheet>
@@ -36,7 +36,100 @@ and open the template in the editor.
             <action method="addJs">
                 <script>paymill/PaymillHelper.js</script>
             </action>
-
         </reference>
-    </default>
+    </paymill_static_files>
+
+    <checkout_onepage_index>
+        <update handle="paymill_static_files" />
+    </checkout_onepage_index>
+
+    <!-- Used for `OneStepCheckout(.com)`, but also for `MageStore One Step Checkout` and `Apptha One Step Checkout` -->
+    <onestepcheckout_index_index>
+        <update handle="paymill_static_files" />
+    </onestepcheckout_index_index>
+
+    <!-- For `IWD Free One Page / Step Checkout v3+` -->
+    <opc_index_index>
+        <update handle="paymill_static_files" />
+    </opc_index_index>
+
+    <!-- For `GoMage LightCheckout` -->
+    <gomage_checkout_onepage_index>
+        <update handle="paymill_static_files" />
+    </gomage_checkout_onepage_index>
+
+    <!-- For `Fire Checkout` 1.5 -->
+    <firecheckout_index_index>
+        <update handle="paymill_static_files" />
+    </firecheckout_index_index>
+
+    <!-- For `Fire Checkout` 2.0 -->
+    <firecheckout_onepage_index>
+        <update handle="paymill_static_files" />
+    </firecheckout_onepage_index>
+
+    <!-- Used for older versions of `MageStore One Step Checkout` -->
+    <onestepquickcheckout_index_index>
+        <update handle="paymill_static_files" />
+    </onestepquickcheckout_index_index>
+
+    <!-- For `FME One Step Checkout`, `MageWorld One Step Checkout Pro`, `GrafischDirect One Step Checkout` -->
+    <checkout_onestep_index>
+        <update handle="paymill_static_files" />
+    </checkout_onestep_index>
+
+    <!-- For `IWD Free One Page / Step Checkout` -->
+    <onepagecheckout_index_index>
+        <update handle="paymill_static_files" />
+    </onepagecheckout_index_index>
+
+    <!-- For `AheadWorks One Step Checkout` -->
+    <aw_onestepcheckout_index_index>
+        <update handle="paymill_static_files" />
+    </aw_onestepcheckout_index_index>
+
+    <!-- For `Aitoc One Step Checkout Manager` -->
+    <aitcheckout_checkout_index>
+        <update handle="paymill_static_files" />
+    </aitcheckout_checkout_index>
+
+    <!-- For `MAGExtended Master Checkout` -->
+    <mastercheckout_index_index>
+        <update handle="paymill_static_files" />
+    </mastercheckout_index_index>
+
+    <!-- For `Lotusbreath One Step Checkout` -->
+    <lotusbreath_onestepcheckout_index_index>
+        <update handle="paymill_static_files" />
+    </lotusbreath_onestepcheckout_index_index>
+
+    <!-- For `Elgentos Twopage Checkout` -->
+    <checkout_twopage_twostep>
+        <update handle="paymill_static_files" />
+    </checkout_twopage_twostep>
+
+    <!-- Support for Three-Step Checkout -->
+    <ecommerceteam_tcheckout_index_index>
+        <update handle="paymill_static_files" />
+    </ecommerceteam_tcheckout_index_index>
+
+    <!-- Support for Good Checkout -->
+    <goodcheckout_index_index>
+        <update handle="paymill_static_files" />
+    </goodcheckout_index_index>
+
+    <!-- Support for WP checkout -->
+    <wp_onepagecheckout_default>
+        <update handle="paymill_static_files" />
+    </wp_onepagecheckout_default>
+
+    <!-- Support for AHT One Step Checkout -->
+    <oscheckout_index_index>
+        <update handle="paymill_static_files" />
+    </oscheckout_index_index>
+
+    <!-- Support for Anattadesign AwesomeCheckout -->
+    <anattadesign_awesomecheckout_onepage_index>
+        <update handle="paymill_static_files" />
+    </anattadesign_awesomecheckout_onepage_index>
 </layout>

@@ -235,7 +235,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         //Create Payment Processor
         $paymentHelper = Mage::helper("paymill/paymentHelper");
         $fcHelper = Mage::helper("paymill/fastCheckoutHelper");
-        $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token);
+        $paymentProcessor = $paymentHelper->createPaymentProcessor($this->getCode(), $token, $this->getOrder()->getQuote());
         
         //Always load client if email doesn't change
         $clientId = $fcHelper->getClientId();
@@ -253,7 +253,7 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
         
         $success = $paymentProcessor->processPayment(!$this->_preauthFlag);
 
-        $this->_existingClientHandling($clientId);
+        $this->_existingClientHandling($clientId, $this->getOrder()->getQuote());
         
         if ($success) {
             
@@ -309,15 +309,17 @@ abstract class Paymill_Paymill_Model_Method_MethodModelAbstract extends Mage_Pay
      * 
      * @param string $clientId
      */
-    private function _existingClientHandling($clientId)
+    private function _existingClientHandling($clientId, $quote = null)
     {
         if (!empty($clientId)) {
             $clients = new Services_Paymill_Clients(
                 trim(Mage::helper('paymill/optionHelper')->getPrivateKey()),
                 Mage::helper('paymill')->getApiUrl()
             );
-     
-            $quote = Mage::getSingleton('checkout/session')->getQuote();
+
+            if (is_null($quote) || !$quote || !$quote->getId()) {
+                $quote = Mage::getSingleton('checkout/session')->getQuote();
+            }
             
             $client = $clients->getOne($clientId);
             if (Mage::helper("paymill/customerHelper")->getCustomerEmail($quote) !== $client['email']) {
