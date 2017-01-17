@@ -18,7 +18,7 @@ Creditcard.prototype.validate = function()
         }
 
         if (!paymill.validateExpiry(
-                this.helper.getElementValue('#paymill_creditcard_expiry_month'), 
+                this.helper.getElementValue('#paymill_creditcard_expiry_month'),
                 this.helper.getElementValue('#paymill_creditcard_expiry_year'))) {
             valid = false;
         }
@@ -27,14 +27,14 @@ Creditcard.prototype.validate = function()
             valid = false;
         }
     }
-    
+
     return valid;
 };
 
 Creditcard.prototype.setValidationRules = function()
 {
     var that = this;
-    
+
     Object.extend(Validation.methods, {
         'paymill-validate-cc-number': new Validator(
             'paymill-validate-cc-number',
@@ -125,7 +125,7 @@ Creditcard.prototype.getTokenParameter = function()
 {
     PAYMILL_PUBLIC_KEY = this.helper.getElementValue('.paymill-info-public_key-cc');
     paymill.config('3ds_cancel_label', this.helper.getElementValue('.paymill_3ds_cancel'));
-    
+
     var cvc = '000';
 
     if (this.helper.getElementValue('#paymill_creditcard_cvc') !== '') {
@@ -139,7 +139,8 @@ Creditcard.prototype.getTokenParameter = function()
         exp_month: this.helper.getElementValue('#paymill_creditcard_expiry_month'),
         exp_year: this.helper.getElementValue('#paymill_creditcard_expiry_year'),
         cvc: cvc,
-        cardholder: this.helper.getElementValue('#paymill_creditcard_holdername')
+        cardholder: this.helper.getElementValue('#paymill_creditcard_holdername'),
+        email: this.helper.getElementValue('.paymill-payment-customer-email-cc')
     };
 };
 
@@ -149,7 +150,8 @@ Creditcard.prototype.getFrameTokenParameter = function()
 
     return {
         amount_int: parseInt(this.getTokenAmount()),
-        currency: this.helper.getElementValue('.paymill-payment-currency-cc')
+        currency: this.helper.getElementValue('.paymill-payment-currency-cc'),
+        email: this.helper.getElementValue('.paymill-payment-customer-email-cc')
     };
 };
 
@@ -158,9 +160,9 @@ Creditcard.prototype.getTokenAmount = function()
 {
     var that = this;
     var returnVal = null;
-    
+
     new Ajax.Request(this.helper.getElementValue('.paymill-payment-token-url-cc'), {
-        asynchronous: false, 
+        asynchronous: false,
         onSuccess: function(response) {
             returnVal = response.transport.responseText;
         }, onFailure: function() {
@@ -191,7 +193,7 @@ Creditcard.prototype.paymillShowCardIcon = function()
         if(this.creditcards.length > 0 && this.creditcards.indexOf(brand) === -1) {
             return;
         }
-        
+
         $$('#paymill_creditcard_number')[0].addClassName("paymill-card-number-" + brand);
         if (!detector.validate(this.helper.getElementValue('#paymill_creditcard_number'))) {
             $$('#paymill_creditcard_number')[0].addClassName("paymill-card-number-grayscale");
@@ -202,11 +204,11 @@ Creditcard.prototype.paymillShowCardIcon = function()
 Creditcard.prototype.setEventListener = function(selector)
 {
     var that = this;
-    
+
     if (this.helper.getElementValue('.paymill-info-fastCheckout-cc') === 'true') {
         that.unsetValidationRules();
     }
-    
+
     Event.observe('paymill_creditcard_number','keyup', function() {
         that.setValidationRules();
         that.helper.setElementValue('.paymill-info-fastCheckout-cc', 'false');
@@ -256,7 +258,7 @@ Creditcard.prototype.setEventListener = function(selector)
             paymillCreditcard.setOnClickHandler(selector);
         }
     });
-    
+
     Event.observe('paymill_creditcard_number', 'keyup', function() {
         that.paymillShowCardIcon();
     });
@@ -284,4 +286,3 @@ PaymillFrameResponseHandler = function(error)
         paymillCreditcard.setOnClickHandler(paymillTokenSelector);
     }
 }
-

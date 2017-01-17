@@ -49,6 +49,7 @@
         <input class="paymill-payment-token-url-cc" type="hidden" value="<?php echo  $this->getUrl('paymill/token/total', array('_secure'=>true));  ?>"/>
         <input class="paymill-payment-token-log-cc" type="hidden" value="<?php echo  $this->getUrl('paymill/token/log', array('_secure'=>true));  ?>"/>
         <input class="paymill-payment-currency-cc" type="hidden" value="<?php echo Mage::helper('paymill/paymentHelper')->getCurrency(Mage::getSingleton('checkout/session')->getQuote()); ?>"/>
+        <input class="paymill-payment-customer-email-cc" type="hidden" value="<?php echo Mage::helper('paymill/customerHelper')->getCustomerEmail(Mage::getSingleton('checkout/session')->getQuote()); ?>"/>
         <input class="paymill-option-debug-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->isInDebugMode(); ?>"/>
         <input class="paymill-info-public_key-cc" type="hidden" value="<?php echo Mage::helper('paymill/optionHelper')->getPublicKey(); ?>"/>
         <input class="paymill-info-fastCheckout-cc" type="hidden" value="<?php echo $this->isFastCheckout($_code); ?>"/>
@@ -70,7 +71,8 @@
         <input class="PAYMILL_field_invalid_card_holder-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_card_holder"); ?>"/>
         <input class="PAYMILL_field_invalid_amount_int-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_amount_int"); ?>"/>
         <input class="PAYMILL_field_field_invalid_amount-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_field_invalid_amount"); ?>"/>
-        <input class="PAYMILL_field_field_field_invalid_currency-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_field_field_invalid_currency"); ?>"/>
+        <input class="PAYMILL_field_invalid_currency-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_currency"); ?>"/>
+        <input class="PAYMILL_field_invalid_email-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_email"); ?>"/>
         <input class="PAYMILL_field_invalid_account_number-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_account_number"); ?>"/>
         <input class="PAYMILL_field_invalid_account_holder-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_account_holder"); ?>"/>
         <input class="PAYMILL_field_invalid_bank_code-cc" type="hidden" value="<?php echo $this->__("PAYMILL_field_invalid_bank_code"); ?>"/>
