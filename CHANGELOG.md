@@ -1,3 +1,8 @@
+## v4.0.4
+ * Remove CURLOPT_CAINFO - path to Certificate Authority (CA) bundle
+ * Remove paymill.crt
+ * Change user agent info to "Paymill-Magento/4.0.4"
+ 
 ## v4.0.3
  * fix SUPEE-6788 related admin controller issue
  * add role managment for paymill log and webhook managment
