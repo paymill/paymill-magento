@@ -29,7 +29,7 @@ class Services_Paymill_Apiclient_Curl implements Services_Paymill_Apiclient_Inte
      */
     private $_apiUrl = '/';
 
-    const USER_AGENT = 'Paymill-php/0.0.2';
+    const USER_AGENT = 'Paymill-Magento/4.0.4';
 
     public static $lastRawResponse;
     public static $lastRawCurlOptions;
@@ -105,8 +105,7 @@ class Services_Paymill_Apiclient_Curl implements Services_Paymill_Apiclient_Inte
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_USERAGENT => self::USER_AGENT,
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_CAINFO => Mage::getBaseDir() . '/lib/Services/Paymill/Apiclient/paymill.crt',
+            CURLOPT_SSL_VERIFYPEER => true
         );
 
         if (Services_Paymill_Apiclient_Interface::HTTP_GET === $method) {
