@@ -35,7 +35,7 @@
         <li>
             <label></label>
             <div class="input-box">
-                <button type="button" onclick="paymillCreditcard.methodInstance.openPaymillFrame('de');"><?php echo $this->__("paymill_change"); ?></button>
+                <button type="button" onclick="paymillCreditcard.methodInstance.openPaymillFrame('<?php echo substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2); ?>');"><?php echo $this->__("paymill_change"); ?></button>
             </div>
         </li>
     </div>
