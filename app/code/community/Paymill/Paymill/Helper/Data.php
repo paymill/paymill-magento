@@ -50,7 +50,7 @@ class Paymill_Paymill_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getApiUrl()
     {
-        return "https://api.paymill.com/v2/";
+        return "https://api.paymill.com/v2.1/";
     }
 
     /**
